@@ -1,11 +1,16 @@
 import os
+
+import environ
 from pathlib import Path
+
+env = environ.Env()
+environ.Env.read_env()  # reading .env file
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7vb68=w1(&+#lw5_owg+4fdy_xkr#2=9!$q)m!%sw$utk3gyep'
+SECRET_KEY = env.str("DJANGO_SECRET_KEY", default="SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -106,8 +111,8 @@ LOGOUT_REDIRECT_URL = 'login'
 # SOCIAL_AUTH_GITHUB_KEY = ''     # github id
 # SOCIAL_AUTH_GITHUB_SECRET = ''  # github secret key
 
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = 'xxxx'  # Client ID
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'xxxx'  # Client Secret
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = env.str('LINKEDIN_ID', default='Client ID')  # Client ID
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = env.str('LINKEDIN_SECRET', default='Client ID')  # Client Secret
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
 SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = [
     'email-address', 'formatted-name', 'public-profile-url', 'picture-url']

@@ -90,5 +90,3 @@ Werkzeug = "==0.16.0"
 
 [dev-packages]
 
-[requires]
-python_version = "3.9"

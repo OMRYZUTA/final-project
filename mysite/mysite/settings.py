@@ -111,16 +111,17 @@ LOGOUT_REDIRECT_URL = 'login'
 # SOCIAL_AUTH_GITHUB_KEY = ''     # github id
 # SOCIAL_AUTH_GITHUB_SECRET = ''  # github secret key
 
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = env.str('LINKEDIN_ID', default='Client ID')  # Client ID
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = env.str('LINKEDIN_SECRET', default='Client ID')  # Client Secret
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
-SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = [
-    'email-address', 'formatted-name', 'public-profile-url', 'picture-url']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = env.str(
+    'LINKEDIN_ID', default='Client ID')  # Client ID
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = env.str(
+    'LINKEDIN_SECRET', default='Client ID')  # Client Secret
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_liteprofile', 'r_emailaddress']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'formatted-name', 'public-profile-url', 'profile-picture']
 SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
     ('id', 'id'),
     ('formattedName', 'name'),
     ('emailAddress', 'email_address'),
-    ('pictureUrl', 'picture_url'),
+    ('profilePicture', 'profile_picture'),
     ('publicProfileUrl', 'profile_url'),
 ]
 

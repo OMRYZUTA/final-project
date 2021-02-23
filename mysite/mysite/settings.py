@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    'MyApp.apps.MyappConfig',
+    'my_auth.apps.my_authConfig',
 ]
 
 MIDDLEWARE = [
@@ -115,7 +115,8 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = env.str(
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = env.str(
     'LINKEDIN_SECRET', default='Client ID')  # Client Secret
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_liteprofile', 'r_emailaddress']
-SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'formatted-name', 'public-profile-url', 'profile-picture']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = [
+    'email-address', 'formatted-name', 'public-profile-url', 'profile-picture']
 SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
     ('id', 'id'),
     ('formattedName', 'name'),

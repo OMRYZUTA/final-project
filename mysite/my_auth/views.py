@@ -26,7 +26,7 @@ def get_position_form(request):
             # ...
             # redirect to a new URL:
             form.save()
-            return HttpResponseRedirect('/MyApp/thanks/')
+            return HttpResponseRedirect('/my_auth/thanks/')
 
     # if a GET (or any other method) we'll create a blank form
     else:

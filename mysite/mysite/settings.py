@@ -24,7 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    'my_auth.apps.my_authConfig',
+    'my_auth.apps.MyAuthConfig',
+    'application_process.apps.ApplicationProcessConfig',
 ]
 
 MIDDLEWARE = [

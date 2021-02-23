@@ -1,5 +1,4 @@
 import os
-
 import environ
 from pathlib import Path
 
@@ -25,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    'MyApp',
+    'MyApp.apps.MyappConfig',
 ]
 
 MIDDLEWARE = [

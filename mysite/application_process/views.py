@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from .models import PositionForm
 
+
+@login_required
 def get_position_form(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -13,6 +15,8 @@ def get_position_form(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
+
+            #form.user_id = request.user.id
             form.save()
             return HttpResponseRedirect('/application_process/thanks/')
 

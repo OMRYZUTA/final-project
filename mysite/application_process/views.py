@@ -16,8 +16,11 @@ def get_position_form(request):
             # ...
             # redirect to a new URL:
 
-            #form.user_id = request.user.id
-            form.save()
+            position = form.save(commit=False)
+            position.user = request.user
+            position.save()
+            #form. = request.user.id
+            #form.save()
             return HttpResponseRedirect('/application_process/thanks/')
 
     # if a GET (or any other method) we'll create a blank form

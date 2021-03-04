@@ -7,8 +7,9 @@ from social_django.models import UserSocialAuth
 class Position(models.Model):
     job_title = models.CharField(max_length=100)
     company_name = models.CharField(max_length=100)
-    user = models.ForeignKey(UserSocialAuth, on_delete=models.CASCADE)
-    
+    user_id = models.IntegerField(null=True)
+    #ForeignKey(UserSocialAuth.uid, on_delete=models.CASCADE)
+
     # email_address = forms.EmailField() #delete later
 
     def __str__(self):
@@ -18,4 +19,4 @@ class Position(models.Model):
 class PositionForm(ModelForm):
     class Meta:
         model = Position
-        fields = ['job_title', 'company_name','user']
+        fields = ['job_title', 'company_name']

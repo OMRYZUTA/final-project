@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from .models import PositionForm
+from .models import PositionForm, Position
 
 
 @login_required
@@ -28,6 +28,12 @@ def get_position_form(request):
         form = PositionForm()
 
     return render(request, 'position_form.html', {'form': form})
+
+
+@login_required
+def get_dashboard(request):
+    positions = Position.objects.all()
+    return render(request, 'dashboard.html', {"positions":positions})
 
 
 def get_thanks(request):

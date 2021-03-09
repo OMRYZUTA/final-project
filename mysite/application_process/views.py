@@ -32,8 +32,8 @@ def get_position_form(request):
 
 @login_required
 def get_dashboard(request):
-    positions = Position.objects.all()
-    return render(request, 'dashboard.html', {"positions":positions})
+    all_user_positions = Position.objects.filter(user_id=request.user.id)
+    return render(request, 'dashboard.html', {"positions": all_user_positions})
 
 
 def get_thanks(request):

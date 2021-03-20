@@ -6,6 +6,7 @@ class Position(models.Model):
     company_name = models.CharField(max_length=100)    
     country = models.CharField(max_length=100, default = 'Israel')
     city = models.CharField(max_length=100)
+    #small change
 
     #ForeignKey(UserSocialAuth.uid, on_delete=models.CASCADE)
 

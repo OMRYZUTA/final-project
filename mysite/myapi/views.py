@@ -18,7 +18,7 @@ class PositionViewSet(viewsets.ModelViewSet):
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
 
-    @login_required
+    # @login_required
     def get_queryset(self):
         queryset = self.queryset
         query_set = queryset.filter(user_id=self.request.user.id)

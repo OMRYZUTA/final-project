@@ -23,3 +23,7 @@ class PositionViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         query_set = queryset.filter(user_id=self.request.user.id)
         return query_set
+
+    # def post_query(self, body):
+    #     pass
+        # do something with the body

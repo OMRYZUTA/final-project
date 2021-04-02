@@ -8,4 +8,4 @@ from .models import Position
 class PositionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Position
-        fields = ('job_title', 'company_name', 'user_id', 'country', 'city')
+        fields = ('job_title', 'company_name', 'user_id', 'country_id', 'city')

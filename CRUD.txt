@@ -1,0 +1,30 @@
+CRUD = Create Update Delete
+
+GET /api/positions?country_id=<country_id>
+gets all the positions in the database, returns a subset of the fields (what is required by the dashboard)
+
+GET /api/positions/<id>
+gets a position by <id>, returns ALL the fields
+
+POST /api/positions
+create a new position entry
+
+PATCH /api/positions/<id>
+updates a position with id == <id> and the data in the body
+
+PATCH /api/positions/12
+{
+    name: "new name"
+}
+
+PUT /api/positions/<id>
+PUT /api/positions/12
+{
+    id: 12,
+    name: "new name",
+    country_id: "il",
+    created_at: "2020-02-02"
+}
+
+DELETE /api/positions/<id>
+deletes the position with id == <id>

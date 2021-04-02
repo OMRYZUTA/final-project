@@ -45,7 +45,8 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], #in order to allow the django engine to use the base.html in all of the apps.
+        # in order to allow the django engine to use the base.html in all of the apps.
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,8 +66,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dann7vb5cvimvr',
+        'USER': 'rejrrrcrlzllgu',
+        'PASSWORD': env.str('POSTGRESQL_SECRET'),
+        'HOST': 'ec2-54-166-242-77.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 

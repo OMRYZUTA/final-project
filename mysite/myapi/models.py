@@ -3,13 +3,15 @@ from django.core import serializers
 
 
 class Position(models.Model):
+    # owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
     user_id = models.IntegerField(null=True)
     job_title = models.CharField(max_length=100)
     company_name = models.CharField(max_length=100)
     country_id = models.CharField(max_length=2, default="IL", null=True)
     city = models.CharField(max_length=100, null=True)
 
-    #ForeignKey(UserSocialAuth.uid, on_delete=models.CASCADE)
+    # def save(self, *args, **kwargs):
+    #     pass
 
     # email_address = forms.EmailField() #delete later
 

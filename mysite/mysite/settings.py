@@ -136,3 +136,8 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [
 TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), 'templates'),
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}

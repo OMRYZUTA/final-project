@@ -3,7 +3,7 @@ from rest_framework import viewsets, generics
 from .serializers import PositionSerializer
 from .models import Position
 from django.contrib.auth.decorators import login_required
-
+from rest_framework import permissions
 
 # class PositionList(generics.ListAPIView):
 #     serializer_class = PositionSerializer
@@ -17,6 +17,7 @@ class PositionViewSet(viewsets.ModelViewSet):
 
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
+    # permission_classes  = [permissions.IsAuthenticatedOrReadOnly]
 
     # @login_required
     def get_queryset(self):

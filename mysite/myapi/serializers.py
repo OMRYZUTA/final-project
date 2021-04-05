@@ -3,9 +3,10 @@ from .models import Position
 
 
 class PositionSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     class Meta:
         model = Position
-        fields = ('job_title', 'company_name', 'user_id', 'country_id', 'city')
+        fields = '__all__'
 
 
 # class SnippetSerializer(serializers.Serializer):

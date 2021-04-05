@@ -27,9 +27,10 @@ class ApplicationProcess(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(null=True)
     date = models.DateField(default=datetime.now)
-
+    #will be one to many - several different application process will have same position (after parsing from other APIs)
+    position = models.OneToOneField(Position,on_delete=models.CASCADE, null=True)
+    
     #ForeignKey(UserSocialAuth.uid, on_delete=models.CASCADE)
-
 
     def __str__(self):
         return self.job_title  # update later

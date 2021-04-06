@@ -15,6 +15,7 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
     serializer_class = ApplicationProcessSerializer
     queryset = ApplicationProcess.objects.all()
     # permission_classes  = [permissions.IsAuthenticatedOrReadOnly]
+    
 
     # @login_required
     def get_queryset(self):

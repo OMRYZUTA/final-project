@@ -20,8 +20,10 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         position_validated_data = validated_data.pop('position')
-        application_process = ApplicationProcess.objects.create(**validated_data)
-        position_serializer =self.fields['position']
-        self.position = position_serializer.create(position_validated_data)
+        
+        position_serializer = self.fields['position']
+        position = position_serializer.create(position_validated_data)
+        validated_data.position = position
+        application_process = ApplicationProcess.objects.create(
+            **validated_data)
         return application_process
-

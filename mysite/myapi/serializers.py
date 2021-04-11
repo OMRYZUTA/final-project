@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Position, ApplicationProcess
+from .models import Position, ApplicationProcess, Countries
 
 
 class PositionSerializer(serializers.HyperlinkedModelSerializer):
@@ -8,6 +8,12 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Position
         fields = '__all__'
+
+    def validate_country_id(self, value):
+        if value not in Countries.objects.values('id'):
+            raise serializers.ValidationError(
+                f'{value}  is not a valid country code')
+        return value
 
 
 class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,7 +26,7 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         position_validated_data = validated_data.pop('position')
-        
+
         position_serializer = self.fields['position']
         position = position_serializer.create(position_validated_data)
         validated_data['position'] = position

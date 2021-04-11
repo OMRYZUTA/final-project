@@ -34,6 +34,7 @@ class ApplicationProcess(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(null=True)
     date = models.DateField(default=datetime.now)
+    #sent_resume= models.FileField()
     # will be one to many - several different application process will have same position (after parsing from other APIs)
     position = models.OneToOneField(
         Position, on_delete=models.CASCADE, null=True)

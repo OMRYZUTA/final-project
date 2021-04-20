@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
-from .serializers import PositionSerializer, ApplicationProcessSerializer
-from .models import Position, ApplicationProcess
+from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer
+from .models import Position, ApplicationProcess, Contact
 from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
 
+class ContactViewSet(viewsets.ModelViewSet):
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
 
 class PositionViewSet(viewsets.ModelViewSet):
 

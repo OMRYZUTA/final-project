@@ -18,6 +18,7 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
 
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)
+    application_process_id = serializers.PrimaryKeyRelatedField(many=False,read_only=True)
 
     class Meta:
         model = Contact

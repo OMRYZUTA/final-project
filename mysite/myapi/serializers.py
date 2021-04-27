@@ -103,10 +103,11 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             nested_position_serializer.update(
                 nested_position_instance, nested_position_validated_data)
 
-        if 'contact' in validated_data:
-            nested_contact_validated_data = validated_data.pop('contact')
-            nested_contact_serializer = self.fields['contact']
-            nested_contact_instance = instance.contact
+        if 'contact_set' in validated_data:
+
+            nested_contact_validated_data = validated_data.pop('contact_set')
+            nested_contact_serializer = self.fields['contact_set']
+            nested_contact_instance = instance.contact_set
             # Runs the update on whatever serializer the nested data belongs to
             nested_contact_serializer.update(
                 nested_contact_instance, nested_contact_validated_data)

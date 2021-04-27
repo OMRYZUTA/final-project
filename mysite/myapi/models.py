@@ -70,7 +70,7 @@ class Stage(models.Model):
     F2F_INTERVIEW = 'FI'
     VIDEO_INTERVIEW = 'VI'
     PHONE_INTERVIEW = 'PI'
-    
+    id = models.AutoField(primary_key=True)
     date = models.DateField(default=datetime.now, null=True, blank=True)
     event_type = models.CharField(
         max_length=2,
@@ -110,4 +110,3 @@ class ApplicationProcess(models.Model):
 
     def __str__(self):
         return self.position.job_title  # update later
-

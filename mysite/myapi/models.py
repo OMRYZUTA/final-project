@@ -38,10 +38,10 @@ class Position(models.Model):
                                   default="IL", null=True, blank=True)
     # later update city field with Local-Flavor library?
     city = models.CharField(max_length=100, null=True, blank=True)
-    #EmailField(max_length=None, min_length=None, allow_blank=False)
+    # EmailField(max_length=None, min_length=None, allow_blank=False)
     initial_contact_email_address = models.EmailField(
         max_length=100, null=True, blank=True)
-    #URLField(max_length=200, min_length=None, allow_blank=False)
+    # URLField(max_length=200, min_length=None, allow_blank=False)
     job_posting_URL = models.URLField(max_length=250, null=True, blank=True)
     # maybe change to textField?
     about_the_job = models.CharField(
@@ -51,12 +51,42 @@ class Position(models.Model):
         return self.job_title  # update later
 
 
+class Stage(models.Model):
+    CV_SENT = 'CV'
+    INITIAL_INTERVIEW = 'II'
+    TECH_INTERVIEW = 'TI'
+    HR_INTERVIEW = 'HI'
+    TEAM_LEADER_INTERVIEW = 'LI'
+    MANAGEMENT_INTERVIEW = 'MI'
+    OFFER_RECIEVED = 'OO'
+    NEGOTIATIONS = 'NG'
+    OFFER_ACCEPTED = 'OA'
+    OFFER_REJECTED = 'OR'
+    OTHER = 'OT'
+    EVENT_TYPE_CHOICES = [
+        (CV_SENT, 'cv sent'),
+        (INITIAL_INTERVIEW, 'initial interview'),
+    ]
+    F2F_INTERVIEW = 'FI'
+    VIDEO_INTERVIEW = 'VI'
+    PHONE_INTERVIEW = 'PI'
+    
+    date = models.DateField(default=datetime.now, null=True, blank=True)
+    event_type = models.CharField(
+        max_length=2,
+        choices=EVENT_TYPE_CHOICES,
+        default=CV_SENT,
+    )
+    application_process_id = models.ForeignKey(
+        'ApplicationProcess', null=True, on_delete=models.CASCADE)
+
+
 class ApplicationProcess(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(null=True)
     note = models.TextField(null=True, blank=True)
     date = models.DateField(default=datetime.now, null=True, blank=True)
-    #sent_resume= models.FileField()
+    # sent_resume= models.FileField()
     # will be one to many - several different application process will have same position (after parsing from other APIs)
     position = models.OneToOneField(
         Position, on_delete=models.CASCADE, null=True, blank=True)
@@ -75,8 +105,9 @@ class ApplicationProcess(models.Model):
 
     # a single or multipale contacts
     # array
-    #contacts = models.ForeignKey(Contact,null=True, on_delete=models.CASCADE)
-    #ForeignKey(UserSocialAuth.uid, on_delete=models.CASCADE)
+    # contacts = models.ForeignKey(Contact,null=True, on_delete=models.CASCADE)
+    # ForeignKey(UserSocialAuth.uid, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.position.job_title  # update later
+

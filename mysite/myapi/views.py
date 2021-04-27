@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
-from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer
-from .models import Position, ApplicationProcess, Contact
+from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer
+from .models import Position, ApplicationProcess, Contact, Stage
 from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
+
+class StageViewSet(viewsets.ModelViewSet):
+    serializer_class = StageSerializer
+    queryset = Stage.objects.all()
 
 class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
@@ -34,17 +38,3 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-""" class PurchaseList(generics.ListAPIView):
-    serializer_class = PurchaseSerializer
-
-    def get_queryset(self):
-        
-        #Optionally restricts the returned purchases to a given user,
-        # by filtering against a `username` query parameter in the URL.
-        
-        queryset = Purchase.objects.all()
-        username = self.request.query_params.get('username')
-        if username is not None:
-            queryset = queryset.filter(purchaser__username=username)
-        return queryset
-        """

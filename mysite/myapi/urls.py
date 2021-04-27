@@ -6,6 +6,7 @@ router = routers.DefaultRouter()
 router.register(r'positions', views.PositionViewSet)
 router.register(r'applicationprocesses', views.ApplicationProcessViewSet)
 router.register(r'contacts', views.ContactViewSet)
+router.register(r'stages', views.StageViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

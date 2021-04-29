@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'my_auth.apps.MyAuthConfig',
-    'application_process.apps.ApplicationProcessConfig',
     'myapi.apps.MyapiConfig',
     'rest_framework',
 ]

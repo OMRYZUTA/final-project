@@ -27,9 +27,11 @@ INSTALLED_APPS = [
     'my_auth.apps.MyAuthConfig',
     'myapi.apps.MyapiConfig',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -40,6 +42,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
 
 TEMPLATES = [
     {

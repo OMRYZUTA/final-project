@@ -55,21 +55,13 @@ const Navbar = props => {
             menuTitle: 'Home',
             pageURL: '/'
         },
-        {
-            menuTitle: 'Admin',
-            pageURL: '/admin'
-        },
-        {
-            menuTitle: 'Stats',
-            pageURL: '/stats'
-        }
     ];
     return (
         <div className={classes.root}>
             <AppBar position='static'>
                 <Toolbar>
                     <Typography variant='h6' className={classes.title}>
-                        Shop
+                        Marshmallow
                     </Typography>
                     {isMobile ? (
                         <>
@@ -113,19 +105,25 @@ const Navbar = props => {
                                 variant='contained'
                                 onClick={() => handleButtonClick('/')}
                             >
-                                HOME
+                                Home
                             </Button>
                             <Button
                                 variant='contained'
-                                onClick={() => handleButtonClick('/admin')}
+                                onClick={() => handleButtonClick('/profile')}
                             >
-                                ADMIN
+                                Profile
                             </Button>
                             <Button
                                 variant='contained'
-                                onClick={() => handleButtonClick('/stats')}
+                                onClick={() => handleButtonClick('/tips')}
                             >
-                                STATS
+                                Tips
+                            </Button>
+                            <Button
+                                variant='contained'
+                                onClick={() => handleButtonClick('/resume_sender')}
+                            >
+                                Resume Sender
                             </Button>
                         </div>
                     )}

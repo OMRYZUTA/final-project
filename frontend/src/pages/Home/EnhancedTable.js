@@ -186,6 +186,7 @@ export default function EnhancedTable() {
 
     const handleClick = (event, app) => {
         setCurrentItem(app);
+        setOpen(true);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -196,11 +197,20 @@ export default function EnhancedTable() {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+    const [open, setOpen] = React.useState(false);
+
+    const handleApplicationOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+        setCurrentItem(null);
+    };
 
     const renderCurrentItem = (currentItem) => {
         return (
             <div>
-                <ApplicationProcessDialog></ApplicationProcessDialog>
+                <ApplicationProcessDialog open={open} handleClose={handleClose} applicationProcess={currentItem} />
             </div>
         )
     }

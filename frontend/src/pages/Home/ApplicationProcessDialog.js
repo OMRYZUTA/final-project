@@ -8,6 +8,9 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
 
 const styles = (theme) => ({
     root: {
@@ -22,6 +25,40 @@ const styles = (theme) => ({
         color: theme.palette.grey[500],
     },
 });
+const AntSwitch = withStyles((theme) => ({
+    root: {
+        width: 28,
+        height: 16,
+        padding: 0,
+        display: 'flex',
+    },
+    switchBase: {
+        padding: 2,
+        color: theme.palette.grey[500],
+        '&$checked': {
+            transform: 'translateX(12px)',
+            color: theme.palette.common.white,
+            '& + $track': {
+                opacity: 1,
+                backgroundColor: theme.palette.primary.main,
+                borderColor: theme.palette.primary.main,
+            },
+        },
+    },
+    thumb: {
+        width: 12,
+        height: 12,
+        boxShadow: 'none',
+    },
+    track: {
+        border: `1px solid ${theme.palette.grey[500]}`,
+        borderRadius: 16 / 2,
+        opacity: 1,
+        backgroundColor: theme.palette.common.white,
+    },
+    checked: {},
+}))(Switch);
+
 
 const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -50,40 +87,34 @@ const DialogActions = withStyles((theme) => ({
     },
 }))(MuiDialogActions);
 
-export default function ApplicationProcessDialog() {
-    const [open, setOpen] = React.useState(false);
+export default function ApplicationProcessDialog({ open, handleClose, applicationProcess }) {
+    const [state, setState] = React.useState(false);
+    const handleChange = (event) => {
+        setState(event.target.checked);
+    };
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open dialog
-            </Button>
-            <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Modal title
-                </DialogTitle>
-                <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-                        in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-                        lacus vel augue laoreet rutrum faucibus dolor auctor.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-                        scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-                        auctor fringilla.
-                    </Typography>
-                </DialogContent>
+            <Dialog onClose={() => {
+                handleClose();
+            }} aria-labelledby="customized-dialog-title" open={open}>
+                <Grid>
+                    <DialogTitle>
+                        <TextField id="standard-basic" label="Company Name" defaultValue={applicationProcess.position.company_name} />
+                    </DialogTitle>
+                    <DialogContent >
+                        <TextField id="standard-basic" label="Job Title" defaultValue={applicationProcess.position.job_title} />
+
+                        <Grid container>
+                            <Grid item>Closed</Grid>
+                            <Grid item>
+                                <AntSwitch checked={state} onChange={handleChange} name="status" />
+                            </Grid>
+                            <Grid item>Applied</Grid>
+                        </Grid>
+                    </DialogContent>
+                </Grid>
                 <DialogActions>
                     <Button autoFocus onClick={handleClose} color="primary">
                         Save changes

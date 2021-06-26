@@ -11,6 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import ContactsAndDocuments from './ContactsAndDocuments'
+import DatePicker from './DatePicker'
+import Dropdown from './DropDown'
+
 
 const styles = (theme) => ({
     root: {
@@ -99,27 +104,73 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
             <Dialog onClose={() => {
                 handleClose();
             }} aria-labelledby="customized-dialog-title" open={open}>
-                <Grid>
-                    <DialogTitle>
-                        <TextField id="standard-basic" label="Company Name" defaultValue={applicationProcess.position.company_name} />
-                    </DialogTitle>
-                    <DialogContent >
-                        <TextField id="standard-basic" label="Job Title" defaultValue={applicationProcess.position.job_title} />
-
-                        <Grid container>
-                            <Grid item>Closed</Grid>
-                            <Grid item>
-                                <AntSwitch checked={state} onChange={handleChange} name="status" />
-                            </Grid>
-                            <Grid item>Applied</Grid>
+                <Grid container justify={'space-around'} direction={'row'}>
+                    <Grid item align="center">
+                        <Grid container justify={'space-around'} direction={'column'}>
+                            <DialogTitle>
+                                <TextField id="standard-basic" label="Company Name" defaultValue={applicationProcess.position.company_name} />
+                            </DialogTitle>
+                            <DialogContent >
+                                <Grid container alignContent={'space-around'} direction={'column'}>
+                                    <Grid item align="center">
+                                        <TextField id="standard-basic" label="Job Title" defaultValue={applicationProcess.position.job_title} />
+                                    </Grid>
+                                    <Grid item align="center">
+                                        <Grid container spacing={2} direction={'row'} alignContent={'space-around'}>
+                                            <Grid item >Closed</Grid>
+                                            <Grid item>
+                                                <AntSwitch checked={state} onChange={handleChange} name="status" />
+                                            </Grid>
+                                            <Grid item align="center">Applied</Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </DialogContent>
                         </Grid>
-                    </DialogContent>
+                        <Grid item>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                label="Job Description"
+                                multiline
+                                rowsMax={4}
+                            />
+                        </Grid>
+                        <Grid item >
+                            <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                <Button>Contacts</Button>
+                                <Button>Documents</Button>
+                            </ButtonGroup>
+                        </Grid>
+                        <Grid item >
+                            <ContactsAndDocuments />
+                        </Grid>
+
+                    </Grid>
+                    <Grid item>
+                        <Grid container justify={'space-around'} direction={'column'}>
+                            <Grid item><DatePicker /></Grid>
+                            <Grid item><Dropdown /></Grid>
+                            <Grid item><Dropdown /></Grid>
+                            <Grid item>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    label="Notes"
+                                    multiline
+                                    rowsMax={4}
+                                /></Grid>
+                            <Grid item >
+                                <DialogActions>
+
+                                    <Button autoFocus onClick={handleClose} color="primary">
+                                        Save changes
+                                    </Button>
+                                </DialogActions>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+
                 </Grid>
-                <DialogActions>
-                    <Button autoFocus onClick={handleClose} color="primary">
-                        Save changes
-                    </Button>
-                </DialogActions>
             </Dialog>
         </div>
     );

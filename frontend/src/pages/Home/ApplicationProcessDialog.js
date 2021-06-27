@@ -130,7 +130,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                         <Grid item>
                             <TextField
                                 id="standard-multiline-flexible"
-                                label="Job Description"
+                                defaultValue={applicationProcess.position.about_the_job||"Job Description"}
                                 multiline
                                 rowsMax={4}
                             />
@@ -142,7 +142,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                             </ButtonGroup>
                         </Grid>
                         <Grid item >
-                            <ContactsAndDocuments />
+                            <ContactsAndDocuments contact_set = {applicationProcess.contact_set} />
                         </Grid>
 
                     </Grid>

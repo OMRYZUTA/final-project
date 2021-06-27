@@ -5,7 +5,7 @@ import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 
-const ContactsAndDocuments = () => {
+const ContactsAndDocuments = ({ contact_set }) => {
     return (
         <div>
             <Grid container direction={'column'}>
@@ -15,8 +15,10 @@ const ContactsAndDocuments = () => {
                             <PermContactCalendarIcon />
                         </Grid>
                         <Grid item>
-                            <TextField id="standard-basic" label="Contact Name" defaultValue={'flula'} />
+                            <TextField id="standard-basic" label="Contact Name" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].name : "contact name") : null}
+                            />
                         </Grid>
+                        {console.log(contact_set)}
                     </Grid>
                 </Grid>
                 <Grid item>
@@ -25,7 +27,7 @@ const ContactsAndDocuments = () => {
                             <ContactPhoneIcon />
                         </Grid>
                         <Grid item>
-                            <TextField id="standard-basic" label="Contact Phone" defaultValue={'03-6512020'} />
+                            <TextField id="standard-basic" label="Contact Phone" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].phone_number1 : "Phone Number") : null} />
                         </Grid>
                     </Grid>
 
@@ -36,7 +38,7 @@ const ContactsAndDocuments = () => {
                             <ContactMailIcon />
                         </Grid>
                         <Grid item>
-                            <TextField id="standard-basic" label="Contact Mail" defaultValue={'flula@gmail.com'} />
+                            <TextField id="standard-basic" label="Contact Mail" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].email_address : "contact name") : null} />
                         </Grid>
                     </Grid>
                 </Grid>

@@ -37,29 +37,6 @@ class StageSerializer(serializers.HyperlinkedModelSerializer):
         # list_serializer_class = StageListSerializer
 
 
-# class StageListSerializer(serializers.ListSerializer):
-#     child = StageSerializer()
-
-    # def update(self, instance, validated_data):
-    #     # Maps for id->instance and id->data item.
-    #     stage_mapping = {stage.id: stage for stage in instance}
-    #     data_mapping = {item['id']: item for item in validated_data}
-    #     # Perform creations and updates.
-    #     ret = []
-    #     for stage_id, data in data_mapping.items():
-    #         stage = stage_mapping.get(stage_id, None)
-    #         if stage is None:
-    #             ret.append(self.child.create(data))
-    #         else:
-    #             ret.append(self.child.update(stage, data))
-
-    #     # Perform deletions.
-    #     for stage_id, stage in stage_mapping.items():
-    #         if stage_id not in data_mapping:
-    #             stage.delete()
-
-    #     return ret
-
 
 class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -131,55 +108,4 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             instance.save()
 
             return instance
-
-        # if 'stage_set' in validated_data:
-            # nested_stage_set_validated_data = validated_data.pop('stage_set')
-            # nested_stage_set_serializer = self.fields['stage_set']
-            # nested_stage_set_instance = instance.stage_set
-            # Runs the update on whatever serializer the nested data belongs to
-
-            # nested_position_serializer.update(
-            #     nested_position_instance, nested_position_validated_data)
-            #  for answer in validated_data.pop('answers'):
-    #         ans, _created = Answer.objects.get_or_create(**answer)
-    #         ans.question = instance
-    #         ans.save()
-    #         answer_ids_new.append(ans.id)
-
-    #     delete_ids = set(answer_ids_pre) - set(answer_ids_new)
-    #     Answer.objects.filter(id__in=delete_ids).delete()
-    # for item, value in validated_data.items():
-    #     setattr(instance, item, value)
-
-            # for stage in nested_stage_set_validated_data:
-            #     nested_stage_serializer.update(
-            #         stage, nested_stage_validated_data)
-
-        # Runs the original parent update(), since the nested fields were "popped" out of the data
         return super(ApplicationProcessSerializer, self).update(instance, validated_data)
-
-    #     profile = instance.accountprofile
-
-    #     # * User Info
-    #     instance.first_name = validated_data.get(
-    #         'first_name', instance.first_name)
-    #     instance.last_name = validated_data.get(
-    #         'last_name', instance.last_name)
-    #     instance.email = validated_data.get(
-    #         'email', instance.email)
-    #     instance.save()
-
-    #     # * AccountProfile Info
-    #     profile.gender = profile_data.get(
-    #         'gender', profile.gender)
-    #     profile.phone = profile_data.get(
-    #         'phone', profile.phone)
-    #     profile.location = profile_data.get(
-    #         'location', profile.location)
-    #     profile.birth_date = profile_data.get(
-    #         'birth_date', profile.birth_date)
-    #     profile.biodata = profile_data.get(
-    #         'biodata', profile.biodata)
-    #     profile.save()
-
-    #     return instance

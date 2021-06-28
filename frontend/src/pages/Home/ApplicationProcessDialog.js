@@ -101,50 +101,43 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
 
     return (
         <div>
-            <Dialog onClose={() => {
-                handleClose();
-            }} aria-labelledby="customized-dialog-title" open={open}>
-                <Grid container justify={'space-around'} direction={'row'}>
-                    <Grid item align="center">
-                        <Grid container justify={'space-around'} direction={'column'}>
-                            <DialogTitle>
-                                <TextField id="standard-basic" label="Company Name" defaultValue={applicationProcess.position.company_name} />
-                            </DialogTitle>
-                            <DialogContent >
-                                <Grid container alignContent={'space-around'} direction={'column'}>
-                                    <Grid item align="center">
-                                        <TextField id="standard-basic" label="Job Title" defaultValue={applicationProcess.position.job_title} />
-                                    </Grid>
-                                    <Grid item align="center">
-                                        <Grid container spacing={2} direction={'row'} alignContent={'space-around'}>
-                                            <Grid item >Closed</Grid>
-                                            <Grid item>
-                                                <AntSwitch checked={state} onChange={handleChange} name="status" />
-                                            </Grid>
-                                            <Grid item align="center">Applied</Grid>
-                                        </Grid>
-                                    </Grid>
+            <Dialog fullWidth={true}
+                maxWidth={'md'} onClose={() => {
+                    handleClose();
+                }} aria-labelledby="customized-dialog-title" open={open}>
+                <Grid container alignItems="center" justify={'space-evenly'} direction={'row'}>
+                    <Grid item md={6} align="center">
+                        <Grid container justify={'flex-start'} direction={'column'} spacing={2}>
+                            <Grid item >
+                                <Grid container alignItems="center">
+                                    <TextField id="standard-basic" label="Company Name" defaultValue={applicationProcess.position.company_name} />
                                 </Grid>
-                            </DialogContent>
+                            </Grid>
+                            <Grid item >
+                                <Grid container alignItems="center">
+                                    <TextField id="standard-basic" label="Job Title" defaultValue={applicationProcess.position.job_title} />
+                                </Grid>
+                            </Grid>
+                            <Grid item >
+                                <Typography component="div">
+                                    <Grid component="label" container alignItems="center" spacing={1}>
+                                        <Grid item>Off</Grid>
+                                        <Grid item>
+                                            <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
+                                        </Grid>
+                                        <Grid item>On</Grid>
+                                    </Grid>
+                                </Typography>
+                            </Grid>
+                            <Grid item >
+                                <Grid container alignItems="center">
+                                    <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                        <Button>Contacts</Button>
+                                        <Button>Documents</Button>
+                                    </ButtonGroup>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                defaultValue={applicationProcess.position.about_the_job||"Job Description"}
-                                multiline
-                                rowsMax={4}
-                            />
-                        </Grid>
-                        <Grid item >
-                            <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                <Button>Contacts</Button>
-                                <Button>Documents</Button>
-                            </ButtonGroup>
-                        </Grid>
-                        <Grid item >
-                            <ContactsAndDocuments contact_set = {applicationProcess.contact_set} />
-                        </Grid>
-
                     </Grid>
                     <Grid item>
                         <Grid container justify={'space-around'} direction={'column'}>

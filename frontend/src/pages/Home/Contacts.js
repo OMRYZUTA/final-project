@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -26,30 +26,40 @@ const useStyles = makeStyles({
 
 const Contacts = ({ contact_set }) => {
     const classes = useStyles();
-
+    const [index, setIndex] = useState(0);
+    console.log(index);
+    const currentContact = contact_set[index];
+    console.log(currentContact);
+    // const [currentContact, setCurrentContact] = useState(contact_set && contact_set.length > 0 ? contact_set[index] : null);
     return (
         <Card className={classes.root}>
             <CardContent>
                 <Grid container direction={'column'}>
                     <Grid item>
+                        <Grid container >
+                            <Button onClick={() => {
+                                setIndex(index + 1);
+                            }}>{">"}</Button>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
                         <Grid container>
-                            <TextField id="standard-basic" label="Contact Name" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].name : "contact name") : null}
+                            <TextField id="name" label="Contact Name" value={currentContact?.name}
                             />
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField id="standard-basic" label="Contact Phone" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].phone_number1 : "Phone Number") : null} />
+                            <TextField id="phone" label="Contact Phone" value={currentContact ? currentContact.phone_number1 : null} />
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField id="standard-basic" label="Contact Mail" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].email_address : "contact name") : null} />
+                            <TextField id="mail" label="Contact Mail" value={currentContact ? currentContact.email_address : null} />
                         </Grid>
                     </Grid>
                 </Grid>
             </CardContent>
-
         </Card>
     );
 }

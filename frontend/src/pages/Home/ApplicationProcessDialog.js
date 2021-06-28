@@ -103,7 +103,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
     const renderContactsOrNotes = () => {
         return (
             <div>
-                {displayContacts ? <Contacts /> : <Notes />}
+                {displayContacts ? <Contacts contact_set={applicationProcess.contact_set} /> : <Notes notes={applicationProcess.notes} />}
             </div>
         )
     }
@@ -145,8 +145,6 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                 <Grid item>
                                     <Grid container>
                                         {renderContactsOrNotes()}
-                                        {/* <Notes /> */}
-                                        {/* <Contacts contact_set={applicationProcess.contact_set} ></Contacts> */}
                                     </Grid>
                                 </Grid>
                             </Grid>

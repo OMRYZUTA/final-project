@@ -15,7 +15,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ContactsAndDocuments from './ContactsAndDocuments'
 import DatePicker from './DatePicker'
 import Dropdown from './DropDown'
-
+import Contacts from './Contacts'
 
 const styles = (theme) => ({
     root: {
@@ -119,28 +119,40 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                 </Grid>
                             </Grid>
                             <Grid item >
-                                <Typography component="div">
-                                    <Grid component="label" container alignItems="center" spacing={1}>
-                                        <Grid item>Off</Grid>
-                                        <Grid item>
-                                            <AntSwitch checked={state.checkedC} onChange={handleChange} name="checkedC" />
-                                        </Grid>
-                                        <Grid item>On</Grid>
-                                    </Grid>
-                                </Typography>
+                                <Grid component="label" container alignItems="center" spacing={1}>
+                                    Status:
+                                    <Grid item> Applied</Grid>
+                                    <Button >Close</Button>
+                                </Grid>
                             </Grid>
                             <Grid item >
                                 <Grid container alignItems="center">
                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
                                         <Button>Contacts</Button>
-                                        <Button>Documents</Button>
+                                        <Button>Notes</Button>
                                     </ButtonGroup>
+
+                                </Grid>
+                                <Grid item>
+                                    <Grid container>
+                                        <Contacts contact_set={applicationProcess.contact_set} ></Contacts>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container justify={'space-around'} direction={'column'}>
+                            <Grid item>
+                                <Grid container>
+                                    <TextField id="standard-basic" label="City" defaultValue={applicationProcess.position.city} />
+                                </Grid>
+                            </Grid>
+                            <Grid item>
+                                <Grid container>
+                                    <TextField id="standard-basic" label="Job URL" defaultValue={applicationProcess.position.job_posting_URL} />
+                                </Grid>
+                            </Grid>
                             <Grid item><DatePicker /></Grid>
                             <Grid item><Dropdown /></Grid>
                             <Grid item><Dropdown /></Grid>
@@ -165,6 +177,6 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
 
                 </Grid>
             </Dialog>
-        </div>
+        </div >
     );
 }

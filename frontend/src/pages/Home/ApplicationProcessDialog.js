@@ -16,6 +16,7 @@ import ContactsAndDocuments from './ContactsAndDocuments'
 import DatePicker from './DatePicker'
 import Dropdown from './DropDown'
 import Contacts from './Contacts'
+import Notes from './Notes'
 
 const styles = (theme) => ({
     root: {
@@ -93,10 +94,19 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function ApplicationProcessDialog({ open, handleClose, applicationProcess }) {
+    const [displayContacts, setDisplayContacts] = React.useState(true);
     const [state, setState] = React.useState(false);
     const handleChange = (event) => {
         setState(event.target.checked);
     };
+
+    const renderContactsOrNotes = () => {
+        return (
+            <div>
+                {displayContacts ? <Contacts /> : <Notes />}
+            </div>
+        )
+    }
 
 
     return (
@@ -128,14 +138,15 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                             <Grid item >
                                 <Grid container alignItems="center">
                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                        <Button>Contacts</Button>
-                                        <Button>Notes</Button>
+                                        <Button id='ContactsButton' onClick={() => { setDisplayContacts(true) }} >Contacts</Button>
+                                        <Button id='NotesButton' onClick={() => { setDisplayContacts(false) }}>Notes</Button>
                                     </ButtonGroup>
-
                                 </Grid>
                                 <Grid item>
                                     <Grid container>
-                                        <Contacts contact_set={applicationProcess.contact_set} ></Contacts>
+                                        {renderContactsOrNotes()}
+                                        {/* <Notes /> */}
+                                        {/* <Contacts contact_set={applicationProcess.contact_set} ></Contacts> */}
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -157,15 +168,9 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                             <Grid item><Dropdown /></Grid>
                             <Grid item><Dropdown /></Grid>
                             <Grid item>
-                                <TextField
-                                    id="standard-multiline-flexible"
-                                    label="Notes"
-                                    multiline
-                                    rowsMax={4}
-                                /></Grid>
+                            </Grid>
                             <Grid item >
                                 <DialogActions>
-
                                     <Button autoFocus onClick={handleClose} color="primary">
                                         Save changes
                                     </Button>
@@ -173,10 +178,8 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                             </Grid>
                         </Grid>
                     </Grid>
-
-
                 </Grid>
             </Dialog>
-        </div >
+        </div>
     );
 }

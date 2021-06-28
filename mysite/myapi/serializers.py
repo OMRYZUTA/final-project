@@ -17,7 +17,7 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.IntegerField(read_only=True)
+    id = serializers.IntegerField(default=None, write_only=False)
     application_process_id = serializers.PrimaryKeyRelatedField(
         many=False, read_only=True)
 
@@ -108,9 +108,29 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             nested_contact_validated_data = validated_data.pop('contact_set')
             nested_contact_serializer = self.fields['contact_set']
             nested_contact_instance = instance.contact_set
-            # Runs the update on whatever serializer the nested data belongs to
-            nested_contact_serializer.update(
-                nested_contact_instance, nested_contact_validated_data)
+            contacts_to_remove = {
+                contact.id: contact for contact in instance.contact_set.all()}
+            for contact in nested_contact_validated_data:
+                contact_id = contact.get('id', None)
+                if contact_id is None:
+                    # new contact to created
+                    instance.contact_set.create(**contact)
+                elif contacts_to_remove.get(contact_id, None) is not None:
+                    # update this item
+                    instance_contact = contacts_to_remove.pop(contact_id)
+                    Contact.objects.filter(
+                        id=instance_contact.id).update(**contact)
+            for contact in contacts_to_remove.values():
+                contact.delete()
+
+            # undo this delete later
+            validated_data.pop('stage_set')
+            for field in validated_data:
+                setattr(instance, field, validated_data.get(
+                    field, getattr(instance, field)))
+            instance.save()
+
+            return instance
 
         # if 'stage_set' in validated_data:
             # nested_stage_set_validated_data = validated_data.pop('stage_set')

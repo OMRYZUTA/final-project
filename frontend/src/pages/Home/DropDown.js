@@ -15,27 +15,31 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Dropdown() {
+export default function Dropdown({ dropdownOptions, label }) {
     const classes = useStyles();
-    const [age, setAge] = React.useState('');
-
+    const [currentOption, setCurrentOption] = React.useState(dropdownOptions && dropdownOptions[0]);
     const handleChange = (event) => {
-        setAge(event.target.value);
+        setCurrentOption(event.target.value);
     };
 
     return (
         <div>
             <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                <InputLabel id="demo-simple-select-label">{label}</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
+                    value={currentOption}
                     onChange={handleChange}
                 >
-                    <MenuItem value={10}>Ten</MenuItem>
+                    {dropdownOptions?.map((option) => {
+                        return (
+                            <MenuItem value={option}>{option}</MenuItem>
+                        )
+                    })}
+                    {/* <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
             </FormControl>
         </div>

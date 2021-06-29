@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import DatePicker from './DatePicker'
+import DropDown from './DropDown'
+
 const useStyles = makeStyles({
     root: {
         minWidth: 100,
@@ -27,9 +30,7 @@ const useStyles = makeStyles({
 const Stages = ({ stage_set }) => {
     const classes = useStyles();
     const [index, setIndex] = useState(0);
-    console.log(index);
     const currentStage = stage_set[index];
-    console.log(currentStage);
     return (
         <Card className={classes.root}>
             <CardContent>
@@ -46,18 +47,20 @@ const Stages = ({ stage_set }) => {
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField id="date" label="Date" value={currentStage?.date}
-                            />
+                            <DatePicker date={currentStage?.date} />
+                            {/* 
+                            <Grid item><DropDown /></Grid>
+                            <Grid item><DropDown /></Grid> */}
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField id="eventType" label="Event" value={currentStage ? currentStage.event_type : null} />
+                            <Grid item><DropDown dropdownOptions={["cv sent", "initial interview", "HR interview", "team leader interview", "management interview", "offer received", "offer accepted", "offer rejected", "other"]} label={'Event'} /></Grid>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField id="eventMedia" label="By" value={currentStage ? currentStage.event_media : null} />
+                            <Grid item><DropDown dropdownOptions={["F2F", "video call", "Phone call", "Email", "Other"]} label={'Medium'} /></Grid>
                         </Grid>
                     </Grid>
                     {/* add notes field*/}

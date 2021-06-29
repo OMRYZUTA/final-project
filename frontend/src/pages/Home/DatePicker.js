@@ -14,16 +14,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DatePicker() {
+export default function DatePicker({ date }) {
     const classes = useStyles();
 
     return (
         <form className={classes.container} noValidate>
             <TextField
                 id="date"
-                label="Next Stage"
+                label="Date"
                 type="date"
-                defaultValue="2021-07-24"
+                value={date}
                 className={classes.textField}
                 InputLabelProps={{
                     shrink: true,

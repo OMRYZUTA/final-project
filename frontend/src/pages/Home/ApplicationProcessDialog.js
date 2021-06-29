@@ -13,10 +13,11 @@ import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import ContactsAndDocuments from './ContactsAndDocuments'
-import DatePicker from './DatePicker'
+
 import Dropdown from './DropDown'
 import Contacts from './Contacts'
 import Notes from './Notes'
+import Stages from './Stages'
 
 const styles = (theme) => ({
     root: {
@@ -162,11 +163,12 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                     <TextField id="standard-basic" label="Job URL" defaultValue={applicationProcess.position.job_posting_URL} />
                                 </Grid>
                             </Grid>
-                            <Grid item><DatePicker /></Grid>
-                            <Grid item><Dropdown /></Grid>
-                            <Grid item><Dropdown /></Grid>
                             <Grid item>
+                                <Grid container>
+                                    <Stages stage_set={applicationProcess.stage_set} />
+                                </Grid>
                             </Grid>
+                            
                             <Grid item >
                                 <DialogActions>
                                     <Button autoFocus onClick={handleClose} color="primary">

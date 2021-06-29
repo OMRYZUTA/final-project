@@ -37,7 +37,10 @@ const Contacts = ({ contact_set }) => {
                 <Grid container direction={'column'}>
                     <Grid item>
                         <Grid container >
-                            <Button onClick={() => {
+                            <Button disabled={0 === index} onClick={() => {
+                                setIndex(index - 1);
+                            }}>{"<"}</Button>
+                            <Button disabled={contact_set?.length - 1 === index} onClick={() => {
                                 setIndex(index + 1);
                             }}>{">"}</Button>
                         </Grid>

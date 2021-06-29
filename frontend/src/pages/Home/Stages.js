@@ -29,12 +29,13 @@ const useStyles = makeStyles({
 
 const Stages = ({ stage_set }) => {
     const classes = useStyles();
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(stage_set && stage_set[stage_set.length - 1]);
     const currentStage = stage_set[index];
     return (
         <Card className={classes.root}>
             <CardContent>
                 <Grid container direction={'column'}>
+                    <Grid item>Stages</Grid>
                     <Grid item>
                         <Grid container >
                             <Button disabled={0 === index} onClick={() => {
@@ -48,9 +49,6 @@ const Stages = ({ stage_set }) => {
                     <Grid item>
                         <Grid container>
                             <DatePicker date={currentStage?.date} />
-                            {/* 
-                            <Grid item><DropDown /></Grid>
-                            <Grid item><DropDown /></Grid> */}
                         </Grid>
                     </Grid>
                     <Grid item>

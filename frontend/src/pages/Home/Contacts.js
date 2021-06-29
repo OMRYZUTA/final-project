@@ -27,10 +27,8 @@ const useStyles = makeStyles({
 const Contacts = ({ contact_set }) => {
     const classes = useStyles();
     const [index, setIndex] = useState(0);
-    console.log(index);
     const currentContact = contact_set[index];
-    console.log(currentContact);
-    // const [currentContact, setCurrentContact] = useState(contact_set && contact_set.length > 0 ? contact_set[index] : null);
+
     return (
         <Card className={classes.root}>
             <CardContent>

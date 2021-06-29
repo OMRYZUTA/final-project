@@ -28,8 +28,9 @@ const useStyles = makeStyles({
 });
 
 const Stages = ({ stage_set }) => {
+
     const classes = useStyles();
-    const [index, setIndex] = useState(stage_set && stage_set[stage_set.length - 1]);
+    const [index, setIndex] = useState(stage_set ? (stage_set.length - 1) : 0);
     const currentStage = stage_set[index];
     return (
         <Card className={classes.root}>

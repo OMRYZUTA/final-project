@@ -173,7 +173,7 @@ export default function EnhancedTable() {
     const [orderBy, setOrderBy] = React.useState('calories');
     const [currentItem, setCurrentItem] = React.useState();
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const data = GetAllApplicationProcesses();
 
     const handleRequestSort = (event, property) => {
@@ -199,9 +199,6 @@ export default function EnhancedTable() {
     };
     const [open, setOpen] = React.useState(false);
 
-    const handleApplicationOpen = () => {
-        setOpen(true);
-    };
     const handleClose = () => {
         setOpen(false);
         setCurrentItem(null);
@@ -265,7 +262,7 @@ export default function EnhancedTable() {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[10, 20, 30]}
                     component="div"
                     count={data.length}
                     rowsPerPage={rowsPerPage}

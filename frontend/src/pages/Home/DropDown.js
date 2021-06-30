@@ -34,7 +34,7 @@ export default function Dropdown({ dropdownOptions, label }) {
                 >
                     {dropdownOptions?.map((option) => {
                         return (
-                            <MenuItem value={option}>{option}</MenuItem>
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
                         )
                     })}
                     {/* <MenuItem value={10}>Ten</MenuItem>

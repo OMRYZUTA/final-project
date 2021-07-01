@@ -68,9 +68,9 @@ const Stages = ({ stage_set, handleChange, id }) => {
                                 {currentList.length > 0 ?
                                     (currentList[index]).date
                                     : ''}
-                                onChange={() => {
-                                    e, listID, currentList, handleChange, index
-                                }}
+                            // onChange={() => {
+                            //     e, listID, currentList, handleChange, index
+                            // }}
                             />
                         </Grid>
                     </Grid>

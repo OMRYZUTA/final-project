@@ -64,7 +64,7 @@ const Navbar = props => {
                         Marshmallow
                     </Typography>
                     {isMobile ? (
-                        <>
+                        <div>
                             <IconButton
                                 edge='start'
                                 className={classes.menuButton}
@@ -98,7 +98,7 @@ const Navbar = props => {
                                     );
                                 })}
                             </Menu>
-                        </>
+                        </div>
                     ) : (
                         <div className={classes.headerOptions}>
                             <Button

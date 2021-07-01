@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Contacts = ({ contact_set }) => {
+const Contacts = ({ contact_set, handleChange }) => {
     const classes = useStyles();
     const [index, setIndex] = useState(0);
     const currentContact = contact_set[index];
@@ -43,7 +43,10 @@ const Contacts = ({ contact_set }) => {
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField id="name" label="Contact Name" value={currentContact?.name}
+                            <TextField 
+                            id="name" 
+                            label="Contact Name" 
+                            defaultValue={currentContact?.name}
                             />
                         </Grid>
                     </Grid>

@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Notes = ({ notes }) => {
+const Notes = ({ notes, handleChange }) => {
     const classes = useStyles();
 
     return (
@@ -35,7 +35,8 @@ const Notes = ({ notes }) => {
                                 label="Notes"
                                 multiline
                                 rowsMax={4}
-                                value={notes}
+                                defaultValue={notes}
+                                onChange={handleChange}
                             />
                         </Grid>
                     </Grid>

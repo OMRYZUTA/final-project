@@ -22,14 +22,28 @@ const DialogActions = withStyles((theme) => ({
 
 export default function ApplicationProcessDialog({ open, handleClose, applicationProcess }) {
     const [displayContacts, setDisplayContacts] = React.useState(true);
-    const currentApplication = React.useRef(applicationProcess);
-
+    const [currentApplication, setCurrentApplication] = React.useState(applicationProcess);
     const renderContactsOrNotes = () => {
         return (
             <div>
-                {displayContacts ? <Contacts contact_set={currentApplication.current.contact_set} /> : <Notes notes={currentApplication.current.position.about_the_job} />}
+                {displayContacts ? <Contacts
+                    contact_set={currentApplication.contact_set}
+                    handleChange={handleChange}
+                /> : <Notes
+                    notes={currentApplication.position.about_the_job}
+                    handleChange={handleChange}
+                />}
             </div>
         )
+    }
+
+    const handleChange = e => {
+        setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
+    }
+
+    const handleSaveChanges = e => {
+        console.log('application process: ', currentApplication);
+        handleClose();
     }
 
     return (
@@ -43,20 +57,33 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                 <Grid container justify={'flex-start'} direction={'column'} spacing={2}>
                                     <Grid item >
                                         <Grid container alignItems="center">
-                                            <TextField id="companyName" label="Company Name"
-                                            type="text"
-                                                value={currentApplication.current.position.company_name} />
+                                            <TextField onChange={handleChange}
+                                                id="company_name" label="Company Name"
+                                                type="text"
+                                                defaultValue={applicationProcess.position.company_name}
+                                            />
                                         </Grid>
                                     </Grid>
                                     <Grid item >
                                         <Grid container alignItems="center">
-                                            <TextField id="standard-basic" label="Job Title" value={currentApplication.current.position.job_title} />
+                                            <TextField
+                                                id="job_title"
+                                                label="Job Title"
+                                                defaultValue={applicationProcess.position.job_title}
+                                                onChange={handleChange} />
                                         </Grid>
                                     </Grid>
                                     <Grid item >
                                         <Grid component="label" container alignItems="center" spacing={1}>
                                             Status:
-                                            <Grid item> Applied</Grid>
+                                            <Grid item>
+                                                <TextField
+                                                    id={'status'}
+                                                    defaultValue={applicationProcess.status}
+                                                    onChange={handleChange}
+                                                >
+                                                </TextField>
+                                            </Grid>
                                             <Button color="secondary" variant="contained">Close</Button>
                                         </Grid>
                                     </Grid>
@@ -79,29 +106,37 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                 <Grid container justify={'space-between'} direction={'column'}>
                                     <Grid item>
                                         <Grid container>
-                                            <TextField id="standard-basic" label="City" value={currentApplication.current.position.city} />
+                                            <TextField
+                                                id="city"
+                                                label="City"
+                                                defaultValue={currentApplication.position.city} />
                                         </Grid>
                                     </Grid>
                                     <Grid item>
                                         <Grid container>
-                                            <TextField id="standard-basic" label="Job URL" value={currentApplication.current.position.job_posting_URL} />
+                                            <TextField
+                                                id="job_url"
+                                                label="Job URL"
+                                                defaultValue={currentApplication.position.job_posting_URL} />
                                         </Grid>
                                     </Grid>
                                     <Grid item>
                                         <Grid container>
-                                            <Stages stage_set={currentApplication.current.stage_set} />
+                                            <Stages
+                                                stage_set=
+                                                {currentApplication.stage_set}
+                                                handleChange={handleChange} />
                                         </Grid>
                                     </Grid>
-
                                 </Grid>
                             </Grid>
                         </Grid>
                         <Grid item >
                             <DialogActions>
-                                <Button variant="outlined" autoFocus onClick={() => {
-                                    handleClose();
-                                    console.log('applicationProcess:', currentApplication.current)
-                                }} color="primary">
+                                <Button variant="outlined"
+                                    autoFocus
+                                    onClick={handleSaveChanges}
+                                    color="primary">
                                     Save changes
                                 </Button>
                             </DialogActions>

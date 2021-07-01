@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import DatePicker from './DatePicker'
 import DropDown from './DropDown'
-
+import { TextField } from '@material-ui/core';
 const useStyles = makeStyles({
     root: {
         minWidth: 100,
@@ -24,11 +24,29 @@ const useStyles = makeStyles({
     },
 });
 
-const Stages = ({ stage_set }) => {
+const Stages = ({ stage_set, handleChange }) => {
 
     const classes = useStyles();
     const [index, setIndex] = useState(stage_set ? (stage_set.length - 1) : 0);
-    const currentStage = stage_set[index];
+    const [currentList, setCurrentList] = useState(stage_set);
+
+    const handleLocalChange = e => {
+        const old = currentList[index];
+        const updated = { ...old, [e.target.id]: e.target.value }
+        const clone = [...currentList];
+        clone[index] = updated;
+        setCurrentList(clone);
+        console.log('in local updated: ', updated);
+        handleChange(
+            {
+                'target':
+                {
+                    'id': 'stage_set',
+                    'value': clone
+                }
+            });
+    }
+
     return (
         <Card className={classes.root}>
             <CardContent>
@@ -36,17 +54,36 @@ const Stages = ({ stage_set }) => {
                     <Grid item>Stages</Grid>
                     <Grid item>
                         <Grid container >
-                            <Button disabled={0 === index} onClick={() => {
-                                setIndex(index - 1);
-                            }}>{"<"}</Button>
-                            <Button disabled={stage_set?.length - 1 === index} onClick={() => {
-                                setIndex(index + 1);
-                            }}>{">"}</Button>
+                            <Button
+                                disabled={0 === index}
+                                onClick=
+                                {() => {
+                                    setIndex(index - 1);
+                                }}>
+                                {"<"}
+                            </Button>
+                            <Button
+                                disabled=
+                                {stage_set?.length - 1 === index}
+                                onClick=
+                                {() => {
+                                    setIndex(index + 1);
+                                }}>
+                                {">"}
+                            </Button>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <DatePicker date={currentStage?.date} />
+                            <TextField
+                                type={'date'}
+                                id={'date'}
+                                defaultValue=
+                                {currentList ?
+                                    (currentList[index]).date
+                                    : null}
+                                onChange={handleLocalChange}
+                            />
                         </Grid>
                     </Grid>
                     <Grid item>

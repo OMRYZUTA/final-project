@@ -22,42 +22,71 @@ const useStyles = makeStyles({
     },
 });
 
-const Contacts = ({ contact_set, handleChange }) => {
+const Contacts = ({ contact_set, handleContactsChange }) => {
     const classes = useStyles();
     const [index, setIndex] = useState(0);
-    const currentContact = contact_set[index];
+    const [Contacts, setContacts] = useState(contact_set);
 
+    const handleListChange = (e) => {
+        const old = Contacts[index];
+        const updated = { ...old, [e.target.id]: e.target.value }
+        const clone = [...Contacts];
+        clone[index] = updated;
+        setContacts(clone);
+        handleContactsChange(e, clone);
+        console.log('in local updated: ', updated);
+    }
     return (
         <Card className={classes.root}>
             <CardContent>
                 <Grid container direction={'column'}>
                     <Grid item>
                         <Grid container >
-                            <Button disabled={0 === index} onClick={() => {
-                                setIndex(index - 1);
-                            }}>{"<"}</Button>
-                            <Button disabled={contact_set?.length - 1 === index} onClick={() => {
-                                setIndex(index + 1);
-                            }}>{">"}</Button>
+                            <Button
+                                disabled={0 === index}
+                                onClick={() => {
+                                    setIndex(index - 1);
+                                }}>
+                                {"<"}
+                            </Button>
+                            <Button
+                                disabled={contact_set?.length - 1 === index}
+                                onClick={() => {
+                                    setIndex(index + 1);
+                                }}>{">"}</Button>
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField 
-                            id="name" 
-                            label="Contact Name" 
-                            defaultValue={currentContact?.name}
+                            <TextField
+                                id="name"
+                                label="Contact Name"
+                                value={Contacts.length > 0 ?
+                                    Contacts[index].name : ''}
+                                onChange={handleListChange}
                             />
                         </Grid>
                     </Grid>
+
                     <Grid item>
                         <Grid container>
-                            <TextField id="phone" label="Contact Phone" value={currentContact ? currentContact.phone_number1 : null} />
+                            <TextField
+                                id="phone_number1"
+                                label="Contact Phone"
+                                value={Contacts.length > 0 ?
+                                    Contacts[index].phone_number1 : ''}
+                                onChange={handleListChange} />
                         </Grid>
                     </Grid>
                     <Grid item>
                         <Grid container>
-                            <TextField id="mail" label="Contact Mail" value={currentContact ? currentContact.email_address : null} />
+                            <TextField
+                                id="email_address"
+                                label="Contact Mail"
+                                value={Contacts.length > 0 ?
+                                    Contacts[index].email_address :
+                                    ''}
+                                onChange={handleListChange} />
                         </Grid>
                     </Grid>
                 </Grid>

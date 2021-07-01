@@ -24,17 +24,19 @@ const useStyles = makeStyles({
     },
 });
 
-const Stages = ({ stage_set, handleChange, id }) => {
+const Stages = ({ stage_set, handleStagesChange, }) => {
 
     const classes = useStyles();
     const [index, setIndex] = useState(stage_set ? (stage_set.length - 1) : 0);
     const [currentList, setCurrentList] = useState(stage_set);
-    
+
     const handleListChange = (e) => {
         const old = currentList[index];
         const updated = { ...old, [e.target.id]: e.target.value }
         const clone = [...currentList];
         clone[index] = updated;
+        setCurrentList(clone);
+        handleStagesChange(e, clone);
         console.log('in local updated: ', updated);
     }
 
@@ -69,13 +71,11 @@ const Stages = ({ stage_set, handleChange, id }) => {
                             <TextField
                                 type={'date'}
                                 id={'date'}
-                                defaultValue=
+                                value=
                                 {currentList.length > 0 ?
                                     (currentList[index]).date
                                     : ''}
-                            // onChange={() => {
-                            //     e, listID, currentList, handleChange, index
-                            // }}
+                                onChange={handleListChange}
                             />
                         </Grid>
                     </Grid>

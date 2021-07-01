@@ -28,7 +28,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
             <div>
                 {displayContacts ? <Contacts
                     contact_set={currentApplication.contact_set}
-                    handleChange={handleChange}
+                    handleContactsChange={handleContactsChange}
                 /> : <Notes
                     notes={currentApplication.position.about_the_job}
                     id={'about_the_job'}
@@ -49,8 +49,14 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
     }
 
     const handlePositionChange = e => {
-        const position = { ...currentApplication.position, [e.target.id]: e.target.value}
-        setCurrentApplication({ ...currentApplication, ['position']: position });
+        const position = { ...currentApplication.position, [e.target.id]: e.target.value }
+        setCurrentApplication({ ...currentApplication, 'position': position });
+    }
+    const handleStagesChange = (e, new_stage_set) => {
+        setCurrentApplication({ ...currentApplication, 'stage_set': new_stage_set });
+    }
+    const handleContactsChange = (e, new_contact_set) => {
+        setCurrentApplication({ ...currentApplication, 'contact_set': new_contact_set })
     }
 
     return (
@@ -135,8 +141,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                             <Stages
                                                 stage_set=
                                                 {currentApplication.stage_set}
-                                                handleChange={handleChange}
-                                                id={'stage_set'}
+                                                handleStagesChange={handleStagesChange}
                                             />
                                         </Grid>
                                     </Grid>

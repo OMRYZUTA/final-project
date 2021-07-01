@@ -49,13 +49,8 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
     }
 
     const handlePositionChange = e => {
-        const event = {
-            'target': {
-                'id': 'position',
-                'value': { ...currentApplication.position, [e.target.id]: e.target.value }
-            }
-        }
-        handleChange(event);
+        const position = { ...currentApplication.position, [e.target.id]: e.target.value}
+        setCurrentApplication({ ...currentApplication, ['position']: position });
     }
 
     return (

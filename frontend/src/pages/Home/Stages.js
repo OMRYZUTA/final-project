@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import DatePicker from './DatePicker'
 import DropDown from './DropDown'
 import { TextField } from '@material-ui/core';
-import HandleListChange from '../../components/HandleListChange';
 const useStyles = makeStyles({
     root: {
         minWidth: 100,
@@ -30,8 +29,14 @@ const Stages = ({ stage_set, handleChange, id }) => {
     const classes = useStyles();
     const [index, setIndex] = useState(stage_set ? (stage_set.length - 1) : 0);
     const [currentList, setCurrentList] = useState(stage_set);
-
-
+    
+    const handleListChange = (e) => {
+        const old = currentList[index];
+        const updated = { ...old, [e.target.id]: e.target.value }
+        const clone = [...currentList];
+        clone[index] = updated;
+        console.log('in local updated: ', updated);
+    }
 
     return (
         <Card className={classes.root}>

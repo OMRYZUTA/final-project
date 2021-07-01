@@ -31,7 +31,9 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                     handleChange={handleChange}
                 /> : <Notes
                     notes={currentApplication.position.about_the_job}
-                    handleChange={handleChange}
+                    id={'about_the_job'}
+                    handleChange={handlePositionChange
+                    }
                 />}
             </div>
         )
@@ -46,6 +48,16 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
         handleClose();
     }
 
+    const handlePositionChange = e => {
+        const event = {
+            'target': {
+                'id': 'position',
+                'value': { ...currentApplication.position, [e.target.id]: e.target.value }
+            }
+        }
+        handleChange(event);
+    }
+
     return (
         <div>
             <Dialog fullWidth={true}
@@ -57,7 +69,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                 <Grid container justify={'flex-start'} direction={'column'} spacing={2}>
                                     <Grid item >
                                         <Grid container alignItems="center">
-                                            <TextField onChange={handleChange}
+                                            <TextField onChange={handlePositionChange}
                                                 id="company_name" label="Company Name"
                                                 type="text"
                                                 defaultValue={applicationProcess.position.company_name}
@@ -70,7 +82,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                                 id="job_title"
                                                 label="Job Title"
                                                 defaultValue={applicationProcess.position.job_title}
-                                                onChange={handleChange} />
+                                                onChange={handlePositionChange} />
                                         </Grid>
                                     </Grid>
                                     <Grid item >
@@ -109,15 +121,18 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                             <TextField
                                                 id="city"
                                                 label="City"
-                                                defaultValue={currentApplication.position.city} />
+                                                defaultValue={currentApplication.position.city}
+                                                onChange={handlePositionChange} />
                                         </Grid>
                                     </Grid>
                                     <Grid item>
                                         <Grid container>
                                             <TextField
-                                                id="job_url"
+                                                id="job_posting_URL"
                                                 label="Job URL"
-                                                defaultValue={currentApplication.position.job_posting_URL} />
+                                                defaultValue={currentApplication.position.job_posting_URL}
+                                                onChange={handlePositionChange}
+                                            />
                                         </Grid>
                                     </Grid>
                                     <Grid item>
@@ -125,7 +140,9 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
                                             <Stages
                                                 stage_set=
                                                 {currentApplication.stage_set}
-                                                handleChange={handleChange} />
+                                                handleChange={handleChange}
+                                                id={'stage_set'}
+                                            />
                                         </Grid>
                                     </Grid>
                                 </Grid>

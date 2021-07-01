@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Notes = ({ notes, handleChange }) => {
+const Notes = ({ notes, handleChange, id }) => {
     const classes = useStyles();
 
     return (
@@ -31,7 +31,7 @@ const Notes = ({ notes, handleChange }) => {
                     <Grid item>
                         <Grid container>
                             <TextField
-                                id="standard-multiline-flexible"
+                                id={id}
                                 label="Notes"
                                 multiline
                                 rowsMax={4}

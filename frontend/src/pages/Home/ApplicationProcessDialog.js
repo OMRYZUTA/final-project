@@ -9,7 +9,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Contacts from './Contacts'
 import Notes from './Notes'
 import Stages from './Stages'
-
+import PostAppProcess from '../../services/appprocesses/PostAppProcess'
 
 
 
@@ -45,6 +45,7 @@ export default function ApplicationProcessDialog({ open, handleClose, applicatio
 
     const handleSaveChanges = e => {
         console.log('application process: ', currentApplication);
+        PostAppProcess(currentApplication);
         handleClose();
     }
 

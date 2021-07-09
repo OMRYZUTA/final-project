@@ -13,6 +13,5 @@ const GetAllApplicationProcesses = () => {
         fetchApplications();
     }, []);
     return applications;
-
 };
 export default GetAllApplicationProcesses;

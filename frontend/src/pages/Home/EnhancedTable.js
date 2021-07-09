@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import GetAllApplicationProcesses from '../../services/ApplicationProcess'
+import GetAllApplicationProcesses from '../../services/appprocesses/GetAppProcesses'
 import ApplicationProcessDialog from './ApplicationProcessDialog'
 
 

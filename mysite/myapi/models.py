@@ -2,6 +2,7 @@ from django.db import models
 from django.core import serializers
 from datetime import datetime
 from django.core.exceptions import ValidationError
+import django
 
 
 class Countries(models.Model):
@@ -63,7 +64,8 @@ class Stage(models.Model):
     application_process_id = models.ForeignKey(
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
 
-    date = models.DateField(default=datetime.now, null=True, blank=True)
+    date = models.DateField(
+        auto_now_add=True, null=True, blank=True)
     event_type = models.CharField(
         max_length=2, choices=EVENT_TYPE_CHOICES, default="OT")
     event_media = models.CharField(
@@ -79,7 +81,7 @@ class ApplicationProcess(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(null=True)
     note = models.TextField(null=True, blank=True)
-    date = models.DateField(default=datetime.now, null=True, blank=True)
+    last_modified = models.DateField(auto_now_add=True, null=True, blank=True)
     # sent_resume= models.FileField()
     # will be one to many - several different application process will have same position (after parsing from other APIs)
     position = models.OneToOneField(

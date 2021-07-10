@@ -50,7 +50,6 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        validated_data['date'] = datetime.datetime.now()
 
         position_validated_data = validated_data.pop('position')
         position_serializer = self.fields['position']
@@ -74,7 +73,7 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
 
     def update(self, instance, validated_data):
         # CHANGE "position" here to match one-to-one field name
-        validated_data['date'] = datetime.datetime.now()
+        validated_data['last_modified'] = datetime.datetime.now()
         if 'position' in validated_data:
             nested_position_validated_data = validated_data.pop('position')
             nested_position_serializer = self.fields['position']

@@ -55,7 +55,7 @@ const headCells = [
   },
   { id: "job_title", numeric: false, disablePadding: true, label: "Position" },
   { id: "status", numeric: false, disablePadding: true, label: "Status" },
-  { id: "date", numeric: true, disablePadding: true, label: "Date" }, // delete later change to next stage
+  { id: "last_modified", numeric: true, disablePadding: true, label: "Date" }, // delete later change to next stage
 ];
 
 function EnhancedTableHead(props) {
@@ -225,14 +225,12 @@ export default function EnhancedTable() {
 
   const handleAddNew = useCallback((e) => {
     const app = {
-      position: {
-        
-      },
+      position: {},
       contact_set: [],
       stage_set: [],
-      user_id: 2, 
-      
-     
+      user_id: 2,
+      last_modified: new Date().toISOString().split('T')[0],
+      status: 'CL'
     };
 
     setCurrentItem(app);
@@ -279,7 +277,7 @@ export default function EnhancedTable() {
                         {row.position.job_title}
                       </TableCell>
                       <TableCell align="left">{row.status}</TableCell>
-                      <TableCell align="left">{row.date}</TableCell>
+                      <TableCell align="left">{row.last_modified}</TableCell>
                     </TableRow>
                   );
                 })}

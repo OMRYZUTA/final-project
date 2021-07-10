@@ -17,13 +17,11 @@ class ContactViewSet(viewsets.ModelViewSet):
 
 
 class PositionViewSet(viewsets.ModelViewSet):
-
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
 
 
 class ApplicationProcessViewSet(viewsets.ModelViewSet):
-
     serializer_class = ApplicationProcessSerializer
     queryset = ApplicationProcess.objects.all()
     # permission_classes  = [permissions.IsAuthenticatedOrReadOnly]

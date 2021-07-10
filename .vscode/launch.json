@@ -5,17 +5,30 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch via NPM",
+            "request": "launch",
+            "runtimeArgs": [
+                "start"
+            ],
+            "runtimeExecutable": "npm",
+            "cwd": "${workspaceFolder}/frontend",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
             "name": "Launch Chrome",
             "request": "launch",
             "type": "pwa-chrome",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}\\frontend\\src"
+            "webRoot": "${workspaceFolder}/frontend/src"
         },
         {
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}\\mysite\\manage.py",
+            "program": "${workspaceFolder}/mysite/manage.py",
             "args": [
                 "runserver"
             ],

@@ -212,6 +212,16 @@ export default function ApplicationProcessDialog({
               </Grid>
             </Grid>
             <Grid item>
+            <DialogActions>
+                <Button
+                  variant="outlined"
+                  autoFocus
+                  onClick={handleClose}
+                  color="primary"
+                >
+                  Cancel
+                </Button>
+              </DialogActions>
               <DialogActions>
                 <Button
                   variant="outlined"

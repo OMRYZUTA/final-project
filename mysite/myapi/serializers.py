@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Position, ApplicationProcess, Countries, Contact, Stage
-import datetime
+from  datetime import date
 
 
 class PositionSerializer(serializers.HyperlinkedModelSerializer):
@@ -73,7 +73,7 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
 
     def update(self, instance, validated_data):
         # CHANGE "position" here to match one-to-one field name
-        validated_data['last_modified'] = datetime.datetime.now()
+        validated_data['last_modified'] = date.today()
         if 'position' in validated_data:
             nested_position_validated_data = validated_data.pop('position')
             nested_position_serializer = self.fields['position']

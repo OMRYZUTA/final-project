@@ -70,7 +70,7 @@ const Stages = ({ stage_set, handleStagesChange, }) => {
                         <Grid container>
                             <TextField
                                 type={'date'}
-                                id={'date'}
+                                id={'stage_date'}
                                 value=
                                 {currentList.length > 0 ?
                                     (currentList[index]).date

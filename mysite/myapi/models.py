@@ -64,7 +64,7 @@ class Stage(models.Model):
     application_process_id = models.ForeignKey(
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
 
-    date = models.DateField(
+    stage_date = models.DateField(
         auto_now_add=True, null=True, blank=True)
     event_type = models.CharField(
         max_length=2, choices=EVENT_TYPE_CHOICES, default="OT")

@@ -226,20 +226,13 @@ export default function EnhancedTable() {
   const handleAddNew = useCallback((e) => {
     const app = {
       position: {
-        job_title: undefined,
-        company_name: undefined,
-        country_id: undefined,
-        city: undefined,
-        initial_contact_email_address: undefined,
-        job_posting_URL: undefined,
-        about_the_job: undefined,
+        
       },
       contact_set: [],
       stage_set: [],
-      user_id: 2, // DELETE LATER: should be set in backend
-      note: undefined,
-      date: new Date().toISOString().split('T')[0], // DELETE LATER: maybe should be set in backend???
-      status: undefined,
+      user_id: 2, 
+      
+     
     };
 
     setCurrentItem(app);

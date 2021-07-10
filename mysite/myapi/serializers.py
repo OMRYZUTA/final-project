@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Position, ApplicationProcess, Countries, Contact, Stage
+import datetime
 
 
 class PositionSerializer(serializers.HyperlinkedModelSerializer):
@@ -49,6 +50,8 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        validated_data['date'] = datetime.datetime.now()
+
         position_validated_data = validated_data.pop('position')
         position_serializer = self.fields['position']
         position = position_serializer.create(position_validated_data)
@@ -71,6 +74,7 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
 
     def update(self, instance, validated_data):
         # CHANGE "position" here to match one-to-one field name
+        validated_data['date'] = datetime.datetime.now()
         if 'position' in validated_data:
             nested_position_validated_data = validated_data.pop('position')
             nested_position_serializer = self.fields['position']

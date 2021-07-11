@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const PostAppProcess = async (app) => {
+const PutAppProcess = async (app) => {
   const result = await axios.put(app.url, app);
-  console.log(result.data.results);
+  console.log("in PutAppProcess: ", result);
+  return result;
 };
-export default PostAppProcess;
+export default PutAppProcess;

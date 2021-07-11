@@ -11,6 +11,7 @@ import Notes from "./Notes";
 import Stages from "./Stages";
 import PostAppProcess from "../../services/appprocesses/PostAppProcess";
 import PutAppProcess from "../../services/appprocesses/PutAppProcess";
+import axios from "axios";
 
 const DialogActions = withStyles((theme) => ({
   root: {
@@ -23,6 +24,8 @@ export default function ApplicationProcessDialog({
   open,
   handleClose,
   applicationProcess,
+  data,
+  setData,
 }) {
   const [displayContacts, setDisplayContacts] = React.useState(true);
   const [currentApplication, setCurrentApplication] =
@@ -55,11 +58,22 @@ export default function ApplicationProcessDialog({
 
   const handleSaveChanges = async (e) => {
     console.log("application process: ", currentApplication);
+
+    let result;
+
     if (currentApplication.url) {
-      await PutAppProcess(currentApplication);
+      result = await PutAppProcess(currentApplication);
+      //find the relevant application process already existing in the data
+      //and update the element
+      //?? setData([...data,result.data]);
     } else {
-      await PostAppProcess(currentApplication);
+      result = await PostAppProcess(currentApplication);
+      setData([...data,result.data]);
     }
+
+    // An Axios response is a POJO with several - DELETE LATER
+    //console.log("in handleSaveChanges: ", result);
+    console.log("in handleSaveChanges data: ", result.data);
 
     handleClose();
   };
@@ -212,7 +226,7 @@ export default function ApplicationProcessDialog({
               </Grid>
             </Grid>
             <Grid item>
-            <DialogActions>
+              <DialogActions>
                 <Button
                   variant="outlined"
                   autoFocus

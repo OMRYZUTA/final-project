@@ -183,7 +183,7 @@ export default function EnhancedTable() {
   const [currentItem, setCurrentItem] = React.useState();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const data = GetAllApplicationProcesses();
+  const [data, setData] = GetAllApplicationProcesses();
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -218,6 +218,8 @@ export default function EnhancedTable() {
           open={open}
           handleClose={handleClose}
           applicationProcess={currentItem}
+          data={data}
+          setData={setData}
         />
       </div>
     );
@@ -235,7 +237,6 @@ export default function EnhancedTable() {
 
     setCurrentItem(app);
     setOpen(true);
-    // DELETE LATER: should be something like `setApplications([...data, app])`
   });
 
   const emptyRows =

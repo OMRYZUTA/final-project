@@ -20,13 +20,6 @@ import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import Button from "@material-ui/core/Button";
 import axios from 'axios';
 
-function updateArray(arr, newAppProc) {
-  const arr2 = arr.filter(a => {
-    return a.id !== newAppProc.id;
-  });
-  arr2.push(newAppProc);
-  return arr2;
-}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -187,7 +180,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("company");
   const [currentItem, setCurrentItem] = React.useState();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

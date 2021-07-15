@@ -5,6 +5,15 @@ from django.core.exceptions import ValidationError
 import django
 
 
+class EventType(models.Model):
+    id = models.CharField(primary_key=True, max_length=2)
+    event_type = models.TextField()
+
+    class Meta:
+        # managed = False
+        db_table = 'event_type'
+
+
 class Countries(models.Model):
     id = models.CharField(primary_key=True, max_length=2)
     name = models.TextField()

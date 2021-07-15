@@ -56,6 +56,14 @@ export default function ApplicationProcessDialog({
     });
   };
 
+  const updateArray = (arr, newAppProc) => {
+    const tempArray = arr.filter(a => {
+      return a.id !== newAppProc.id;
+    });
+    tempArray.push(newAppProc);
+    return tempArray;
+  }
+
   const handleSaveChanges = async (e) => {
     console.log("application process: ", currentApplication);
 
@@ -63,18 +71,11 @@ export default function ApplicationProcessDialog({
 
     if (currentApplication.url) {
       result = await PutAppProcess(currentApplication);
-      //find the relevant application process already existing in the data
-      //and update the element
-      //?? setData([...data,result.data]);
+
     } else {
       result = await PostAppProcess(currentApplication);
-      setData([...data,result.data]);
     }
-
-    // An Axios response is a POJO with several - DELETE LATER
-    //console.log("in handleSaveChanges: ", result);
-    console.log("in handleSaveChanges data: ", result.data);
-
+    setData(updateArray(data, result.data));
     handleClose();
   };
 

@@ -16,9 +16,17 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import GetAllApplicationProcesses from "../../services/appprocesses/GetAppProcesses";
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import Button from "@material-ui/core/Button";
+import axios from 'axios';
+
+function updateArray(arr, newAppProc) {
+  const arr2 = arr.filter(a => {
+    return a.id !== newAppProc.id;
+  });
+  arr2.push(newAppProc);
+  return arr2;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -183,8 +191,16 @@ export default function EnhancedTable() {
   const [currentItem, setCurrentItem] = React.useState();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [data, setData] = GetAllApplicationProcesses();
-
+  const [applications, setApplications] = React.useState([]);
+  React.useEffect(() => {
+    const fetchApplications = async () => {
+      const result = await axios(
+        '/api/applicationprocesses/',
+      );
+      setApplications(result.data.results);
+    };
+    fetchApplications();
+  }, []);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -218,8 +234,8 @@ export default function EnhancedTable() {
           open={open}
           handleClose={handleClose}
           applicationProcess={currentItem}
-          data={data}
-          setData={setData}
+          data={applications}
+          setData={setApplications}
         />
       </div>
     );
@@ -240,7 +256,7 @@ export default function EnhancedTable() {
   });
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -258,10 +274,10 @@ export default function EnhancedTable() {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={data.length}
+              rowCount={applications.length}
             />
             <TableBody>
-              {stableSort(data, getComparator(order, orderBy))
+              {stableSort(applications, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
@@ -293,7 +309,7 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[10, 20, 30]}
           component="div"
-          count={data.length}
+          count={applications.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

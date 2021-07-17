@@ -7,7 +7,7 @@ import django
 
 class EventType(models.Model):
     id = models.CharField(primary_key=True, max_length=2)
-    event_type = models.TextField()
+    name = models.TextField()
 
     class Meta:
         managed = False
@@ -16,7 +16,7 @@ class EventType(models.Model):
 
 class EventMedia(models.Model):
     id = models.CharField(primary_key=True, max_length=2)
-    event_media = models.TextField()
+    name = models.TextField()
 
     class Meta:
         managed = False
@@ -25,7 +25,7 @@ class EventMedia(models.Model):
 
 class Status(models.Model):
     id = models.CharField(primary_key=True, max_length=2)
-    event_media = models.TextField()
+    name = models.TextField()
 
     class Meta:
         managed = False
@@ -61,8 +61,8 @@ class Position(models.Model):
     id = models.AutoField(primary_key=True)
     job_title = models.CharField(max_length=100, null=True, blank=True)
     company_name = models.CharField(max_length=100, null=True, blank=True)
-    country_id = models.CharField(
-        max_length=2, default="IL", null=True, blank=True)
+    country = models.ForeignKey(
+        Countries, null=False, default="IL", on_delete=models.DO_NOTHING)
     # later update city field with Local-Flavor library?
     city = models.CharField(max_length=100, null=True, blank=True)
     # EmailField(max_length=None, min_length=None, allow_blank=False)
@@ -84,15 +84,15 @@ class Stage(models.Model):
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
     stage_date = models.DateField(
         auto_now_add=True, null=True, blank=True)
-    event_type = models.ForeignKey(
-        'EventType', null=False, default="OT", on_delete=models.DO_NOTHING)
-    event_media = models.ForeignKey(
-        'EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
+    #event_type = models.ForeignKey(
+    #    'EventType', null=False, default="OT", on_delete=models.DO_NOTHING)
+    #event_media = models.ForeignKey(
+    #    'EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True)
     # contact? nested contact per stage
 
     def __str__(self):
-        return self.event_type  # update later
+        return self.stage_date  # update later
 
 
 class ApplicationProcess(models.Model):
@@ -105,8 +105,8 @@ class ApplicationProcess(models.Model):
     position = models.OneToOneField(
         Position, on_delete=models.CASCADE, null=True, blank=True)
 
-    status = models.ForeignKey(
-        'Status', null=False, default="IN", on_delete=models.DO_NOTHING)
+    # status = models.ForeignKey(
+    #     'Status', null=False, default="IN", on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.position.job_title  # update later

@@ -3,6 +3,13 @@ from .models import Position, ApplicationProcess, Countries, Contact, Stage
 from  datetime import date
 
 
+class CountrySerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Countries
+        fields = '__all__'
+
 class PositionSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)
 

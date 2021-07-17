@@ -18,7 +18,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import Button from "@material-ui/core/Button";
-import axios from 'axios';
+import * as apServices from '../../services/AppProcServices';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -187,9 +187,7 @@ export default function EnhancedTable() {
   const [applications, setApplications] = React.useState([]);
   React.useEffect(() => {
     const fetchApplications = async () => {
-      const result = await axios(
-        '/api/applicationprocesses/',
-      );
+      const result = await apServices.getAll()
       setApplications(result.data.results);
     };
     fetchApplications();

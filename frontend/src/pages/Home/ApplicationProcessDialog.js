@@ -9,9 +9,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Contacts from "./Contacts";
 import Notes from "./Notes";
 import Stages from "./Stages";
-import PostAppProcess from "../../services/appprocesses/PostAppProcess";
-import PutAppProcess from "../../services/appprocesses/PutAppProcess";
-import axios from "axios";
+import * as apServices from '../../services/AppProcServices';
 
 const DialogActions = withStyles((theme) => ({
   root: {
@@ -70,10 +68,9 @@ export default function ApplicationProcessDialog({
     let result;
 
     if (currentApplication.url) {
-      result = await PutAppProcess(currentApplication);
-
+      result = await apServices.update(currentApplication);
     } else {
-      result = await PostAppProcess(currentApplication);
+      result = await apServices.addNew(currentApplication);
     }
     setData(updateArray(data, result.data));
     handleClose();

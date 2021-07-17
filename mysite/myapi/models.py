@@ -10,9 +10,16 @@ class EventType(models.Model):
     event_type = models.TextField()
 
     class Meta:
-        # managed = False
+        managed = False
         db_table = 'event_type'
 
+
+class EventMedia(models.Model):
+    id = models.CharField(primary_key=True, max_length=2)
+    event_media = models.TextField()
+    class Meta:
+        managed = False
+        db_table = 'event_media'
 
 class Countries(models.Model):
     id = models.CharField(primary_key=True, max_length=2)
@@ -61,24 +68,13 @@ class Position(models.Model):
 
 
 class Stage(models.Model):
-    EVENT_TYPE_CHOICES = (
-        ("CV", "cv sent"), ("II", "initial interview"), ("HI", "HR interview"),
-        ("LI", "team leader interview"), ("MI",
-                                          "management interview"), ("OO", "offer received"),
-        ("NG", "negotiations"), ("OA", "offer accepted"), ("OR", "offer rejected"), ("OT", "other"),)
-    EVENT_MEDIA_CHOICES = (("FI", "F2F"), ("VI", "video call"),
-                           ("PI", "phone call"), ("EM", "email"), ("OT", "other"),)
-
     id = models.AutoField(primary_key=True)
     application_process_id = models.ForeignKey(
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
-
     stage_date = models.DateField(
         auto_now_add=True, null=True, blank=True)
-    event_type = models.CharField(
-        max_length=2, choices=EVENT_TYPE_CHOICES, default="OT")
-    event_media = models.CharField(
-        max_length=2, choices=EVENT_MEDIA_CHOICES, default="OT")
+    event_type = models.ForeignKey('EventType', null=False, default="OT", on_delete=models.DO_NOTHING)
+    event_media = models.ForeignKey('EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True)
     # contact? nested contact per stage
 

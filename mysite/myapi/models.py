@@ -17,9 +17,20 @@ class EventType(models.Model):
 class EventMedia(models.Model):
     id = models.CharField(primary_key=True, max_length=2)
     event_media = models.TextField()
+
     class Meta:
         managed = False
         db_table = 'event_media'
+
+
+class Status(models.Model):
+    id = models.CharField(primary_key=True, max_length=2)
+    event_media = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'status'
+
 
 class Countries(models.Model):
     id = models.CharField(primary_key=True, max_length=2)
@@ -73,8 +84,10 @@ class Stage(models.Model):
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
     stage_date = models.DateField(
         auto_now_add=True, null=True, blank=True)
-    event_type = models.ForeignKey('EventType', null=False, default="OT", on_delete=models.DO_NOTHING)
-    event_media = models.ForeignKey('EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
+    event_type = models.ForeignKey(
+        'EventType', null=False, default="OT", on_delete=models.DO_NOTHING)
+    event_media = models.ForeignKey(
+        'EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True)
     # contact? nested contact per stage
 
@@ -92,17 +105,8 @@ class ApplicationProcess(models.Model):
     position = models.OneToOneField(
         Position, on_delete=models.CASCADE, null=True, blank=True)
 
-    APPLIED = 'AP'
-    CLOSED = 'CL'
-    STATUS_CHOICES = [
-        (APPLIED, 'applied'),
-        (CLOSED, 'closed')
-    ]
-    status = models.CharField(
-        max_length=2,
-        choices=STATUS_CHOICES,
-        default=APPLIED,
-    )
+    status = models.ForeignKey(
+        'Status', null=False, default="IN", on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.position.job_title  # update later

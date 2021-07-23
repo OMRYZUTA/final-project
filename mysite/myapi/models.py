@@ -86,8 +86,8 @@ class Stage(models.Model):
         auto_now_add=True, null=True, blank=True)
     event_type = models.ForeignKey(
         EventType, null=False, default="OT", on_delete=models.DO_NOTHING)
-    # event_media = models.ForeignKey(
-    #    'EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
+    event_media = models.ForeignKey(
+        'EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True)
     # contact? nested contact per stage
 
@@ -105,8 +105,8 @@ class ApplicationProcess(models.Model):
     position = models.OneToOneField(
         Position, on_delete=models.CASCADE, null=True, blank=True)
 
-    # status = models.ForeignKey(
-    #     'Status', null=False, default="IN", on_delete=models.DO_NOTHING)
+    status = models.ForeignKey(
+        'Status', null=False, default="IN", on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.position.job_title  # update later

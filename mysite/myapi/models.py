@@ -84,9 +84,9 @@ class Stage(models.Model):
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
     stage_date = models.DateField(
         auto_now_add=True, null=True, blank=True)
-    #event_type = models.ForeignKey(
-    #    'EventType', null=False, default="OT", on_delete=models.DO_NOTHING)
-    #event_media = models.ForeignKey(
+    event_type = models.ForeignKey(
+        EventType, null=False, default="OT", on_delete=models.DO_NOTHING)
+    # event_media = models.ForeignKey(
     #    'EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True)
     # contact? nested contact per stage

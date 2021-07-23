@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Position, ApplicationProcess, Countries, Contact, Stage
+from .models import EventType, Position, ApplicationProcess, Countries, Contact, Stage
 from datetime import date
 
 
@@ -7,7 +7,17 @@ class CountrySerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.CharField(read_only=True)
 
     class Meta:
+        managed = False
         model = Countries
+        fields = '__all__'
+
+
+class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.CharField(read_only=True)
+
+    class Meta:
+        managed = False
+        model = EventType
         fields = '__all__'
 
 
@@ -39,11 +49,21 @@ class StageSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(default=None, write_only=False)
     application_process_id = serializers.PrimaryKeyRelatedField(
         many=False, read_only=True)
+    event_type= EventTypeSerializer()
 
     class Meta:
         model = Stage
         fields = '__all__'
-        # list_serializer_class = StageListSerializer
+
+    def create(self, validated_data):
+
+        event_type_validated_data = validated_data.pop('event_type')
+        event_type_serializer = self.fields['event_type']
+        event_type = event_type_serializer.create(event_type_validated_data)
+        validated_data['event_type'] = event_type
+        stage = Stage.objects.create(
+            **validated_data)
+        return stage
 
 
 class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):

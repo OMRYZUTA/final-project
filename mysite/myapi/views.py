@@ -1,9 +1,14 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
-from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, CountrySerializer
-from .models import Position, ApplicationProcess, Contact, Stage, Countries, EventType,EventMedia,Status
+from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, CountrySerializer, EventTypeSerializer
+from .models import Position, ApplicationProcess, Contact, Stage, Countries, EventType, EventMedia, Status
 from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
+
+
+class EventTypeViewSet(viewsets.ModelViewSet):
+    serializer_class = EventTypeSerializer
+    queryset = EventType.objects.all()
 
 
 class CountryViewSet(viewsets.ModelViewSet):

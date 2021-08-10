@@ -149,7 +149,7 @@ export default function ApplicationProcessDialog({
                       <Grid item>
                         <TextField
                           id={"status"}
-                          defaultValue={applicationProcess.status}
+                          defaultValue={applicationProcess.status.name}
                           onChange={handleChange}
                         ></TextField>
                       </Grid>

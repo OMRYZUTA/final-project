@@ -188,6 +188,7 @@ export default function EnhancedTable() {
   React.useEffect(() => {
     const fetchApplications = async () => {
       const result = await apServices.getAll()
+      console.log(result.data.results);
       setApplications(result.data.results);
     };
     fetchApplications();
@@ -284,7 +285,7 @@ export default function EnhancedTable() {
                       <TableCell align="left">
                         {row.position.job_title}
                       </TableCell>
-                      <TableCell align="left">{row.status}</TableCell>
+                      <TableCell align="left">{row.status.name}</TableCell>
                       <TableCell align="left">{row.last_modified}</TableCell>
                     </TableRow>
                   );

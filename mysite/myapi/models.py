@@ -104,7 +104,7 @@ class ApplicationProcess(models.Model):
     # will be one to many - several different application process will have same position (after parsing from other APIs)
     position = models.OneToOneField(
         Position, on_delete=models.CASCADE, null=True, blank=True)
-
+#need to change null = False delete later
     status = models.ForeignKey(
         'Status', null=True, default="IN", on_delete=models.DO_NOTHING)
 

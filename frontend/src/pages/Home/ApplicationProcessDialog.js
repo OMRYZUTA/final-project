@@ -14,7 +14,7 @@ import DropDown from "./DropDown";
 import * as StaticServices from "../../services/StaticServices";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/Styles";
-
+import HorizontalLinearStepper from "./HorizontalLinearStepper";
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: '100%',
@@ -51,7 +51,6 @@ export default function ApplicationProcessDialog({
   React.useEffect(() => {
     const fetchStatusObjects = async () => {
       const result = await StaticServices.getStatuses();
-      console.log(result.data.results);
       setStatusObjects(result.data.results);
     };
     fetchStatusObjects();
@@ -61,7 +60,6 @@ export default function ApplicationProcessDialog({
   React.useEffect(() => {
     const fetchCountries = async () => {
       const result = await StaticServices.getCountries();
-      console.log(result.data.results);
       setCountries(result.data.results);
     };
     fetchCountries();
@@ -152,6 +150,7 @@ export default function ApplicationProcessDialog({
   return (
     <div>
       <Dialog
+        fullHeight={true}
         fullWidth={true}
         maxWidth={"xl"}
         onClose={handleClose}
@@ -261,6 +260,12 @@ export default function ApplicationProcessDialog({
               </Grid>
             </Paper>
 
+          </Grid>
+
+          <Grid item xs={12}>
+            <Paper>
+              <HorizontalLinearStepper stage_set={  currentApplication.stage_set } />
+            </Paper>
           </Grid>
         </Grid>
       </Dialog>

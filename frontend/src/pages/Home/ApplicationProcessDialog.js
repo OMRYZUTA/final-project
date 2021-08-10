@@ -10,7 +10,8 @@ import Contacts from "./Contacts";
 import Notes from "./Notes";
 import Stages from "./Stages";
 import * as apServices from '../../services/AppProcServices';
-
+import DropDown from "./DropDown";
+import * as StaticServices from "../../services/StaticServices";
 const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
@@ -25,7 +26,19 @@ export default function ApplicationProcessDialog({
   data,
   setData,
 }) {
+  
   const [displayContacts, setDisplayContacts] = React.useState(true);
+  const dropDownOptions = ["I","a","C"];
+  const[statusObjects,setStatusObjects] = React.useState(dropDownOptions);
+  React.useEffect(() => {
+    const fetchStatusObjects = async () => {
+      const result = await StaticServices.getStatuses();
+      console.log(result.data.results);
+      setStatusObjects(result.data.results);
+    };
+    fetchStatusObjects();
+  }, []);
+
   const [currentApplication, setCurrentApplication] =
     React.useState(applicationProcess);
   const renderContactsOrNotes = () => {
@@ -53,7 +66,20 @@ export default function ApplicationProcessDialog({
       [e.target.id]: e.target.value,
     });
   };
-
+  const handleStatusChange = (e) => {
+    let status ={};
+    // switch(e.target.value){
+    //   case "Interested":
+    //     status["name"] = "Interested";
+    //     status["id"] ="IN";
+    //     break;
+    //   case ""
+    // }
+    setCurrentApplication({
+      ...currentApplication,
+      [e.target.id]: e.target.value,
+    });
+  };
   const updateArray = (arr, newAppProc) => {
     const tempArray = arr.filter(a => {
       return a.id !== newAppProc.id;
@@ -92,6 +118,7 @@ export default function ApplicationProcessDialog({
       contact_set: new_contact_set,
     });
   };
+  
 
   return (
     <div>
@@ -145,13 +172,13 @@ export default function ApplicationProcessDialog({
                       alignItems="center"
                       spacing={1}
                     >
-                      Status:
                       <Grid item>
-                        <TextField
+                        {/* <TextField
                           id={"status"}
                           defaultValue={applicationProcess.status.name}
                           onChange={handleChange}
-                        ></TextField>
+                        ></TextField> */}
+                        <DropDown dropdownOptions ={statusObjects.map(status => status.name)} label={"Status"} />
                       </Grid>
                       <Button color="secondary" variant="contained">
                         Close

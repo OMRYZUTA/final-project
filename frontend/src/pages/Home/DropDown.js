@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Dropdown({ dropdownOptions, label }) {
+export default function DropDown({ dropdownOptions, label }) {
     const classes = useStyles();
     const [currentOption, setCurrentOption] = React.useState(dropdownOptions && dropdownOptions[0]);
     const handleChange = (event) => {

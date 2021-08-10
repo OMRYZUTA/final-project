@@ -28,8 +28,8 @@ export default function ApplicationProcessDialog({
 }) {
   
   const [displayContacts, setDisplayContacts] = React.useState(true);
-  const dropDownOptions = ["I","a","C"];
-  const[statusObjects,setStatusObjects] = React.useState(dropDownOptions);
+  
+  const[statusObjects,setStatusObjects] = React.useState([]);
   React.useEffect(() => {
     const fetchStatusObjects = async () => {
       const result = await StaticServices.getStatuses();
@@ -38,6 +38,17 @@ export default function ApplicationProcessDialog({
     };
     fetchStatusObjects();
   }, []);
+
+  const[countries,setCountries] = React.useState([]);
+  React.useEffect(() => {
+    const fetchCountries = async () => {
+      const result = await StaticServices.getCountries();
+      console.log(result.data.results);
+      setCountries(result.data.results);
+    };
+    fetchCountries();
+  }, []);
+
 
   const [currentApplication, setCurrentApplication] =
     React.useState(applicationProcess);
@@ -173,11 +184,7 @@ export default function ApplicationProcessDialog({
                       spacing={1}
                     >
                       <Grid item>
-                        {/* <TextField
-                          id={"status"}
-                          defaultValue={applicationProcess.status.name}
-                          onChange={handleChange}
-                        ></TextField> */}
+                        {/* need to add onchange and component id */}
                         <DropDown dropdownOptions ={statusObjects.map(status => status.name)} label={"Status"} />
                       </Grid>
                     </Grid>
@@ -214,6 +221,17 @@ export default function ApplicationProcessDialog({
               </Grid>
               <Grid item>
                 <Grid container justify={"space-between"} direction={"column"}>
+                <Grid item>
+                    <Grid container>
+                      {/* <TextField
+                        id="city"
+                        label="Country"
+                        defaultValue={currentApplication.position.city}
+                        onChange={handlePositionChange}
+                      /> */}
+                      <DropDown dropdownOptions ={countries.map(country => country.name)} label={"Country"}/>
+                    </Grid>
+                  </Grid>
                   <Grid item>
                     <Grid container>
                       <TextField

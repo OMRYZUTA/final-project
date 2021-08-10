@@ -180,9 +180,6 @@ export default function ApplicationProcessDialog({
                         ></TextField> */}
                         <DropDown dropdownOptions ={statusObjects.map(status => status.name)} label={"Status"} />
                       </Grid>
-                      <Button color="secondary" variant="contained">
-                        Close
-                      </Button>
                     </Grid>
                   </Grid>
                   <Grid item>

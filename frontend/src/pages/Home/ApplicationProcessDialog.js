@@ -12,6 +12,24 @@ import Stages from "./Stages";
 import * as apServices from '../../services/AppProcServices';
 import DropDown from "./DropDown";
 import * as StaticServices from "../../services/StaticServices";
+import { Paper } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/Styles";
+
+const useStyles = makeStyles((theme) => ({
+  grid: {
+    width: '100%',
+    margin: '0px'
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'pink',
+    justify: 'center'
+  }
+}))
+
 const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
@@ -26,10 +44,10 @@ export default function ApplicationProcessDialog({
   data,
   setData,
 }) {
-  
+
   const [displayContacts, setDisplayContacts] = React.useState(true);
-  
-  const[statusObjects,setStatusObjects] = React.useState([]);
+
+  const [statusObjects, setStatusObjects] = React.useState([]);
   React.useEffect(() => {
     const fetchStatusObjects = async () => {
       const result = await StaticServices.getStatuses();
@@ -39,7 +57,7 @@ export default function ApplicationProcessDialog({
     fetchStatusObjects();
   }, []);
 
-  const[countries,setCountries] = React.useState([]);
+  const [countries, setCountries] = React.useState([]);
   React.useEffect(() => {
     const fetchCountries = async () => {
       const result = await StaticServices.getCountries();
@@ -78,7 +96,7 @@ export default function ApplicationProcessDialog({
     });
   };
   const handleStatusChange = (e) => {
-    let status ={};
+    let status = {};
     // switch(e.target.value){
     //   case "Interested":
     //     status["name"] = "Interested";
@@ -129,164 +147,120 @@ export default function ApplicationProcessDialog({
       contact_set: new_contact_set,
     });
   };
-  
+  const classes = useStyles();
 
   return (
     <div>
       <Dialog
         fullWidth={true}
-        maxWidth={"md"}
+        maxWidth={"xl"}
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <Grid container direction={"column"}>
-          <Grid item>
-            <Grid
-              container
-              alignItems="center"
-              justify={"space-evenly"}
-              direction={"row"}
-            >
-              <Grid item md={6} align="center">
-                <Grid
-                  container
-                  justify={"flex-start"}
-                  direction={"column"}
-                  spacing={2}
-                >
-                  <Grid item>
-                    <Grid container alignItems="center">
-                      <TextField
-                        onChange={handlePositionChange}
-                        id="company_name"
-                        label="Company Name"
-                        type="text"
-                        defaultValue={applicationProcess.position.company_name}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Grid container alignItems="center">
-                      <TextField
-                        id="job_title"
-                        label="Job Title"
-                        defaultValue={applicationProcess.position.job_title}
-                        onChange={handlePositionChange}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Grid
-                      component="label"
-                      container
-                      alignItems="center"
-                      spacing={1}
-                    >
-                      <Grid item>
-                        {/* need to add onchange and component id */}
-                        <DropDown dropdownOptions ={statusObjects.map(status => status.name)} label={"Status"} />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Grid container alignItems="center">
-                      <ButtonGroup
-                        color="primary"
-                        aria-label="outlined primary button group"
-                      >
-                        <Button
-                          id="ContactsButton"
-                          onClick={() => {
-                            setDisplayContacts(true);
-                          }}
-                        >
-                          Contacts
-                        </Button>
-                        <Button
-                          id="NotesButton"
-                          onClick={() => {
-                            setDisplayContacts(false);
-                          }}
-                        >
-                          Notes
-                        </Button>
-                      </ButtonGroup>
-                    </Grid>
-                    <Grid item>
-                      <Grid container>{renderContactsOrNotes()}</Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Grid container justify={"space-between"} direction={"column"}>
+        <Grid container spacing={2} className={classes.grid} alignItems={"stretch"}>
+          <Grid item xs={12} md={4}>
+
+            <Paper className={classes.paper}>
+              <Grid container direction={"column"}>
                 <Grid item>
-                    <Grid container>
-                      {/* <TextField
+                  <TextField
+                    onChange={handlePositionChange}
+                    id="company_name"
+                    label="Company Name"
+                    type="text"
+                    defaultValue={applicationProcess.position.company_name}
+                  />
+                </Grid>
+                <Grid item>
+
+                  <TextField
+                    id="job_title"
+                    label="Job Title"
+                    defaultValue={applicationProcess.position.job_title}
+                    onChange={handlePositionChange}
+                  />
+                </Grid>
+                <Grid item>
+                  {/* need to add onchange and component id */}
+                  <DropDown dropdownOptions={statusObjects.map(status => status.name)} label={"Status"} />
+                </Grid>
+
+              </Grid>
+            </Paper>
+
+          </Grid>
+          <Grid item xs={12} md={4}>
+
+            <Paper className={classes.paper}>
+              <Grid container justify={"space-between"} direction={"column"}>
+                <Grid item>
+                  <Grid container>
+                    {/* <TextField
                         id="city"
                         label="Country"
                         defaultValue={currentApplication.position.city}
                         onChange={handlePositionChange}
                       /> */}
-                      <DropDown dropdownOptions ={countries.map(country => country.name)} label={"Country"}/>
-                    </Grid>
+                    <DropDown dropdownOptions={countries.map(country => country.name)} label={"Country"} />
                   </Grid>
-                  <Grid item>
-                    <Grid container>
-                      <TextField
-                        id="city"
-                        label="City"
-                        defaultValue={currentApplication.position.city}
-                        onChange={handlePositionChange}
-                      />
-                    </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid container>
+                    <TextField
+                      id="city"
+                      label="City"
+                      defaultValue={currentApplication.position.city}
+                      onChange={handlePositionChange}
+                    />
                   </Grid>
-                  <Grid item>
-                    <Grid container>
-                      <TextField
-                        id="job_posting_URL"
-                        label="Job URL"
-                        defaultValue={
-                          currentApplication.position.job_posting_URL
-                        }
-                        onChange={handlePositionChange}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Grid container>
-                      <Stages
-                        stage_set={currentApplication.stage_set}
-                        handleStagesChange={handleStagesChange}
-                      />
-                    </Grid>
+                </Grid>
+                <Grid item>
+                  <Grid container>
+                    <TextField
+                      id="job_posting_URL"
+                      label="Job URL"
+                      defaultValue={
+                        currentApplication.position.job_posting_URL
+                      }
+                      onChange={handlePositionChange}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <DialogActions>
-                <Button
-                  variant="outlined"
-                  autoFocus
-                  onClick={handleClose}
+            </Paper>
+
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper className={classes.paper}>
+              <Grid container alignItems="center" >
+                <ButtonGroup
                   color="primary"
+                  aria-label="outlined primary button group"
                 >
-                  Cancel
-                </Button>
-              </DialogActions>
-              <DialogActions>
-                <Button
-                  variant="outlined"
-                  autoFocus
-                  onClick={handleSaveChanges}
-                  color="primary"
-                >
-                  Save changes
-                </Button>
-              </DialogActions>
-            </Grid>
+                  <Button
+                    id="ContactsButton"
+                    onClick={() => {
+                      setDisplayContacts(true);
+                    }}
+                  >
+                    Contacts
+                  </Button>
+                  <Button
+                    id="NotesButton"
+                    onClick={() => {
+                      setDisplayContacts(false);
+                    }}
+                  >
+                    Notes
+                  </Button>
+                </ButtonGroup>
+              </Grid>
+              <Grid item>
+                <Grid container>{renderContactsOrNotes()}</Grid>
+              </Grid>
+            </Paper>
+
           </Grid>
         </Grid>
       </Dialog>

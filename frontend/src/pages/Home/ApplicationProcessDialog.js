@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'pink',
+    backgroundColor: '#f8e3e8',
     justify: 'center'
   }
 }))
@@ -108,7 +108,7 @@ export default function ApplicationProcessDialog({
       [e.target.id]: e.target.value,
     });
   };
-  
+
   const updateArray = (arr, newAppProc) => {
     const tempArray = arr.filter(a => {
       return a.id !== newAppProc.id;
@@ -145,7 +145,7 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({
       ...currentApplication,
       contact_set: new_contact_set,
-    }); 
+    });
   };
   const classes = useStyles();
 
@@ -267,7 +267,7 @@ export default function ApplicationProcessDialog({
           <Grid item xs={12}>
             <Paper>
               {/* <ProgressBar stageSet={currentApplication.stage_set} /> */}
-              <HorizontalLinearStepper stage_set={  currentApplication.stage_set } />
+              <HorizontalLinearStepper stage_set={currentApplication.stage_set} />
             </Paper>
           </Grid>
         </Grid>

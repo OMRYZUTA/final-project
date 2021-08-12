@@ -19,13 +19,14 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import Button from "@material-ui/core/Button";
 import * as apServices from '../../services/AppProcServices';
+import { red } from "@material-ui/core/colors";
 
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
-    backgroundColor: '#ccf1de'
+    backgroundColor: '#EFF8FB'
   },
 
   highlight:
@@ -161,10 +162,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   tableHeader: {
-    backgroundColor: '#ffdfd3'
+    backgroundColor: '#f8e3e8'
   },
   blueRow: {
-    backgroundColor: '#ccf1de'
+    backgroundColor: '#EFF8FB'
   },
   paper: {
     width: "100%",

@@ -10,23 +10,24 @@ import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { withRouter } from 'react-router-dom';
+// import { ReactComponent as Logo } from '../../resources/images/logo.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     menuButton: {
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(2),
     },
     title: {
         [theme.breakpoints.down('xs')]: {
-            flexGrow: 1
+            flexGrow: 1,
         }
     },
     headerOptions: {
         display: 'flex',
         flex: 1,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
     }
 }));
 
@@ -60,15 +61,15 @@ const Navbar = props => {
         <div className={classes.root}>
             <AppBar position='static'>
                 <Toolbar>
-                    <Typography variant='h6' className={classes.title}>
-                        Marshmallow
-                    </Typography>
+                    {/* <div className='logo' style={{ height: 50 }, { width: 50 }}> */}
+                    {/* <Logo /> */}
+                    {/* </div> */}
                     {isMobile ? (
                         <div>
                             <IconButton
                                 edge='start'
                                 className={classes.menuButton}
-                                color='inherit'
+                                color='secondary'
                                 aria-label='menu'
                                 onClick={handleMenu}
                             >

@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { withRouter } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../resources/images/logo.svg';
@@ -17,7 +18,8 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     logo: {
-        width: 70,
+        width: 90,
+        padding: 10,
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -43,6 +45,7 @@ const Navbar = props => {
     const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
     const handleMenu = event => {
+        console.log("in handle menu")
         setAnchorEl(event.currentTarget);
     };
 
@@ -64,7 +67,11 @@ const Navbar = props => {
         <div className={classes.root}>
             <AppBar position='static'>
                 <Toolbar>
-                    <Logo className={classes.logo} />
+                    <Grid container direction={'column'}>
+                        <Logo className={classes.logo} />
+                        <Typography>managing your job hunt
+                        </Typography>
+                    </Grid>
                     {isMobile ? (
                         <div>
                             <IconButton
@@ -107,7 +114,7 @@ const Navbar = props => {
                                 variant='contained'
                                 onClick={() => handleButtonClick('/')}
                             >
-                                Home
+                                User Name
                             </Button>
                         </div>
                     )}

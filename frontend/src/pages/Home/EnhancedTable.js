@@ -20,6 +20,29 @@ import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import Button from "@material-ui/core/Button";
 import * as apServices from '../../services/AppProcServices';
 
+
+const useToolbarStyles = makeStyles((theme) => ({
+  root: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+    backgroundColor: '#ccf1de'
+  },
+
+  highlight:
+    theme.palette.type === "light"
+      ? {
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
+      : {
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
+  title: {
+    flex: "1 1 100%",
+  },
+}));
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -65,7 +88,7 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <TableHead>
+    <TableHead className={classes.tableHeader}>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
@@ -101,25 +124,6 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === "light"
-      ? {
-        color: theme.palette.secondary.main,
-        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-      }
-      : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.secondary.dark,
-      },
-  title: {
-    flex: "1 1 100%",
-  },
-}));
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
@@ -132,7 +136,7 @@ const EnhancedTableToolbar = (props) => {
         id="tableTitle"
         component="div"
       >
-        Application Process
+        Job Application Processes
       </Typography>
 
       <Button
@@ -155,6 +159,12 @@ const EnhancedTableToolbar = (props) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+  },
+  tableHeader: {
+    backgroundColor: '#ffdfd3'
+  },
+  blueRow: {
+    backgroundColor: '#ccf1de'
   },
   paper: {
     width: "100%",
@@ -279,6 +289,7 @@ export default function EnhancedTable() {
                       onClick={(event) => handleClick(event, row)}
                       tabIndex={-1}
                       key={row.id}
+                      className={row.id % 2 === 0 ? classes.blueRow : null}
                     >
                       <TableCell align="left">
                         {row.position.company_name}

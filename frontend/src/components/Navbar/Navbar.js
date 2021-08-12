@@ -10,11 +10,14 @@ import Menu from '@material-ui/core/Menu';
 import Button from '@material-ui/core/Button';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { withRouter } from 'react-router-dom';
-// import { ReactComponent as Logo } from '../../resources/images/logo.svg';
+import { ReactComponent as Logo } from '../../resources/images/logo.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
+    },
+    logo: {
+        width: 70,
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -61,9 +64,7 @@ const Navbar = props => {
         <div className={classes.root}>
             <AppBar position='static'>
                 <Toolbar>
-                    {/* <div className='logo' style={{ height: 50 }, { width: 50 }}> */}
-                    {/* <Logo /> */}
-                    {/* </div> */}
+                    <Logo className={classes.logo} />
                     {isMobile ? (
                         <div>
                             <IconButton
@@ -107,24 +108,6 @@ const Navbar = props => {
                                 onClick={() => handleButtonClick('/')}
                             >
                                 Home
-                            </Button>
-                            <Button
-                                variant='contained'
-                                onClick={() => handleButtonClick('/profile')}
-                            >
-                                Profile
-                            </Button>
-                            <Button
-                                variant='contained'
-                                onClick={() => handleButtonClick('/tips')}
-                            >
-                                Tips
-                            </Button>
-                            <Button
-                                variant='contained'
-                                onClick={() => handleButtonClick('/resume_sender')}
-                            >
-                                Resume Sender
                             </Button>
                         </div>
                     )}

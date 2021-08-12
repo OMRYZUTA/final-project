@@ -184,6 +184,7 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [applications, setApplications] = React.useState([]);
+
   React.useEffect(() => {
     const fetchApplications = async () => {
       const result = await apServices.getAll()
@@ -192,6 +193,7 @@ export default function EnhancedTable() {
     };
     fetchApplications();
   }, []);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");

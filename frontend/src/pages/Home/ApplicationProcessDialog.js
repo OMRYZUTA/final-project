@@ -15,7 +15,7 @@ import * as StaticServices from "../../services/StaticServices";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/Styles";
 import HorizontalLinearStepper from "./HorizontalLinearStepper";
-import ProgressBar from "./ProgressBar";
+
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: '100%',
@@ -108,6 +108,7 @@ export default function ApplicationProcessDialog({
       [e.target.id]: e.target.value,
     });
   };
+  
   const updateArray = (arr, newAppProc) => {
     const tempArray = arr.filter(a => {
       return a.id !== newAppProc.id;
@@ -144,7 +145,7 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({
       ...currentApplication,
       contact_set: new_contact_set,
-    });
+    }); 
   };
   const classes = useStyles();
 

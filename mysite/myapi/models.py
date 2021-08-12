@@ -98,13 +98,15 @@ class Stage(models.Model):
 class ApplicationProcess(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.IntegerField(null=True)
+    # reference_set
+    # what about contact_set?
     note = models.TextField(null=True, blank=True)
     last_modified = models.DateField(auto_now_add=True, null=True, blank=True)
     # sent_resume= models.FileField()
     # will be one to many - several different application process will have same position (after parsing from other APIs)
     position = models.OneToOneField(
         Position, on_delete=models.CASCADE, null=True, blank=True)
-#need to change null = False delete later
+# need to change null = False delete later
     status = models.ForeignKey(
         'Status', null=True, default="IN", on_delete=models.DO_NOTHING)
 

@@ -15,6 +15,7 @@ import * as StaticServices from "../../services/StaticServices";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/Styles";
 import HorizontalLinearStepper from "./HorizontalLinearStepper";
+import ProgressBar from "./ProgressBar";
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: '100%',
@@ -264,6 +265,7 @@ export default function ApplicationProcessDialog({
 
           <Grid item xs={12}>
             <Paper>
+              {/* <ProgressBar stageSet={currentApplication.stage_set} /> */}
               <HorizontalLinearStepper stage_set={  currentApplication.stage_set } />
             </Paper>
           </Grid>

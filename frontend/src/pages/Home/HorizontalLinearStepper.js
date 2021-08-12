@@ -20,8 +20,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-
 export default function HorizontalLinearStepper({ stage_set }) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);

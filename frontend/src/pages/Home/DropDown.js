@@ -15,33 +15,25 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DropDown({ dropdownOptions, label }) {
+export default function DropDown({
+    label,
+    options,      // an array of {key, value} pairs
+    currentValue, // a single key value, must be a valid option
+    keyPropName,  // the name of the "key" property from the pair
+    namePropName, // the name of the "name" property from the pair
+    onChange,     // callback function that notifies "outside" that the user selected a different options
+}) {
     const classes = useStyles();
-    const [currentOption, setCurrentOption] = React.useState(dropdownOptions && dropdownOptions[0]);
-    const handleChange = (event) => {
-        setCurrentOption(event.target.value);
-    };
 
     return (
-        <div>
-            <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">{label}</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={currentOption}
-                    onChange={handleChange}
-                >
-                    {dropdownOptions?.map((option) => {
-                        return (
-                            <MenuItem key={option} value={option}>{option}</MenuItem>
-                        )
-                    })}
-                    {/* <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem> */}
-                </Select>
-            </FormControl>
-        </div>
+        <FormControl className={classes.formControl}>
+            <InputLabel>{label}</InputLabel>
+            <Select
+                value={currentValue}
+                onChange={onChange}
+            >
+                {options.map((option) => <MenuItem value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
+            </Select>
+        </FormControl>
     );
 }

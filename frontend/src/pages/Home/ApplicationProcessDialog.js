@@ -14,7 +14,7 @@ import DropDown from "./DropDown";
 import * as StaticServices from "../../services/StaticServices";
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/Styles";
-import HorizontalLinearStepper from "./HorizontalLinearStepper";
+import HorizontalStepper from "./HorizontalLinearStepper";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -48,6 +48,7 @@ export default function ApplicationProcessDialog({
 
   const [displayContacts, setDisplayContacts] = React.useState(true);
 
+  //TODO: cache the status, countries, etc - receive from backend not ask from backend
   const [statusObjects, setStatusObjects] = React.useState([]);
   React.useEffect(() => {
     const fetchStatusObjects = async () => {
@@ -94,6 +95,7 @@ export default function ApplicationProcessDialog({
       [e.target.id]: e.target.value,
     });
   };
+
   const handleStatusChange = (e) => {
     let status = {};
     // switch(e.target.value){
@@ -138,9 +140,11 @@ export default function ApplicationProcessDialog({
     };
     setCurrentApplication({ ...currentApplication, position: position });
   };
+
   const handleStagesChange = (e, new_stage_set) => {
     setCurrentApplication({ ...currentApplication, stage_set: new_stage_set });
   };
+
   const handleContactsChange = (e, new_contact_set) => {
     setCurrentApplication({
       ...currentApplication,
@@ -184,7 +188,13 @@ export default function ApplicationProcessDialog({
                 </Grid>
                 <Grid item>
                   {/* need to add onchange and component id */}
-                  <DropDown dropdownOptions={statusObjects.map(status => status.name)} label={"Status"} />
+                  <DropDown
+                    label={"Status"}
+                    options={statusObjects}
+                    currentValue={currentApplication.status.id}
+                    keyPropName="id"
+                    namePropName="name"
+                  />
                 </Grid>
 
               </Grid>
@@ -197,13 +207,13 @@ export default function ApplicationProcessDialog({
               <Grid container justify={"space-between"} direction={"column"}>
                 <Grid item>
                   <Grid container>
-                    {/* <TextField
-                        id="city"
-                        label="Country"
-                        defaultValue={currentApplication.position.city}
-                        onChange={handlePositionChange}
-                      /> */}
-                    <DropDown dropdownOptions={countries.map(country => country.name)} label={"Country"} />
+                    <DropDown
+                      label={"Country"}
+                      options={countries}
+                      currentValue={currentApplication.position.country.id}
+                      keyPropName="id"
+                      namePropName="name"
+                    />
                   </Grid>
                 </Grid>
                 <Grid item>
@@ -211,7 +221,7 @@ export default function ApplicationProcessDialog({
                     <TextField
                       id="city"
                       label="City"
-                      defaultValue={currentApplication.position.city}
+                      value={currentApplication.position.city}
                       onChange={handlePositionChange}
                     />
                   </Grid>
@@ -267,7 +277,7 @@ export default function ApplicationProcessDialog({
           <Grid item xs={12}>
             <Paper>
               {/* <ProgressBar stageSet={currentApplication.stage_set} /> */}
-              <HorizontalLinearStepper stage_set={currentApplication.stage_set} />
+              <HorizontalStepper stage_set={currentApplication.stage_set} />
             </Paper>
           </Grid>
         </Grid>

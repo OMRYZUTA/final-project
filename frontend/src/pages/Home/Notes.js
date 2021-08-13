@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 const Notes = ({ notes, handleChange, id }) => {
     const classes = useStyles();
 
+     // TODO: I think you don't need any of those grids (noam)
     return (
         <Card className={classes.root}>
             <CardContent>

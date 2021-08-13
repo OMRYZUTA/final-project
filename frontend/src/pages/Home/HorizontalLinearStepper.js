@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import StepDialog from './StepDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,71 +21,73 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function HorizontalLinearStepper({ stage_set }) {
+export default function HorizontalStepper({ stage_set }) {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
-    console.log('stage set: ', stage_set);
-    const [stages, setStages] = React.useState(stage_set);
-    const isStepOptional = (step) => {
-        return step === 1;
-    };
+    const [steps, setSteps] = useState(stage_set);
+    const [currentStep, setCurrentStep] = useState();
 
-    const isStepSkipped = (step) => {
-        return skipped.has(step);
-    };
-
-    const handleNext = () => {
-        let newSkipped = skipped;
-        if (isStepSkipped(activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(activeStep);
-        }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped(newSkipped);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleSkip = () => {
-        if (!isStepOptional(activeStep)) {
-            // You probably want to guard against something like this,
-            // it should never occur unless someone's actively trying to break something.
-            throw new Error("You can't skip a step that isn't optional.");
-        }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped((prevSkipped) => {
-            const newSkipped = new Set(prevSkipped.values());
-            newSkipped.add(activeStep);
-            return newSkipped;
+    const handleAddStep = useCallback(() => {
+        setCurrentStep({
+            eventType: '',
+            mediaType: '',
         });
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
+    })
+    const handleStepDialogClose = useCallback((newStep) => {
+        if (newStep) {
+            setSteps([...steps, newStep]);
+        }
+    });
+    const eventTypes = [
+        {
+            id: '',
+            name: 'none',
+        },
+        {
+            id: 'CV',
+            name: 'CV Sent',
+        },
+        {
+            id: 'HI',
+            name: 'HR Interview',
+        }
+    ];
+    const mediaTypes = [
+        {
+            id: '',
+            name: 'none',
+        },
+        {
+            id: 'CV',
+            name: 'CV Sent',
+        },
+        {
+            id: 'FI',
+            name: 'F2F',
+        }
+    ];
 
     return (
         <div className={classes.root}>
-            <Stepper activeStep={activeStep}>
-                {console.log(stage_set) || stage_set?.map((stage) => {
-
-                    return (
-                        <Step key={stage.id} >
-                            <StepLabel >{stage.event_type.name}{" "}{stage.stage_date}</StepLabel>
-                        </Step>
-                    );
-                })}
+            <Button onClick={handleAddStep} className={classes.button}>
+                Add step
+            </Button>
+            <Stepper>
+                {steps
+                    .sort((s1, s2) => s1.date - s2.date)
+                    .map((stage) => {
+                        return (
+                            <Step key={stage.id}>
+                                <StepLabel >{stage.event_type.name}{" "}{stage.stage_date}</StepLabel>
+                            </Step>
+                        );
+                    })}
             </Stepper>
-            <div>
-                <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                    Add step
-                </Button>
-            </div>
+            {currentStep && <StepDialog
+                initialStep={currentStep}
+                eventTypes={eventTypes}
+                mediaTypes={mediaTypes}
+                onClose={handleStepDialogClose}
+            />}
         </div>
     );
 }

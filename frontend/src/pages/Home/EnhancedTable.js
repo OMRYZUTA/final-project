@@ -12,21 +12,25 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import DeleteIcon from '@material-ui/icons/Delete';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import Button from "@material-ui/core/Button";
 import * as apServices from '../../services/AppProcServices';
 import { red } from "@material-ui/core/colors";
-
+import AddIcon from '@material-ui/icons/Add';
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
+    flexDirection: 'row',
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
-    backgroundColor: '#EFF8FB'
+    backgroundColor: 'white'
   },
 
   highlight:
@@ -40,7 +44,9 @@ const useToolbarStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.secondary.dark,
       },
   title: {
+    paddingRight: "15px",
     flex: "1 1 100%",
+    fontWeight: "bold",
   },
 }));
 
@@ -79,7 +85,8 @@ const headCells = [
   },
   { id: "job_title", numeric: false, disablePadding: true, label: "Position" },
   { id: "status", numeric: false, disablePadding: true, label: "Status" },
-  { id: "last_modified", numeric: true, disablePadding: true, label: "Date" }, // delete later change to next stage
+  { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" }, // delete later change to next stage
+  { id: "deleteLater", disablePadding: true, label: "" }, // delete later change to next stage
 ];
 
 function EnhancedTableHead(props) {
@@ -135,18 +142,10 @@ const EnhancedTableToolbar = (props) => {
         className={classes.title}
         variant="h6"
         id="tableTitle"
-        component="div"
+
       >
         Job Application Processes
       </Typography>
-
-      <Button
-        variant="outlined"
-        onClick={props.handleAddNew}
-        color="primary"
-      >
-        add new process
-      </Button>
 
       <Tooltip title="Filter list">
         <IconButton aria-label="filter list">
@@ -162,10 +161,19 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   tableHeader: {
-    backgroundColor: '#f8e3e8'
+    backgroundColor: 'white'
+  },
+  addNewAppBtn: {
+    marginLeft: "15px",
+    paddingLeft: "10px",
+    color: "black",
+    backgroundColor: '#69FFE6',
   },
   blueRow: {
-    backgroundColor: '#EFF8FB'
+    backgroundColor: '#5FE2FF'
+  },
+  pinkRow: {
+    backgroundColor: '#FFADE7'
   },
   paper: {
     width: "100%",
@@ -173,6 +181,9 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 750,
+  },
+  pagination: {
+    backgroundColor: 'white'
   },
   visuallyHidden: {
     border: 0,
@@ -186,6 +197,21 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
 }));
+const matchStatusToClassName = (statusID, classes) => {
+  let className = ''
+  switch (statusID) {
+    case "AP":
+      className = classes["blueRow"];
+      break;
+    case "CL":
+      className = classes["pinkRow"];
+      break;
+    default:
+      className = "";
+      break;
+  }
+  return className;
+}
 
 export default function EnhancedTable() {
   const classes = useStyles();
@@ -193,7 +219,7 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState("company");
   const [currentItem, setCurrentItem] = React.useState();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [applications, setApplications] = React.useState([]);
 
   React.useEffect(() => {
@@ -266,7 +292,19 @@ export default function EnhancedTable() {
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem)}
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar handleAddNew={handleAddNew} />
+        <EnhancedTableToolbar />
+
+        <Button
+          borderRadius={8}
+          className={classes.addNewAppBtn}
+          variant="outlined"
+          onClick={handleAddNew}
+          color="primary"
+        >
+          <AddIcon />
+          ADD
+        </Button>
+
         <TableContainer>
           <Table
             className={classes.table}
@@ -290,7 +328,7 @@ export default function EnhancedTable() {
                       onClick={(event) => handleClick(event, row)}
                       tabIndex={-1}
                       key={row.id}
-                      className={row.id % 2 === 0 ? classes.blueRow : null}
+                      className={matchStatusToClassName(row.status.id, classes)}
                     >
                       <TableCell align="left">
                         {row.position.company_name}
@@ -300,6 +338,9 @@ export default function EnhancedTable() {
                       </TableCell>
                       <TableCell align="left">{row.status.name}</TableCell>
                       <TableCell align="left">{row.last_modified}</TableCell>
+                      <TableCell align="left">
+                        <DeleteIcon />
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -312,7 +353,8 @@ export default function EnhancedTable() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 20, 30]}
+          className={classes.pagination}
+          rowsPerPageOptions={[5, 10, 20, 30]}
           component="div"
           count={applications.length}
           rowsPerPage={rowsPerPage}

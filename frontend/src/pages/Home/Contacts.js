@@ -34,7 +34,6 @@ const Contacts = ({ contact_set, handleContactsChange }) => {
         clone[index] = updated;
         setContacts(clone);
         handleContactsChange(e, clone);
-        console.log('in local updated: ', updated);
     }
     return (
         <Card className={classes.root}>

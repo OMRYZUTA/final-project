@@ -12,18 +12,14 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import SearchIcon from '@material-ui/icons/Search';
-import TextField from "@material-ui/core/TextField";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import DeleteIcon from '@material-ui/icons/Delete';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import Button from "@material-ui/core/Button";
 import * as apServices from '../../services/AppProcServices';
-import { red } from "@material-ui/core/colors";
 import AddIcon from '@material-ui/icons/Add';
 import SearchField from "./SearchField";
 
@@ -234,7 +230,6 @@ export default function EnhancedTable() {
   React.useEffect(() => {
     const fetchApplications = async () => {
       const result = await apServices.getAll()
-      console.log(result.data.results);
       setApplications(result.data.results);
     };
     fetchApplications();

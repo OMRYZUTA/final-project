@@ -7,7 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { withRouter } from 'react-router-dom';
@@ -53,7 +52,6 @@ const Navbar = props => {
     const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
     const handleMenu = event => {
-        console.log("in handle menu")
         setAnchorEl(event.currentTarget);
     };
 

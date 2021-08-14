@@ -8,7 +8,6 @@ import TextField from "@material-ui/core/TextField";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Contacts from "./Contacts";
 import Notes from "./Notes";
-import Stages from "./Stages";
 import * as apServices from '../../services/AppProcServices';
 import DropDown from "./DropDown";
 import * as StaticServices from "../../services/StaticServices";

@@ -16,6 +16,8 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import SearchIcon from '@material-ui/icons/Search';
+import TextField from "@material-ui/core/TextField";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import DeleteIcon from '@material-ui/icons/Delete';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
@@ -23,6 +25,7 @@ import Button from "@material-ui/core/Button";
 import * as apServices from '../../services/AppProcServices';
 import { red } from "@material-ui/core/colors";
 import AddIcon from '@material-ui/icons/Add';
+import SearchField from "./SearchField";
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -146,7 +149,7 @@ const EnhancedTableToolbar = (props) => {
       >
         Job Application Processes
       </Typography>
-
+      <SearchField />
       <Tooltip title="Filter list">
         <IconButton aria-label="filter list">
           <FilterListIcon />
@@ -165,15 +168,21 @@ const useStyles = makeStyles((theme) => ({
   },
   addNewAppBtn: {
     marginLeft: "15px",
-    paddingLeft: "10px",
+    marginBottom: "5px",
     color: "black",
-    backgroundColor: '#69FFE6',
+    paddingRight: "15px",
+    borderRadius: "45%",
+    width: "5%",
+    display: "flex",
   },
   blueRow: {
     backgroundColor: '#5FE2FF'
   },
   pinkRow: {
     backgroundColor: '#FFADE7'
+  },
+  deleteBin: {
+    color: '#5f676e'
   },
   paper: {
     width: "100%",
@@ -293,17 +302,14 @@ export default function EnhancedTable() {
       {currentItem && renderCurrentItem(currentItem)}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
+        <Paper className={classes.addNewAppBtn} >
+          <Button position={"relative"}
+            onClick={handleAddNew}
+          >
+            <AddIcon />
 
-        <Button
-          borderRadius={8}
-          className={classes.addNewAppBtn}
-          variant="outlined"
-          onClick={handleAddNew}
-          color="primary"
-        >
-          <AddIcon />
-          ADD
-        </Button>
+          </Button>
+        </Paper>
 
         <TableContainer>
           <Table
@@ -339,7 +345,7 @@ export default function EnhancedTable() {
                       <TableCell align="left">{row.status.name}</TableCell>
                       <TableCell align="left">{row.last_modified}</TableCell>
                       <TableCell align="left">
-                        <DeleteIcon />
+                        <DeleteIcon className={classes.deleteBin} />
                       </TableCell>
                     </TableRow>
                   );

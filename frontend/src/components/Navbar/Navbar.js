@@ -75,8 +75,7 @@ const Navbar = props => {
                 <Toolbar>
                     <Grid container direction={'column'}>
                         <Logo className={classes.logo} />
-                        <Typography>managing your job hunt
-                        </Typography>
+                        <Typography>managing your job hunt</Typography>
                     </Grid>
                     {isMobile ? (
                         <div>

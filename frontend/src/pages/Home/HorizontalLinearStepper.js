@@ -20,6 +20,28 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function renderEmptyState() {
+    return (
+        <Typography>baby steps...</Typography>
+    )
+}
+
+function renderStepper(steps) {
+    return (
+        <Stepper>
+            {steps
+                .sort((s1, s2) => s1.date - s2.date)
+                .map((stage) => {
+                    return (
+                        <Step key={stage.id}>
+                            <StepLabel >{stage.event_type.name}{" "}{stage.stage_date}</StepLabel>
+                        </Step>
+                    );
+                })}
+        </Stepper>
+    )
+}
+
 
 export default function HorizontalStepper({ stage_set }) {
     const classes = useStyles();
@@ -66,22 +88,14 @@ export default function HorizontalStepper({ stage_set }) {
         }
     ];
 
+    const hasSteps = steps.length;
+
     return (
         <div className={classes.root}>
             <Button onClick={handleAddStep} className={classes.button}>
                 Add step
             </Button>
-            <Stepper>
-                {steps
-                    .sort((s1, s2) => s1.date - s2.date)
-                    .map((stage) => {
-                        return (
-                            <Step key={stage.id}>
-                                <StepLabel >{stage.event_type.name}{" "}{stage.stage_date}</StepLabel>
-                            </Step>
-                        );
-                    })}
-            </Stepper>
+            {hasSteps ? renderStepper(steps) : renderEmptyState()}
             {currentStep && <StepDialog
                 initialStep={currentStep}
                 eventTypes={eventTypes}

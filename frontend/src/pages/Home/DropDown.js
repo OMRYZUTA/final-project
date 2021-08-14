@@ -32,7 +32,7 @@ export default function DropDown({
                 value={currentValue}
                 onChange={onChange}
             >
-                {options.map((option) => <MenuItem value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
+                {options.map((option) => <MenuItem id={option[keyPropName]} value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
             </Select>
         </FormControl>
     );

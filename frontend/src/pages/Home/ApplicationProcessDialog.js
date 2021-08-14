@@ -18,14 +18,15 @@ import HorizontalStepper from "./HorizontalLinearStepper";
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: '100%',
-    margin: '0px'
+    margin: '0px',
+    backgroundColor: '#FFFFC5',
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f8e3e8',
+    backgroundColor: '#FFADE7',
     justify: 'center'
   }
 }))
@@ -162,9 +163,9 @@ export default function ApplicationProcessDialog({
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <Grid container spacing={2} className={classes.grid} alignItems={"stretch"}>
-          <Grid item xs={12} md={4}>
+        <Grid container spacing={2} className={classes.grid} alignItems={"stretch"} backgroundColor={'#FFFFC5'}>
 
+          <Grid item xs={12} md={4}>
             <Paper className={classes.paper}>
               <Grid container direction={"column"}>
                 <Grid item>
@@ -177,7 +178,6 @@ export default function ApplicationProcessDialog({
                   />
                 </Grid>
                 <Grid item>
-
                   <TextField
                     id="job_title"
                     label="Job Title"
@@ -195,13 +195,11 @@ export default function ApplicationProcessDialog({
                     namePropName="name"
                   />
                 </Grid>
-
               </Grid>
             </Paper>
-
           </Grid>
-          <Grid item xs={12} md={4}>
 
+          <Grid item xs={12} md={4}>
             <Paper className={classes.paper}>
               <Grid container justify={"space-between"} direction={"column"}>
                 <Grid item>
@@ -239,8 +237,8 @@ export default function ApplicationProcessDialog({
                 </Grid>
               </Grid>
             </Paper>
-
           </Grid>
+
           <Grid item xs={12} md={4}>
             <Paper className={classes.paper}>
               <Grid container alignItems="center" >
@@ -270,15 +268,34 @@ export default function ApplicationProcessDialog({
                 <Grid container>{renderContactsOrNotes()}</Grid>
               </Grid>
             </Paper>
-
           </Grid>
 
           <Grid item xs={12}>
-            <Paper>
-              {/* <ProgressBar stageSet={currentApplication.stage_set} /> */}
+            <Paper className={classes.paper}>
               <HorizontalStepper stage_set={currentApplication.stage_set} />
             </Paper>
           </Grid>
+
+          <Grid item xs={4}>
+            <Button
+              id="saveChanges"
+              onClick={() => {
+              }}
+              color={'#93f7ff'}
+            >
+              Save changes
+            </Button>
+
+            <Button
+              id="cancel"
+              onClick={() => {
+              }}
+              color={'#93f7ff'}
+            >
+              cancel
+            </Button>
+          </Grid>
+
         </Grid>
       </Dialog>
     </div>

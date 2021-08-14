@@ -160,7 +160,6 @@ export default function ApplicationProcessDialog({
         fullWidth={true}
         maxWidth={"xl"}
         onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
         open={open}
       >
         <Grid container spacing={2} className={classes.grid} alignItems={"stretch"} backgroundColor={'#FFFFC5'}>

@@ -11,34 +11,34 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, onClos
             ...step,
             eventType: event.target.value,
         });
-    });
+    }, [step]);
 
     const handleMediaTypeChange = useCallback((event) => {
         setStep({
             ...step,
             eventMedia: event.target.value,
         });
-    });
+    }, [step]);
 
     const handleDateChange = useCallback((event) => {
         setStep({
             ...step,
             date: event.target.value,
         });
-    });
+    }, [step]);
 
     const handleNotesChange = useCallback((event) => {
         setStep({
             ...step,
             notes: event.target.value,
         });
-    });
+    }, [step]);
 
     const handleSave = useCallback(() => {
         onClose(step);
-    }, [step]);
+    }, [step, onClose]);
 
-    const handleCancel = useCallback(() => onClose())
+    const handleCancel = useCallback(() => onClose(), [onClose])
 
     const isNew = !step.id; // change any value to boolean true/false
 

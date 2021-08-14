@@ -1,10 +1,15 @@
 import React, { useCallback, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import {
+    // Button,
+    IconButton,
+    makeStyles,
+    Step,
+    StepLabel,
+    Stepper,
+    Typography
+} from '@material-ui/core';
+import { Add } from '@material-ui/icons';
+
 import StepDialog from './StepDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,12 +58,13 @@ export default function HorizontalStepper({ stage_set }) {
             eventType: '',
             mediaType: '',
         });
-    })
+    }, [])
     const handleStepDialogClose = useCallback((newStep) => {
+        setCurrentStep();
         if (newStep) {
             setSteps([...steps, newStep]);
         }
-    });
+    }, [steps]);
     const eventTypes = [
         {
             id: '',
@@ -92,9 +98,9 @@ export default function HorizontalStepper({ stage_set }) {
 
     return (
         <div className={classes.root}>
-            <Button onClick={handleAddStep} className={classes.button}>
-                Add step
-            </Button>
+            <IconButton onClick={handleAddStep} className={classes.button}>
+                <Add />
+            </IconButton>
             {hasSteps ? renderStepper(steps) : renderEmptyState()}
             {currentStep && <StepDialog
                 initialStep={currentStep}

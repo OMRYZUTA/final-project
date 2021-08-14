@@ -1,27 +1,32 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { lighten, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import DeleteIcon from '@material-ui/icons/Delete';
+import {
+  IconButton,
+  lighten,
+  makeStyles,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
+import {
+  Add,
+  Delete,
+  FilterList,
+} from '@material-ui/icons';
+
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
-import Button from "@material-ui/core/Button";
-import * as apServices from '../../services/AppProcServices';
-import AddIcon from '@material-ui/icons/Add';
 import SearchField from "./SearchField";
+import * as apServices from '../../services/AppProcServices';
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -156,7 +161,7 @@ const EnhancedTableToolbar = (props) => {
       <SearchField />
       <Tooltip title="Filter list">
         <IconButton aria-label="filter list">
-          <FilterListIcon />
+          <FilterList />
         </IconButton>
       </Tooltip>
     </Toolbar>
@@ -308,7 +313,7 @@ export default function EnhancedTable() {
 
     setCurrentItem(app);
     setOpen(true);
-  });
+  }, []);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
@@ -318,14 +323,9 @@ export default function EnhancedTable() {
       {currentItem && renderCurrentItem(currentItem)}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
-        <Paper className={classes.addNewAppBtn} >
-          <Button position={"relative"}
-            onClick={handleAddNew}
-          >
-            <AddIcon />
-
-          </Button>
-        </Paper>
+        <IconButton position={"relative"} onClick={handleAddNew}        >
+          <Add />
+        </IconButton>
 
         <TableContainer>
           <Table
@@ -361,7 +361,7 @@ export default function EnhancedTable() {
                       <TableCell align="left">{row.status}</TableCell>
                       <TableCell align="left">{row.last_modified}</TableCell>
                       <TableCell align="left">
-                        <DeleteIcon className={classes.deleteBin} />
+                        <Delete className={classes.deleteBin} />
                       </TableCell>
                     </TableRow>
                   );

@@ -29,7 +29,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
-    backgroundColor: 'white'
+    backgroundColor: '#FFFFC5'
   },
 
   highlight:
@@ -50,10 +50,19 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
+  let x, y;
+  if (typeof a[orderBy] === "string") {
+    x = a[orderBy].toLowerCase();
+    y = b[orderBy].toLowerCase();
+  }
+  else {
+    x = a[orderBy];
+    y = b[orderBy];
+  }
+  if (y < x) {
     return -1;
   }
-  if (b[orderBy] > a[orderBy]) {
+  if (y > x) {
     return 1;
   }
   return 0;
@@ -66,8 +75,10 @@ function getComparator(order, orderBy) {
 }
 
 function stableSort(array, comparator) {
+  console.log(array);
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
+
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
@@ -77,15 +88,12 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "company_name",
-    numeric: false,
-    disablePadding: true,
-    label: "Company",
+    id: "company_name", numeric: false, disablePadding: true, label: "Company",
   },
   { id: "job_title", numeric: false, disablePadding: true, label: "Position" },
   { id: "status", numeric: false, disablePadding: true, label: "Status" },
-  { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" }, // delete later change to next stage
-  { id: "deleteLater", disablePadding: true, label: "" }, // delete later change to next stage
+  { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" },
+  { id: "delete", disablePadding: true, label: "" }, // for the delete bin
 ];
 
 function EnhancedTableHead(props) {
@@ -160,7 +168,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   tableHeader: {
-    backgroundColor: 'white'
+    backgroundColor: '#FFFFC5'
   },
   addNewAppBtn: {
     marginLeft: "15px",
@@ -177,18 +185,25 @@ const useStyles = makeStyles((theme) => ({
   pinkRow: {
     backgroundColor: '#FFADE7'
   },
+  yellowRow: {
+    backgroundColor: "#FFFFC5"
+  },
+  whiteRow: {
+    backgroundColor: "white"
+  },
   deleteBin: {
     color: '#5f676e'
   },
   paper: {
     width: "100%",
     marginBottom: theme.spacing(2),
+    backgroundColor: "#FFFFC5"
   },
   table: {
     minWidth: 750,
   },
   pagination: {
-    backgroundColor: 'white'
+    backgroundColor: "#FFFFC5"
   },
   visuallyHidden: {
     border: 0,
@@ -205,11 +220,14 @@ const useStyles = makeStyles((theme) => ({
 const matchStatusToClassName = (statusID, classes) => {
   let className = ''
   switch (statusID) {
-    case "AP":
+    case "Applied":
       className = classes["blueRow"];
       break;
-    case "CL":
+    case "Closed":
       className = classes["pinkRow"];
+      break;
+    case "Interested":
+      className = classes["whiteRow"];
       break;
     default:
       className = "";
@@ -226,11 +244,13 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [applications, setApplications] = React.useState([]);
+  const [rowEntries, setRowEntries] = React.useState([]);
 
   React.useEffect(() => {
     const fetchApplications = async () => {
       const result = await apServices.getAll()
       setApplications(result.data.results);
+      setRowEntries(result.data.results.map(app => Object.create({ id: app.id, company_name: app.position.company_name, job_title: app.position.job_title, status: app.status.name, last_modified: app.last_modified })))
     };
     fetchApplications();
   }, []);
@@ -241,8 +261,9 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-  const handleClick = (event, app) => {
+  const handleClick = (app, event) => {
     setCurrentItem(app);
+    console.log(app);
     setOpen(true);
   };
 
@@ -320,24 +341,24 @@ export default function EnhancedTable() {
               rowCount={applications.length}
             />
             <TableBody>
-              {stableSort(applications, getComparator(order, orderBy))
+              {stableSort(rowEntries, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, index) => {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row)}
+                      onClick={() => { handleClick(applications[index]) }}
                       tabIndex={-1}
                       key={row.id}
-                      className={matchStatusToClassName(row.status.id, classes)}
+                      className={matchStatusToClassName(row.status, classes)}
                     >
                       <TableCell align="left">
-                        {row.position.company_name}
+                        {row.company_name}
                       </TableCell>
                       <TableCell align="left">
-                        {row.position.job_title}
+                        {row.job_title}
                       </TableCell>
-                      <TableCell align="left">{row.status.name}</TableCell>
+                      <TableCell align="left">{row.status}</TableCell>
                       <TableCell align="left">{row.last_modified}</TableCell>
                       <TableCell align="left">
                         <DeleteIcon className={classes.deleteBin} />
@@ -364,6 +385,6 @@ export default function EnhancedTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-    </div>
+    </div >
   );
 }

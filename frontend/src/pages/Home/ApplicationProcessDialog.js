@@ -1,42 +1,43 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  Grid,
+  makeStyles,
+  Paper,
+  TextField,
+} from "@material-ui/core";
+
 import Contacts from "./Contacts";
 import Notes from "./Notes";
 import * as apServices from '../../services/AppProcServices';
 import DropDown from "./DropDown";
 import * as StaticServices from "../../services/StaticServices";
-import { Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/Styles";
 import HorizontalStepper from "./HorizontalLinearStepper";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: '100%',
     margin: '0px',
-    backgroundColor: '#FFFFC5',
+    backgroundColor: '#f7f7f9',
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFADE7',
+    backgroundColor: '#fbdce4',
     justify: 'center'
   }
 }))
 
-const DialogActions = withStyles((theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
+// const DialogActions = withStyles((theme) => ({
+//   root: {
+//     margin: 0,
+//     padding: theme.spacing(1),
+//   },
+// }))(DialogActions);
 
 export default function ApplicationProcessDialog({
   open,
@@ -162,7 +163,7 @@ export default function ApplicationProcessDialog({
         onClose={handleClose}
         open={open}
       >
-        <Grid container spacing={2} className={classes.grid} alignItems={"stretch"} backgroundColor={'#FFFFC5'}>
+        <Grid container spacing={2} className={classes.grid} alignItems={"stretch"} backgroundColor={'#c9e8f2'}>
 
           <Grid item xs={12} md={4}>
             <Paper className={classes.paper}>
@@ -280,7 +281,7 @@ export default function ApplicationProcessDialog({
               id="saveChanges"
               onClick={() => {
               }}
-              color={'#93f7ff'}
+              color={'#c9e8f2'}
             >
               Save changes
             </Button>
@@ -289,7 +290,7 @@ export default function ApplicationProcessDialog({
               id="cancel"
               onClick={() => {
               }}
-              color={'#93f7ff'}
+              color={'#c9e8f2'}
             >
               cancel
             </Button>

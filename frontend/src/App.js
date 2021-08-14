@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core';
+
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
-import { makeStyles } from '@material-ui/core/styles';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 
 const theme = createMuiTheme({
   palette: {

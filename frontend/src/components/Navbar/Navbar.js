@@ -1,17 +1,22 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Grid from '@material-ui/core/Grid';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { withRouter } from 'react-router-dom';
+import {
+    AppBar,
+    Grid,
+    IconButton,
+    makeStyles,
+    Menu,
+    MenuItem,
+    Toolbar,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from '@material-ui/core';
+import { Menu as MenuIcon } from '@material-ui/icons';
+
 import { ReactComponent as Logo } from '../../resources/images/logo.svg';
 import ProfilePicture from '../../resources/images/ProfilePhoto.jpg';
+
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,

@@ -19,9 +19,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import {
-  Add,
-  Delete,
-  FilterList,
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  FilterList as FilterListIcon,
 } from '@material-ui/icons';
 
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
@@ -161,7 +161,7 @@ const EnhancedTableToolbar = (props) => {
       <SearchField />
       <Tooltip title="Filter list">
         <IconButton aria-label="filter list">
-          <FilterList />
+          <FilterListIcon />
         </IconButton>
       </Tooltip>
     </Toolbar>
@@ -173,7 +173,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   tableHeader: {
-    backgroundColor: '#FFFFC5'
+    backgroundColor: '#FFADE7'
   },
   addNewAppBtn: {
     marginLeft: "15px",
@@ -184,8 +184,14 @@ const useStyles = makeStyles((theme) => ({
     width: "5%",
     display: "flex",
   },
-  blueRow: {
+  malibuRow: {
     backgroundColor: '#5FE2FF'
+  },
+  anakiwaRow: {
+    backgroundColor: '#93f7ff'
+  },
+  otherBlueRow: {
+    backgroundColor: '#c3fff5'
   },
   pinkRow: {
     backgroundColor: '#FFADE7'
@@ -226,13 +232,13 @@ const matchStatusToClassName = (statusID, classes) => {
   let className = ''
   switch (statusID) {
     case "Applied":
-      className = classes["blueRow"];
+      className = classes["yellowRow"];
       break;
     case "Closed":
-      className = classes["pinkRow"];
+      className = classes["anakiwaRow"];
       break;
     case "Interested":
-      className = classes["whiteRow"];
+      className = classes["otherBlueRow"];
       break;
     default:
       className = "";
@@ -323,8 +329,8 @@ export default function EnhancedTable() {
       {currentItem && renderCurrentItem(currentItem)}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
-        <IconButton position={"relative"} onClick={handleAddNew}        >
-          <Add />
+        <IconButton position={"relative"} onClick={handleAddNew}>
+          <AddIcon />
         </IconButton>
 
         <TableContainer>
@@ -361,7 +367,7 @@ export default function EnhancedTable() {
                       <TableCell align="left">{row.status}</TableCell>
                       <TableCell align="left">{row.last_modified}</TableCell>
                       <TableCell align="left">
-                        <Delete className={classes.deleteBin} />
+                        <DeleteIcon className={classes.deleteBin} />
                       </TableCell>
                     </TableRow>
                   );

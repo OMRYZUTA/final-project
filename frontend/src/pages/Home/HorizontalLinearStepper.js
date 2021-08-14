@@ -8,7 +8,7 @@ import {
     Stepper,
     Typography
 } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Add as AddIcon } from '@material-ui/icons';
 
 import StepDialog from './StepDialog';
 
@@ -99,7 +99,7 @@ export default function HorizontalStepper({ stage_set }) {
     return (
         <div className={classes.root}>
             <IconButton onClick={handleAddStep} className={classes.button}>
-                <Add />
+                <AddIcon />
             </IconButton>
             {hasSteps ? renderStepper(steps) : renderEmptyState()}
             {currentStep && <StepDialog

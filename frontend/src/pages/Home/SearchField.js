@@ -1,8 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
+import { IconButton, InputBase, makeStyles } from '@material-ui/core';
+import { Search as SearchIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,13 +30,13 @@ export default function SearchField() {
 
       <InputBase
         className={classes.input}
-        placeholder="Search Application"
+        placeholder="search"
         inputProps={{ 'aria-label': 'search google maps' }}
       />
       <IconButton type="submit" className={classes.iconButton} aria-label="search">
         <SearchIcon />
       </IconButton>
-  
+
     </div>
   );
 }

@@ -8,9 +8,11 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core'
 const theme = createMuiTheme({
   palette: {
     //https://www.schemecolor.com/spiral-marshmallow-color-scheme.php
-    // Pink Marshmallow #f8e3e8
-    // yellow #ffffbf//#FBF7EC
-    // blue #ccf1de //#EFF8FB
+    // Pink Marshmallow #FFADE7
+    // yellow #FFFFC5
+    // darkBlue #5FE2FF
+    // lightBlue #5FE2FF
+    // blurBlue #93F7FF
     primary: {
       main: '#FBF7EC'
     },

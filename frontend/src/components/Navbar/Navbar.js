@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { withRouter } from 'react-router-dom';
 import { ReactComponent as Logo } from '../../resources/images/logo.svg';
-
+import ProfilePicture from '../../resources/images/ProfilePhoto.jpg';
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
     logo: {
         width: 90,
         padding: 10,
+    },
+    profilePhoto: {
+        width: "80px",
+        borderRadius: "50% !important;"
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -114,12 +118,9 @@ const Navbar = props => {
                         </div>
                     ) : (
                         <div className={classes.headerOptions}>
-                            <Button
-                                variant='contained'
-                                onClick={() => handleButtonClick('/')}
-                            >
-                                User Name
-                            </Button>
+                            <a href="/" >
+                                <img className={classes.profilePhoto} src={ProfilePicture} alt="profile" onClick={() => handleButtonClick('/')} />
+                            </a>
                         </div>
                     )}
                 </Toolbar>

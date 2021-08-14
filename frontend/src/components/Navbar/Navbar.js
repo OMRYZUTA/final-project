@@ -17,6 +17,10 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
+    appBar: {
+        paddingLeft: "70px",
+        paddingRight: "70px",
+    },
     logo: {
         width: 90,
         padding: 10,
@@ -65,7 +69,7 @@ const Navbar = props => {
     ];
     return (
         <div className={classes.root}>
-            <AppBar position='static'>
+            <AppBar className={classes.appBar} position='static'>
                 <Toolbar>
                     <Grid container direction={'column'}>
                         <Logo className={classes.logo} />

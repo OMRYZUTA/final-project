@@ -14,33 +14,37 @@ const theme = createMuiTheme({
     // lightBlue #5FE2FF
     // blurBlue #93F7FF
     primary: {
-      main: '#FBF7EC'
+      main: '#FFFFC5'
     },
     // secondary: ''
   },
   typography: {
     fontFamily: 'Roboto'
   },
+
 })
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles({
+  container: {
+    marginLeft: "100px",
+    marginRight: "50px",
+  }
+});
 export default function App() {
   const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.container}>
-        <Router>
-          <Navbar />
-          <Switch>
-            <Route
-              exact
-              from='/'
-              render={props => <Home {...props} />}
-            />
-            <Route exact path='/home' render={props => <Home {...props} />} />
-          </Switch>
-        </Router>
-      </div>
+      <Router >
+        <Navbar />
+        <Switch>
+          <Route
+            exact
+            from='/'
+            render={props => <Home {...props} />}
+          />
+          <Route exact path='/home' render={props => <Home {...props} className={classes.container} />} />
+        </Switch>
+      </Router>
     </ThemeProvider>
   );
 }

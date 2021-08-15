@@ -6,14 +6,18 @@ import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import ContactsCard from "./ContactsCard";
 import Notes from "./Notes";
 import * as apServices from '../../services/AppProcServices';
 import DropDown from "./DropDown";
+import IconButton from '@material-ui/core/IconButton';
+import Document from "./Document";
 import * as StaticServices from "../../services/StaticServices";
 import HorizontalStepper from "./HorizontalLinearStepper";
 import { useTheme } from '@material-ui/core/styles';
-
+import Card from '@material-ui/core/Card';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -30,17 +34,21 @@ const useStyles = makeStyles((theme) => ({
   paperField: {
     margin: "5px",
     width: "auto",
+  }, container: {
+    justifyContent: 'flex-start',
   },
-
   footer: {
+    padding: "5px",
     xs: 12,
     justifyContent: 'flex-end',
   },
   button: {
-    backgroundColor: '#FFADE7'//pink
+    backgroundColor: '#FFADE7',//pink
+    margin: '5px',
   },
   card: {
-    width: "100%"
+    backgroundColor: '#c3fff5',//veryLightBlue
+    width: "100%",
   }
 }))
 
@@ -255,11 +263,15 @@ export default function ApplicationProcessDialog({
                       value={currentApplication.reference}
                     // onChange={handlePositionChange}
                     />
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container>
-
+                    <Typography>Documents</Typography>
+                    <Card className={classes.card}>
+                      <Grid container direction="row" className={classes.container}>
+                        <IconButton >
+                          <AddIcon />
+                        </IconButton>
+                        <Document text={"CV1"}></Document>
+                      </Grid>
+                    </Card>
                   </Grid>
                 </Grid>
               </Grid>
@@ -303,7 +315,7 @@ export default function ApplicationProcessDialog({
             </Paper>
           </Grid>
 
-          <Grid container className={classes.footer}>
+          <Grid container className={classes.footer} >
             <Grid item  >
               <Button
                 id="saveChanges"
@@ -324,7 +336,6 @@ export default function ApplicationProcessDialog({
               </Button>
             </Grid>
           </Grid>
-
         </Grid>
       </Dialog>
     </div>

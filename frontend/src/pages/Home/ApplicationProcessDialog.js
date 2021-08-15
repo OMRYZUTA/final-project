@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -7,28 +6,37 @@ import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-
 import Contacts from "./Contacts";
 import Notes from "./Notes";
 import * as apServices from '../../services/AppProcServices';
 import DropDown from "./DropDown";
 import * as StaticServices from "../../services/StaticServices";
 import HorizontalStepper from "./HorizontalLinearStepper";
+import { useTheme } from '@material-ui/core/styles';
+
 
 const useStyles = makeStyles((theme) => ({
+
   grid: {
     width: '100%',
     margin: '0px',
-    backgroundColor: '#f7f7f9',
+    backgroundColor: '#FFFFC5',//yellow
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fbdce4',
+    justifyContent: 'flex-start',
+    backgroundColor: '#c3fff5',//veryLightBlue
     justify: 'center'
-  }
+  },
+  footer: {
+    xs: 12,
+    justifyContent: 'flex-end',
+  },
+  button: {
+    backgroundColor: '#FFADE7'//pink
+  },
 }))
 
 // const DialogActions = withStyles((theme) => ({
@@ -45,7 +53,7 @@ export default function ApplicationProcessDialog({
   data,
   setData,
 }) {
-
+  const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
 
   //TODO: cache the status, countries, etc - receive from backend not ask from backend
@@ -151,7 +159,7 @@ export default function ApplicationProcessDialog({
       contact_set: new_contact_set,
     });
   };
-  const classes = useStyles();
+  const classes = useStyles(theme);
 
   return (
     <div>
@@ -242,7 +250,7 @@ export default function ApplicationProcessDialog({
             <Paper className={classes.paper}>
               <Grid container alignItems="center" >
                 <ButtonGroup
-                  color="primary"
+                  color="neutral"
                   aria-label="outlined primary button group"
                 >
                   <Button
@@ -271,28 +279,30 @@ export default function ApplicationProcessDialog({
 
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              <HorizontalStepper stage_set={currentApplication.stage_set} />
+              <HorizontalStepper className={classes.stepper} stage_set={currentApplication.stage_set} />
             </Paper>
           </Grid>
 
-          <Grid item xs={4}>
-            <Button
-              id="saveChanges"
-              onClick={() => {
-              }}
-              color={'#c9e8f2'}
-            >
-              Save changes
-            </Button>
+          <Grid container className={classes.footer}>
+            <Grid item  >
+              <Button
+                id="saveChanges"
+                onClick={() => {
+                }}
+                className={classes.button}
+              >
+                Save changes
+              </Button>
 
-            <Button
-              id="cancel"
-              onClick={() => {
-              }}
-              color={'#c9e8f2'}
-            >
-              cancel
-            </Button>
+              <Button
+                id="cancel"
+                onClick={() => {
+                }}
+                className={classes.button}
+              >
+                cancel
+              </Button>
+            </Grid>
           </Grid>
 
         </Grid>

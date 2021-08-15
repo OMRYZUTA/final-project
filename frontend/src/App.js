@@ -8,15 +8,39 @@ import Home from './pages/Home';
 
 const theme = createMuiTheme({
   palette: {
-    //https://www.schemecolor.com/spiral-marshmallow-color-scheme.php
-    // Pink Marshmallow #FFADE7
+    // Pink #FFADE7
     // yellow #FFFFC5
-    // darkBlue #5FE2FF
     // lightBlue #5FE2FF
     // blurBlue #93F7FF
-    primary: {
-      main: '#FFFFC5'
+    //veryLightBlue #c3fff5
+    lightBlue: {
+      backgroundColor: '#5FE2FF'
     },
+    blurBlue: {
+      backgroundColor: '#93f7ff'
+    },
+    veryLightBlue: {
+      backgroundColor: '#c3fff5'
+    },
+    pink: {
+      backgroundColor: '#FFADE7'
+    },
+    yellow: {
+      backgroundColor: '#FFFFC5'
+    },
+    primary: { // Pink
+      main: '#FFADE7'
+    },
+    secondary: {
+      light: '#c3fff5',//veryLightBlue 
+      dark: '#93F7FF',// blurBlue
+      main: '#5FE2FF'// lightBlue
+    },
+    neutral: {// yellow 
+      main: '#FFFFC5'
+    }
+
+
     // secondary: ''
   },
   typography: {

@@ -6,16 +6,19 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-
+import Grid from '@material-ui/core/Grid'
 import StepDialog from './StepDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
     },
-    button: {
-        marginRight: theme.spacing(1),
+    container: {
+        justifyContent: 'flex-start',
     },
+    // button: {
+    //     marginRight: theme.spacing(1),
+    // },
     instructions: {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
@@ -95,9 +98,11 @@ export default function HorizontalStepper({ stage_set }) {
 
     return (
         <div className={classes.root}>
-            <IconButton onClick={handleAddStep} className={classes.button}>
-                <AddIcon />
-            </IconButton>
+            <Grid container direction="row" className={classes.container}>
+                <IconButton onClick={handleAddStep} className={classes.button}>
+                    <AddIcon />
+                </IconButton>
+            </Grid>
             {hasSteps ? renderStepper(steps) : renderEmptyState()}
             {currentStep && <StepDialog
                 initialStep={currentStep}

@@ -16,8 +16,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/FilterList';
-import FilterListIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import SearchField from "./SearchField";
@@ -31,7 +31,6 @@ const useToolbarStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(1),
     backgroundColor: '#FFFFC5'
   },
-
   highlight:
     theme.palette.type === "light"
       ? {
@@ -46,6 +45,10 @@ const useToolbarStyles = makeStyles((theme) => ({
     paddingRight: "15px",
     flex: "1 1 100%",
     fontWeight: "bold",
+    color: '#5f676e',
+  },
+  search: {
+    backgroundColor: 'f7efd9',
   },
 }));
 
@@ -149,11 +152,10 @@ const EnhancedTableToolbar = (props) => {
         className={classes.title}
         variant="h6"
         id="tableTitle"
-
       >
         Job Application Processes
       </Typography>
-      <SearchField />
+      <SearchField className={classes.search} />
       <Tooltip title="Filter list">
         <IconButton aria-label="filter list">
           <FilterListIcon />

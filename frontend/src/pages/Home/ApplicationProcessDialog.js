@@ -255,7 +255,8 @@ export default function ApplicationProcessDialog({
                       className={classes.paperField}
                       id="reference"
                       label="Reference"
-                      value={currentApplication.reference}
+                      value={"Orly Dvir, former boss"}
+                    //value={currentApplication.reference}
                     // onChange={handlePositionChange}
                     />
                     <Typography>Documents</Typography>

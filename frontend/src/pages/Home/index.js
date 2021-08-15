@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 		color: 'white',
 		height: 48,
 		padding: '0 70px',
-		backgroundColor: '#FFFFC5',
+		backgroundColor: '#f7f7f9',//'#FFFFC5',
 		spacing: 0,
 		justifyContent: 'center',
 		alignItems: 'center',

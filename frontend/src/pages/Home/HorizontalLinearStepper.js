@@ -11,17 +11,18 @@ import StepDialog from './StepDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
+        //width: '100%',
+        backgroundColor: '#c3fff5',//veryLightBlue
     },
     container: {
         justifyContent: 'flex-start',
     },
-    // button: {
-    //     marginRight: theme.spacing(1),
-    // },
     instructions: {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
+    },
+    step: {
+        backgroundColor: '#FFADE7',//pink
     },
 }));
 
@@ -31,19 +32,24 @@ function renderEmptyState() {
     )
 }
 
-function renderStepper(steps) {
+function RenderStepper(steps) {
+    const classes = useStyles();
     return (
-        <Stepper>
+        <Stepper className={classes.root}>
             {steps
                 .sort((s1, s2) => s1.date - s2.date)
                 .map((stage) => {
                     return (
-                        <Step key={stage.id}>
-                            <StepLabel >{stage.event_type.name}{" "}{stage.stage_date}</StepLabel>
+                        //past date - blue, future date pink
+                        <Step key={stage.id} active={true}>
+                            <StepLabel >
+                                <div>{stage.event_type.name}</div>
+                                <div>{stage.stage_date}</div>
+                            </StepLabel>
                         </Step>
                     );
                 })}
-        </Stepper>
+        </Stepper >
     )
 }
 
@@ -99,11 +105,11 @@ export default function HorizontalStepper({ stage_set }) {
     return (
         <div className={classes.root}>
             <Grid container direction="row" className={classes.container}>
-                <IconButton onClick={handleAddStep} className={classes.button}>
+                <IconButton onClick={handleAddStep}>
                     <AddIcon />
                 </IconButton>
             </Grid>
-            {hasSteps ? renderStepper(steps) : renderEmptyState()}
+            {hasSteps ? RenderStepper(steps) : renderEmptyState()}
             {currentStep && <StepDialog
                 initialStep={currentStep}
                 eventTypes={eventTypes}

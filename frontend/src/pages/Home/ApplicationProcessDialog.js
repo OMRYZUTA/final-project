@@ -23,13 +23,18 @@ const useStyles = makeStyles((theme) => ({
 
   grid: {
     width: '100%',
-    margin: '0px',
+    margin: '2px',
     backgroundColor: '#FFFFC5',//yellow
+    spacing: 2,
+    alignItems: 'stretch',
   },
   paper: {
     padding: theme.spacing(2),
     justifyContent: 'flex-start',
     backgroundColor: '#c3fff5',//veryLightBlue
+  },
+  paperWithHeight: {
+    height: '90%',
   },
   paperField: {
     margin: "5px",
@@ -183,10 +188,10 @@ export default function ApplicationProcessDialog({
         onClose={handleClose}
         open={open}
       >
-        <Grid container spacing={2} className={classes.grid} alignItems={"stretch"} backgroundColor={'#c9e8f2'}>
+        <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} backgroundColor={'#c9e8f2'}>
 
-          <Grid item xs={12} md={4}>
-            <Paper className={classes.paper}>
+          <Grid item alignItems={"stretch"} xs={12} md={4}>
+            <Paper className={classes.paper + " " + classes.paperWithHeight}>
               <Grid container direction={"column"}>
                 <Grid item>
                   <TextField
@@ -232,8 +237,8 @@ export default function ApplicationProcessDialog({
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <Paper className={classes.paper}>
+          <Grid item alignItems={"stretch"} xs={12} md={4}>
+            <Paper className={classes.paper + " " + classes.paperWithHeight}>
               <Grid container justify={"space-between"} direction={"column"}>
                 <Grid item>
                   <Grid container>
@@ -278,8 +283,8 @@ export default function ApplicationProcessDialog({
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={4}>
-            <Paper className={classes.paper}>
+          <Grid item alignItems={"stretch"} xs={12} md={4}>
+            <Paper className={classes.paper + " " + classes.paperWithHeight}>
               <Grid container alignItems="center" >
                 <ButtonGroup
                   color="neutral"
@@ -309,7 +314,7 @@ export default function ApplicationProcessDialog({
             </Paper>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item alignItems={"stretch"} xs={12}>
             <Paper className={classes.paper}>
               <HorizontalStepper className={classes.stepper} stage_set={currentApplication.stage_set} />
             </Paper>

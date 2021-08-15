@@ -75,7 +75,7 @@ export default function ApplicationProcessDialog({
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
 
-  //TODO: cache the status, countries, etc - receive from backend not ask from backend
+  //TODO: cache the status, etc - receive from backend not ask from backend
   const [statusObjects, setStatusObjects] = useState([]);
   useEffect(() => {
     const fetchStatusObjects = async () => {
@@ -84,16 +84,6 @@ export default function ApplicationProcessDialog({
     };
     fetchStatusObjects();
   }, []);
-
-  const [countries, setCountries] = useState([]);
-  useEffect(() => {
-    const fetchCountries = async () => {
-      const result = await StaticServices.getCountries();
-      setCountries(result.data.results);
-    };
-    fetchCountries();
-  }, []);
-
 
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);

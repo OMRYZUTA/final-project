@@ -6,7 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Contacts from "./Contacts";
+import ContactsCard from "./ContactsCard";
 import Notes from "./Notes";
 import * as apServices from '../../services/AppProcServices';
 import DropDown from "./DropDown";
@@ -24,12 +24,14 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
-    alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#c3fff5',//veryLightBlue
-    justify: 'center'
   },
+  paperField: {
+    margin: "5px",
+    width: "auto",
+  },
+
   footer: {
     xs: 12,
     justifyContent: 'flex-end',
@@ -37,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: '#FFADE7'//pink
   },
+  card: {
+    width: "100%"
+  }
 }))
 
 // const DialogActions = withStyles((theme) => ({
@@ -80,9 +85,9 @@ export default function ApplicationProcessDialog({
     useState(applicationProcess);
   const renderContactsOrNotes = () => {
     return (
-      <div>
+      <div className={classes.card}>
         {displayContacts ? (
-          <Contacts
+          <ContactsCard
             contact_set={currentApplication.contact_set}
             handleContactsChange={handleContactsChange}
           />
@@ -177,6 +182,7 @@ export default function ApplicationProcessDialog({
               <Grid container direction={"column"}>
                 <Grid item>
                   <TextField
+                    className={classes.paperField}
                     onChange={handlePositionChange}
                     id="company_name"
                     label="Company Name"
@@ -186,15 +192,27 @@ export default function ApplicationProcessDialog({
                 </Grid>
                 <Grid item>
                   <TextField
+                    className={classes.paperField}
                     id="job_title"
                     label="Job Title"
                     defaultValue={applicationProcess.position.job_title}
                     onChange={handlePositionChange}
                   />
+                  <TextField
+                    className={classes.paperField}
+                    id="job_posting_URL"
+                    label="Job URL"
+                    defaultValue={
+                      currentApplication.position.job_posting_URL
+                    }
+                    onChange={handlePositionChange}
+                  />
+
                 </Grid>
                 <Grid item>
                   {/* need to add onchange and component id */}
                   <DropDown
+                    className={classes.paperField}
                     label={"Status"}
                     options={statusObjects}
                     currentValue={currentApplication.status.id}
@@ -212,6 +230,7 @@ export default function ApplicationProcessDialog({
                 <Grid item>
                   <Grid container>
                     <DropDown
+                      className={classes.paperField}
                       label={"Country"}
                       options={countries}
                       currentValue={currentApplication.position.country.id}
@@ -221,25 +240,26 @@ export default function ApplicationProcessDialog({
                   </Grid>
                 </Grid>
                 <Grid item>
-                  <Grid container>
+                  <Grid container direction="column">
                     <TextField
+                      className={classes.paperField}
                       id="city"
                       label="City"
                       value={currentApplication.position.city}
                       onChange={handlePositionChange}
                     />
+                    <TextField
+                      className={classes.paperField}
+                      id="reference"
+                      label="Reference"
+                      value={currentApplication.reference}
+                    // onChange={handlePositionChange}
+                    />
                   </Grid>
                 </Grid>
                 <Grid item>
                   <Grid container>
-                    <TextField
-                      id="job_posting_URL"
-                      label="Job URL"
-                      defaultValue={
-                        currentApplication.position.job_posting_URL
-                      }
-                      onChange={handlePositionChange}
-                    />
+
                   </Grid>
                 </Grid>
               </Grid>

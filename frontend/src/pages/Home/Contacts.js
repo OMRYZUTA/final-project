@@ -1,97 +1,65 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
+import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
+import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-const useStyles = makeStyles({
+
+const useStyles = makeStyles((theme) => ({
+
     root: {
-        minWidth: 100,
+        height: '100%',
+        width: '100%',
     },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
+    contacts: {
+        height: '100%',
+        width: '100%',
     },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-});
+}))
 
-const Contacts = ({ contact_set, handleContactsChange }) => {
+
+const Contacts = ({ contact_set }) => {
     const classes = useStyles();
-    const [index, setIndex] = useState(0);
-    const [Contacts, setContacts] = useState(contact_set);
 
-    const handleListChange = (e) => {
-        const old = Contacts[index];
-        const updated = { ...old, [e.target.id]: e.target.value }
-        const clone = [...Contacts];
-        clone[index] = updated;
-        setContacts(clone);
-        handleContactsChange(e, clone);
-    }
     return (
-        <Card className={classes.root}>
-            <CardContent>
-                <Grid container direction={'column'}>
-                    <Grid item>
-                        <Grid container >
-                            <Button
-                                disabled={0 === index}
-                                onClick={() => {
-                                    setIndex(index - 1);
-                                }}>
-                                {"<"}
-                            </Button>
-                            <Button
-                                disabled={contact_set?.length - 1 === index}
-                                onClick={() => {
-                                    setIndex(index + 1);
-                                }}>{">"}</Button>
+        <div>
+            <Grid container direction={'column'} className={classes.root}>
+                <Grid item>
+                    <Grid container direction={'row'} alignContent={'center'} alignItems={'center'} className={classes.contacts}>
+                        <Grid item>
+                            <PermContactCalendarIcon />
                         </Grid>
-                    </Grid>
-                    <Grid item>
-                        <Grid container>
-                            <TextField
-                                id="name"
-                                label="Contact Name"
-                                value={Contacts.length > 0 ?
-                                    Contacts[index].name : ''}
-                                onChange={handleListChange}
+                        <Grid item>
+                            <TextField id="standard-basic" label="Contact Name" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].name : "contact name") : null}
                             />
                         </Grid>
+                        {console.log(contact_set)}
                     </Grid>
-
-                    <Grid item>
-                        <Grid container>
-                            <TextField
-                                id="phone_number1"
-                                label="Contact Phone"
-                                value={Contacts.length > 0 ?
-                                    Contacts[index].phone_number1 : ''}
-                                onChange={handleListChange} />
+                </Grid>
+                <Grid item>
+                    <Grid container direction={'row'} alignContent={'center'} alignItems={'center'}>
+                        <Grid item>
+                            <ContactPhoneIcon />
+                        </Grid>
+                        <Grid item>
+                            <TextField id="standard-basic" label="Contact Phone" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].phone_number1 : "Phone Number") : null} />
                         </Grid>
                     </Grid>
-                    <Grid item>
-                        <Grid container>
-                            <TextField
-                                id="email_address"
-                                label="Contact Mail"
-                                value={Contacts.length > 0 ?
-                                    Contacts[index].email_address :
-                                    ''}
-                                onChange={handleListChange} />
+
+                </Grid>
+                <Grid item>
+                    <Grid container direction={'row'} alignContent={'center'} alignItems={'center'}>
+                        <Grid item>
+                            <ContactMailIcon />
+                        </Grid>
+                        <Grid item>
+                            <TextField id="standard-basic" label="Contact Mail" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].email_address : "contact name") : null} />
                         </Grid>
                     </Grid>
                 </Grid>
-            </CardContent>
-        </Card>
-    );
+            </Grid>
+        </div>
+    )
 }
-
-export default Contacts;
+export default Contacts

@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles({
     root: {
-        minWidth: 100,
+        width: '100%',
     },
     bullet: {
         display: 'inline-block',
@@ -24,26 +24,19 @@ const useStyles = makeStyles({
 const Notes = ({ notes, handleChange, id }) => {
     const classes = useStyles();
 
-     // TODO: I think you don't need any of those grids (noam)
+    // TODO: I think you don't need any of those grids (noam)
     return (
-        <Card className={classes.root}>
-            <CardContent>
-                <Grid container direction={'column'}>
-                    <Grid item>
-                        <Grid container>
-                            <TextField
-                                id={id}
-                                label="Notes"
-                                multiline
-                                rowsMax={4}
-                                defaultValue={notes}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+
+        <TextField
+            fullWidth={true}
+            id={id}
+            label="Notes"
+            multiline
+            rowsMax={10}
+            defaultValue={notes}
+            onChange={handleChange}
+        />
+
     );
 }
 export default Notes;

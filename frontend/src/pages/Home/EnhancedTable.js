@@ -1,28 +1,23 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import {
-  IconButton,
-  lighten,
-  makeStyles,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
-import {
-  Add as AddIcon,
-  Delete as DeleteIcon,
-  FilterList as FilterListIcon,
-} from '@material-ui/icons';
+import { lighten, makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/FilterList';
+import FilterListIcon from '@material-ui/icons/Add';
 
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import SearchField from "./SearchField";

@@ -1,14 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import {
-    // Button,
-    IconButton,
-    makeStyles,
-    Step,
-    StepLabel,
-    Stepper,
-    Typography
-} from '@material-ui/core';
-import { Add as AddIcon } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Stepper from '@material-ui/core/Stepper';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
 
 import StepDialog from './StepDialog';
 

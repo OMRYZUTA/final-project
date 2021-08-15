@@ -1,13 +1,12 @@
-import React from "react";
-import {
-  Button,
-  ButtonGroup,
-  Dialog,
-  Grid,
-  makeStyles,
-  Paper,
-  TextField,
-} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 
 import Contacts from "./Contacts";
 import Notes from "./Notes";
@@ -47,11 +46,11 @@ export default function ApplicationProcessDialog({
   setData,
 }) {
 
-  const [displayContacts, setDisplayContacts] = React.useState(true);
+  const [displayContacts, setDisplayContacts] = useState(true);
 
   //TODO: cache the status, countries, etc - receive from backend not ask from backend
-  const [statusObjects, setStatusObjects] = React.useState([]);
-  React.useEffect(() => {
+  const [statusObjects, setStatusObjects] = useState([]);
+  useEffect(() => {
     const fetchStatusObjects = async () => {
       const result = await StaticServices.getStatuses();
       setStatusObjects(result.data.results);
@@ -59,8 +58,8 @@ export default function ApplicationProcessDialog({
     fetchStatusObjects();
   }, []);
 
-  const [countries, setCountries] = React.useState([]);
-  React.useEffect(() => {
+  const [countries, setCountries] = useState([]);
+  useEffect(() => {
     const fetchCountries = async () => {
       const result = await StaticServices.getCountries();
       setCountries(result.data.results);
@@ -70,7 +69,7 @@ export default function ApplicationProcessDialog({
 
 
   const [currentApplication, setCurrentApplication] =
-    React.useState(applicationProcess);
+    useState(applicationProcess);
   const renderContactsOrNotes = () => {
     return (
       <div>

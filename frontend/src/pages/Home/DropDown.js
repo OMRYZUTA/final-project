@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -24,6 +25,7 @@ export default function DropDown({
     onChange,     // callback function that notifies "outside" that the user selected a different options
 }) {
     const classes = useStyles();
+    const [optionsReceived, setOptionsReceived] = useState([{ undefined: "" }, ...options]);
 
     return (
         <FormControl className={classes.formControl}>
@@ -32,7 +34,7 @@ export default function DropDown({
                 value={currentValue}
                 onChange={onChange}
             >
-                {options.map((option) => <MenuItem id={option[keyPropName]} value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
+                {optionsReceived.map((option) => <MenuItem id={option[keyPropName]} value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
             </Select>
         </FormControl>
     );

@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { createTheme } from '@material-ui/core/styles';
 import { makeStyles, ThemeProvider } from '@material-ui/styles';
 
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     // Pink #FFADE7
     // yellow #FFFFC5

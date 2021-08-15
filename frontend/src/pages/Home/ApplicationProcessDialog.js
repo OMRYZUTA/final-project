@@ -18,6 +18,7 @@ import HorizontalStepper from "./HorizontalLinearStepper";
 import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import AddIcon from '@material-ui/icons/Add';
+import CountrySelect from "./CountrySelect";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -193,6 +194,7 @@ export default function ApplicationProcessDialog({
           <Grid item alignItems={"stretch"} xs={12} md={4}>
             <Paper className={classes.paper + " " + classes.paperWithHeight}>
               <Grid container direction={"column"}>
+
                 <Grid item>
                   <TextField
                     className={classes.paperField}
@@ -203,6 +205,7 @@ export default function ApplicationProcessDialog({
                     defaultValue={applicationProcess.position.company_name}
                   />
                 </Grid>
+
                 <Grid item>
                   <TextField
                     className={classes.paperField}
@@ -211,6 +214,9 @@ export default function ApplicationProcessDialog({
                     defaultValue={applicationProcess.position.job_title}
                     onChange={handlePositionChange}
                   />
+                </Grid>
+
+                <Grid item>
                   <TextField
                     className={classes.paperField}
                     id="job_posting_URL"
@@ -220,8 +226,8 @@ export default function ApplicationProcessDialog({
                     }
                     onChange={handlePositionChange}
                   />
-
                 </Grid>
+
                 <Grid item>
                   {/* need to add onchange and component id */}
                   <DropDown
@@ -233,6 +239,7 @@ export default function ApplicationProcessDialog({
                     namePropName="name"
                   />
                 </Grid>
+
               </Grid>
             </Paper>
           </Grid>
@@ -242,14 +249,7 @@ export default function ApplicationProcessDialog({
               <Grid container justify={"space-between"} direction={"column"}>
                 <Grid item>
                   <Grid container>
-                    <DropDown
-                      className={classes.paperField}
-                      label={"Country"}
-                      options={countries}
-                      currentValue={currentApplication.position.country.id}
-                      keyPropName="id"
-                      namePropName="name"
-                    />
+                    <CountrySelect />
                   </Grid>
                 </Grid>
                 <Grid item>

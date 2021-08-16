@@ -23,11 +23,12 @@ const useStyles = makeStyles(theme => ({
         paddingRight: "70px",
     },
     logo: {
-        width: 90,
+        width: 300,
         padding: 10,
     },
     profilePhoto: {
-        width: "80px",
+        width: "70px",
+        padding: 20,
         borderRadius: "50% !important;"
     },
     menuButton: {
@@ -77,7 +78,6 @@ const Navbar = props => {
                 <Toolbar>
                     <Grid container direction={'column'}>
                         <Logo className={classes.logo} />
-                        <Typography>managing your job hunt</Typography>
                     </Grid>
                     {isMobile ? (
                         <div>

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { createTheme } from '@material-ui/core/styles';
 import { makeStyles, ThemeProvider } from '@material-ui/styles';
-
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
 

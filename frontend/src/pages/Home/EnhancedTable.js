@@ -350,7 +350,7 @@ export default function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={() => { handleClick(applications[index]) }}
+                      onClick={() => { handleClick(applications.find(app => app.id === row.id)) }}
                       tabIndex={-1}
                       key={row.id}
                       className={matchStatusToClassName(row.status, classes)}
@@ -388,6 +388,6 @@ export default function EnhancedTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-    </div >
+    </div>
   );
 }

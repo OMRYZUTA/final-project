@@ -23,11 +23,12 @@ const useStyles = makeStyles(theme => ({
         paddingRight: "70px",
     },
     logo: {
-        width: 90,
+        width: 300,
         paddingTop: 10,
     },
     profilePhoto: {
-        width: "80px",
+        width: "70px",
+        padding: 20,
         borderRadius: "50% !important;"
     },
     menuButton: {

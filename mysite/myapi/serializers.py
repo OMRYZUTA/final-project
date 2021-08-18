@@ -43,6 +43,7 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(default=None, write_only=False)
     application_process_id = serializers.PrimaryKeyRelatedField(
         many=False, read_only=True)
+    country = CountrySerializer()
 
     class Meta:
         model = Position
@@ -53,6 +54,16 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
             raise serializers.ValidationError(
                 f'{value}  is not a valid country code')
         return value
+
+    def create(self, validated_data):
+        country_validated_data = validated_data.pop('country')
+        if(country_validated_data != None):
+            country_serializer = self.fields['country']
+            country = country_serializer.create(country_validated_data)
+            validated_data['country'] = country
+        position = Position.objects.create(
+            **validated_data)
+        return position
 
 
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
@@ -113,12 +124,9 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             status_serializer = self.fields['status']
             status = status_serializer.create(status_validated_data)
             validated_data['status'] = status
+            status_validated_data = validated_data.pop('status')
 
         position_validated_data = validated_data.pop('position')
-
-        # position_serializer = self.fields['position']
-        # position = position_serializer.create(position_validated_data)
-        # validated_data['position'] = position
 
         contacts_data = validated_data.pop('contact_set')
         stages_data = validated_data.pop('stage_set')

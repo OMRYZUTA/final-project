@@ -62,7 +62,7 @@ class Position(models.Model):
     job_title = models.CharField(max_length=100, null=True, blank=True)
     company_name = models.CharField(max_length=100, null=True, blank=True)
     country = models.ForeignKey(
-        Countries, null=False, default="IL", on_delete=models.DO_NOTHING)
+        'Countries', null=False, default="IL", on_delete=models.DO_NOTHING)
     city = models.CharField(max_length=100, null=True, blank=True)
     initial_contact_email_address = models.EmailField(
         max_length=100, null=True, blank=True)

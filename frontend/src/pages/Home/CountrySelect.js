@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 import React from 'react';
+import { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,11 +24,7 @@ const useStyles = makeStyles({
 });
 
 const CountrySelect = ({ country }) => {
-    // const urlSplittedArray = country.toString().split('/')
-    //let display = 'Choose Country';
-    //if (urlSplittedArray>2){
-    //     display = urlSplittedArray[urlSplittedArray.length-2];
-    //}
+    const [currentCountry, setCountry] = useState(country);
     const classes = useStyles();
 
     return (
@@ -48,9 +45,9 @@ const CountrySelect = ({ country }) => {
             )}
             renderInput={(params) => {
                 console.log(params);
-                let enhancedParams=params;
-                if(country!== null){
-                    enhancedParams.inputProps.value = country;
+                let enhancedParams = params;
+                if (country !== null) {
+                    enhancedParams.inputProps.value = country.name;
                 }
                 return (
                     <TextField

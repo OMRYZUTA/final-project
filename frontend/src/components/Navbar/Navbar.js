@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     },
     logo: {
         width: 90,
-        padding: 10,
+        paddingTop: 10,
     },
     profilePhoto: {
         width: "80px",
@@ -75,9 +75,12 @@ const Navbar = props => {
         <div className={classes.root}>
             <AppBar className={classes.appBar} position='static'>
                 <Toolbar>
-                    <Grid container direction={'column'}>
-                        <Logo className={classes.logo} />
+                    <Grid container direction='column' >
+                        <a href="/" >
+                            <Logo className={classes.logo} />
+                        </a>
                         <Typography>managing your job hunt</Typography>
+
                     </Grid>
                     {isMobile ? (
                         <div>

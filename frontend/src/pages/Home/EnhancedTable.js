@@ -343,6 +343,7 @@ export default function EnhancedTable() {
               onRequestSort={handleRequestSort}
               rowCount={applications.length}
             />
+            
             <TableBody>
               {stableSort(rowEntries, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

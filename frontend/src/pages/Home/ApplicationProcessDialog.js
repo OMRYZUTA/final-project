@@ -242,7 +242,7 @@ export default function ApplicationProcessDialog({
               <Grid container justify={"space-between"} direction={"column"}>
                 <Grid item>
                   <Grid container>
-                    <CountrySelect />
+                    <CountrySelect country={currentApplication.position.country} />
                   </Grid>
                 </Grid>
                 <Grid item>

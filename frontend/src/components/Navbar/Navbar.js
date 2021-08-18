@@ -80,8 +80,6 @@ const Navbar = props => {
                         <a href="/" >
                             <Logo className={classes.logo} />
                         </a>
-                        <Typography>managing your job hunt</Typography>
-
                     </Grid>
                     {isMobile ? (
                         <div>

@@ -22,7 +22,12 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CountrySelect() {
+const CountrySelect = ({ country }) => {
+    // const urlSplittedArray = country.toString().split('/')
+    //let display = 'Choose Country';
+    //if (urlSplittedArray>2){
+    //     display = urlSplittedArray[urlSplittedArray.length-2];
+    //}
     const classes = useStyles();
 
     return (
@@ -41,17 +46,24 @@ export default function CountrySelect() {
                     {option.label} ({option.code}) +{option.phone}
                 </React.Fragment>
             )}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label="Choose a country"
-                    variant="outlined"
-                    inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
-                    }}
-                />
-            )}
+            renderInput={(params) => {
+                console.log(params);
+                let enhancedParams=params;
+                if(country!== null){
+                    enhancedParams.inputProps.value = country;
+                }
+                return (
+                    <TextField
+                        {...enhancedParams}
+                        label="Choose a country"
+                        variant="outlined"
+                        inputProps={{
+                            ...enhancedParams.inputProps,
+                            autoComplete: 'new-password', // disable autocomplete and autofill
+                        }}
+                    />
+                )
+            }}
         />
     );
 }
@@ -307,3 +319,4 @@ const countries = [
     { code: 'ZM', label: 'Zambia', phone: '260' },
     { code: 'ZW', label: 'Zimbabwe', phone: '263' },
 ];
+export default CountrySelect;

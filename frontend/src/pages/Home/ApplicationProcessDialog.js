@@ -74,7 +74,7 @@ export default function ApplicationProcessDialog({
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
-
+  console.log(applicationProcess)
   //TODO: cache the status, etc - receive from backend not ask from backend
   const [statusObjects, setStatusObjects] = useState([]);
   useEffect(() => {
@@ -255,8 +255,7 @@ export default function ApplicationProcessDialog({
                       className={classes.paperField}
                       id="reference"
                       label="Reference"
-                      value={"Orly Dvir, former boss"}
-                    //value={currentApplication.reference}
+                      value={currentApplication.reference}
                     // onChange={handlePositionChange}
                     />
                     <Typography>Documents</Typography>

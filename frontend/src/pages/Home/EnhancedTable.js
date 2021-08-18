@@ -78,7 +78,6 @@ function getComparator(order, orderBy) {
 }
 
 function stableSort(array, comparator) {
-  console.log(array);
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
 
@@ -271,7 +270,6 @@ export default function EnhancedTable() {
 
   const handleClick = (app, event) => {
     setCurrentItem(app);
-    console.log(app);
     setOpen(true);
   };
 

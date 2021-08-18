@@ -168,6 +168,9 @@ export default function ApplicationProcessDialog({
       contact_set: new_contact_set,
     });
   };
+  const handleApplicationChange = (e) => {
+    setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
+  }
   const classes = useStyles(theme);
 
   return (
@@ -256,7 +259,7 @@ export default function ApplicationProcessDialog({
                       id="reference"
                       label="Reference"
                       value={currentApplication.reference}
-                    // onChange={handlePositionChange}
+                      onChange={handleApplicationChange}
                     />
                     <Typography>Documents</Typography>
                     <Card className={classes.card}>

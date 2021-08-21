@@ -112,7 +112,7 @@ function EnhancedTableHead(props) {
           <TableCell
             key={headCell.id}
             align="left"
-            padding={"default"}
+            padding={"normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -412,8 +412,8 @@ export default function EnhancedTable() {
           count={applications.length}
           rowsPerPage={rowsPerPage}
           page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
     </div>

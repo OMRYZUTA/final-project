@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -9,11 +9,9 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import ContactsCard from "./ContactsCard";
 import Notes from "./Notes";
-import * as apServices from '../../services/AppProcServices';
 import DropDown from "./DropDown";
 import IconButton from '@material-ui/core/IconButton';
 import Document from "./Document";
-import * as StaticServices from "../../services/StaticServices";
 import HorizontalStepper from "./HorizontalLinearStepper";
 import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -73,16 +71,6 @@ export default function ApplicationProcessDialog({
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
-  //TODO: cache the status, etc - receive from backend not ask from backend
-  //const [statusObjects, setStatusObjects] = useState([]);
-  // useEffect(() => {
-  //   const fetchStatusObjects = async () => {
-  //     const result = await StaticServices.getStatuses();
-  //     setStatusObjects(result.data.results);
-  //   };
-  //   fetchStatusObjects();
-  // }, []);
-
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
   const renderContactsOrNotes = () => {
@@ -114,7 +102,7 @@ export default function ApplicationProcessDialog({
   const handleStatusChange = (e) => {
     setCurrentApplication({
       ...currentApplication,
-      status: e.target.value,
+      status: e.target,
     });
     console.log(currentApplication);
   };

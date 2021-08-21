@@ -4,7 +4,6 @@ import { createTheme } from '@material-ui/core/styles';
 import { makeStyles, ThemeProvider } from '@material-ui/styles';
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
-import { colors } from '@material-ui/core';
 
 const theme = createTheme({
   palette: {

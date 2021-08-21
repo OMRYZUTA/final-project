@@ -1,6 +1,4 @@
-/* eslint-disable no-use-before-define */
 import React from 'react';
-import { useState } from 'react'
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,8 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-const CountrySelect = ({ country }) => {
-    const [currentCountry, setCountry] = useState(country);
+const CountrySelect = ({ country, onChange }) => {
     const classes = useStyles();
 
     return (
@@ -35,6 +32,7 @@ const CountrySelect = ({ country }) => {
             classes={{
                 option: classes.option,
             }}
+            onChange={onChange}
             autoHighlight
             getOptionLabel={(option) => option.label}
             renderOption={(option) => (

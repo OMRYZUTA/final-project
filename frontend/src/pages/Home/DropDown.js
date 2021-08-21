@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -16,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const EMPTY_OPTION = {
+    id: undefined,
+    name: '',
+};
+
 export default function DropDown({
     label,
     options,      // an array of {key, value} pairs
@@ -25,21 +29,16 @@ export default function DropDown({
     onChange,     // callback function that notifies "outside" that the user selected a different options
 }) {
     const classes = useStyles();
-    const [optionsReceived, setOptionsReceived] = useState([...options, { undefined: "" }]);
-    const [currentOption, setCurrentOption] = useState(currentValue);
+    const extendedOptions = [EMPTY_OPTION, ...options];
 
-    const handleChange = (e) => {
-        setCurrentOption(e.target.value)
-        onChange(e);
-    }
     return (
         <FormControl className={classes.formControl}>
             <InputLabel>{label}</InputLabel>
             <Select
-                value={currentOption}
-                onChange={handleChange}
+                value={currentValue}
+                onChange={onChange}
             >
-                {optionsReceived.map((option) => <MenuItem key={option[keyPropName]} value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
+                {extendedOptions.map((option) => <MenuItem key={option[keyPropName]} value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
             </Select>
         </FormControl>
     );

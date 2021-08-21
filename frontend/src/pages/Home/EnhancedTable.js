@@ -260,12 +260,10 @@ export default function EnhancedTable() {
   };
 
   const handleClose = useCallback(() => {
-    console.log(applications);
     setCurrentItem(null);
   }, [applications]);
 
   const handleSave = useCallback(async applicationProcess => {
-    console.log(applications);
     let result;
 
     if (applicationProcess.url) {

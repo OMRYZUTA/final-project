@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#c3fff5',//veryLightBlue
     width: "100%",
   }
-}))
+}));
 
 // const DialogActions = withStyles((theme) => ({
 //   root: {
@@ -64,10 +64,9 @@ const useStyles = makeStyles((theme) => ({
 // }))(DialogActions);
 
 export default function ApplicationProcessDialog({
-  open,
-  handleClose,
   applicationProcess,
   statuses,
+  handleClose,
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
@@ -100,9 +99,13 @@ export default function ApplicationProcessDialog({
   };
 
   const handleStatusChange = (e) => {
+    const newStatus = {
+      id: e.target.value,
+      name: e.target.name,
+    }
     setCurrentApplication({
       ...currentApplication,
-      status: e.target,
+      status: newStatus,
     });
     console.log(currentApplication);
   };
@@ -152,171 +155,169 @@ export default function ApplicationProcessDialog({
   const handleApplicationChange = (e) => {
     setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
   };
+
   const classes = useStyles(theme);
 
   return (
-    <div>
-      <Dialog
-        fullHeight={true}
-        fullWidth={true}
-        maxWidth={"xl"}
-        onClose={handleClose}
-        open={open}
-      >
-        <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} backgroundColor={'#c9e8f2'}>
+    <Dialog
+      fullHeight={true}
+      fullWidth={true}
+      maxWidth={"xl"}
+      onClose={handleClose}
+      open={true}
+    >
+      <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} backgroundColor={'#c9e8f2'}>
 
-          <Grid item alignItems={"stretch"} xs={12} md={4}>
-            <Paper className={classes.paper + " " + classes.paperWithHeight}>
-              <Grid container direction={"column"}>
+        <Grid item alignItems={"stretch"} xs={12} md={4}>
+          <Paper className={classes.paper + " " + classes.paperWithHeight}>
+            <Grid container direction={"column"}>
 
-                <Grid item>
-                  <TextField
-                    className={classes.paperField}
-                    onChange={handlePositionChange}
-                    id="company_name"
-                    label="Company Name"
-                    type="text"
-                    defaultValue={applicationProcess.position.company_name}
-                  />
-                </Grid>
-
-                <Grid item>
-                  <TextField
-                    className={classes.paperField}
-                    id="job_title"
-                    label="Job Title"
-                    defaultValue={applicationProcess.position.job_title}
-                    onChange={handlePositionChange}
-                  />
-                </Grid>
-
-                <Grid item>
-                  <TextField
-                    className={classes.paperField}
-                    id="job_posting_URL"
-                    label="Job URL"
-                    defaultValue={
-                      currentApplication.position.job_posting_URL
-                    }
-                    onChange={handlePositionChange}
-                  />
-                </Grid>
-
-                <Grid item>
-                  {/* need to add onchange and component id */}
-                  <DropDown
-                    className={classes.paperField}
-                    label={"Status"}
-                    options={statuses}
-                    currentValue={currentApplication.status.id}
-                    keyPropName="id"
-                    namePropName="name"
-                    onChange={handleStatusChange}
-                  />
-                </Grid>
-
+              <Grid item>
+                <TextField
+                  className={classes.paperField}
+                  onChange={handlePositionChange}
+                  id="company_name"
+                  label="Company Name"
+                  type="text"
+                  defaultValue={applicationProcess.position.company_name}
+                />
               </Grid>
-            </Paper>
-          </Grid>
 
-          <Grid item alignItems={"stretch"} xs={12} md={4}>
-            <Paper className={classes.paper + " " + classes.paperWithHeight}>
-              <Grid container justify={"space-between"} direction={"column"}>
-                <Grid item>
-                  <Grid container>
-                    <CountrySelect country={currentApplication.position.country} />
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <Grid container direction="column">
-                    <TextField
-                      className={classes.paperField}
-                      id="city"
-                      label="City"
-                      value={currentApplication.position.city}
-                      onChange={handlePositionChange}
-                    />
-                    <TextField
-                      className={classes.paperField}
-                      id="reference"
-                      label="Reference"
-                      value={currentApplication.reference}
-                      onChange={handleApplicationChange}
-                    />
-                    <Typography>Documents</Typography>
-                    <Card className={classes.card}>
-                      <Grid container direction="row" className={classes.container}>
-                        <IconButton >
-                          <AddIcon />
-                        </IconButton>
-                        <Document text={"CV1"}></Document>
-                      </Grid>
-                    </Card>
-                  </Grid>
-                </Grid>
+              <Grid item>
+                <TextField
+                  className={classes.paperField}
+                  id="job_title"
+                  label="Job Title"
+                  defaultValue={applicationProcess.position.job_title}
+                  onChange={handlePositionChange}
+                />
               </Grid>
-            </Paper>
-          </Grid>
 
-          <Grid item alignItems={"stretch"} xs={12} md={4}>
-            <Paper className={classes.paper + " " + classes.paperWithHeight}>
-              <Grid container alignItems="center" >
-                <ButtonGroup
-                  color="neutral"
-                  aria-label="outlined primary button group"
-                >
-                  <Button
-                    id="ContactsButton"
-                    onClick={() => {
-                      setDisplayContacts(true);
-                    }}
-                  >
-                    Contacts
-                  </Button>
-                  <Button
-                    id="NotesButton"
-                    onClick={() => {
-                      setDisplayContacts(false);
-                    }}
-                  >
-                    Notes
-                  </Button>
-                </ButtonGroup>
+              <Grid item>
+                <TextField
+                  className={classes.paperField}
+                  id="job_posting_URL"
+                  label="Job URL"
+                  defaultValue={
+                    currentApplication.position.job_posting_URL
+                  }
+                  onChange={handlePositionChange}
+                />
+              </Grid>
+
+              <Grid item>
+                {/* need to add onchange and component id */}
+                <DropDown
+                  className={classes.paperField}
+                  label={"Status"}
+                  options={statuses}
+                  currentValue={currentApplication.status.id}
+                  keyPropName="id"
+                  namePropName="name"
+                  onChange={handleStatusChange}
+                />
+              </Grid>
+
+            </Grid>
+          </Paper>
+        </Grid>
+
+        <Grid item alignItems={"stretch"} xs={12} md={4}>
+          <Paper className={classes.paper + " " + classes.paperWithHeight}>
+            <Grid container justify={"space-between"} direction={"column"}>
+              <Grid item>
+                <Grid container>
+                  <CountrySelect country={currentApplication.position.country} />
+                </Grid>
               </Grid>
               <Grid item>
-                <Grid container>{renderContactsOrNotes()}</Grid>
+                <Grid container direction="column">
+                  <TextField
+                    className={classes.paperField}
+                    id="city"
+                    label="City"
+                    value={currentApplication.position.city}
+                    onChange={handlePositionChange}
+                  />
+                  <TextField
+                    className={classes.paperField}
+                    id="reference"
+                    label="Reference"
+                    value={currentApplication.reference}
+                    onChange={handleApplicationChange}
+                  />
+                  <Typography>Documents</Typography>
+                  <Card className={classes.card}>
+                    <Grid container direction="row" className={classes.container}>
+                      <IconButton >
+                        <AddIcon />
+                      </IconButton>
+                      <Document text={"CV1"}></Document>
+                    </Grid>
+                  </Card>
+                </Grid>
               </Grid>
-            </Paper>
-          </Grid>
-
-          <Grid item alignItems={"stretch"} xs={12}>
-            <Paper className={classes.paper}>
-              <HorizontalStepper className={classes.stepper} stage_set={currentApplication.stage_set} />
-            </Paper>
-          </Grid>
-
-          <Grid container className={classes.footer} >
-            <Grid item  >
-              <Button
-                id="saveChanges"
-                onClick={handleSaveChanges}
-                className={classes.button}
-              >
-                Save changes
-              </Button>
-
-              <Button
-                id="cancel"
-                onClick={() => {
-                }}
-                className={classes.button}
-              >
-                cancel
-              </Button>
             </Grid>
+          </Paper>
+        </Grid>
+
+        <Grid item alignItems={"stretch"} xs={12} md={4}>
+          <Paper className={classes.paper + " " + classes.paperWithHeight}>
+            <Grid container alignItems="center" >
+              <ButtonGroup
+                color="neutral"
+                aria-label="outlined primary button group"
+              >
+                <Button
+                  id="ContactsButton"
+                  onClick={() => {
+                    setDisplayContacts(true);
+                  }}
+                >
+                  Contacts
+                </Button>
+                <Button
+                  id="NotesButton"
+                  onClick={() => {
+                    setDisplayContacts(false);
+                  }}
+                >
+                  Notes
+                </Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item>
+              <Grid container>{renderContactsOrNotes()}</Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+
+        <Grid item alignItems={"stretch"} xs={12}>
+          <Paper className={classes.paper}>
+            <HorizontalStepper className={classes.stepper} stage_set={currentApplication.stage_set} />
+          </Paper>
+        </Grid>
+
+        <Grid container className={classes.footer}>
+          <Grid item>
+            <Button
+              id="cancel"
+              className={classes.button}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              id="saveChanges"
+              className={classes.button}
+              onClick={handleSaveChanges}
+            >
+              Save changes
+            </Button>
           </Grid>
         </Grid>
-      </Dialog>
-    </div>
+      </Grid>
+    </Dialog >
   );
 }

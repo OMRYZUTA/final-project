@@ -285,7 +285,6 @@ export default function EnhancedTable() {
 
   const handleClick = (app, event) => {
     setCurrentItem(app);
-    setOpen(true);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -296,22 +295,17 @@ export default function EnhancedTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
-    setOpen(false);
     setCurrentItem(null);
   };
 
   const renderCurrentItem = (currentItem, statuses) => {
     return (
       <ApplicationProcessDialog
-        open={open}
-        handleClose={handleClose}
         applicationProcess={currentItem}
-        data={applications}
         statuses={statuses}
-        setData={setApplications}
+        handleClose={handleClose}
       />
     );
   };
@@ -327,26 +321,10 @@ export default function EnhancedTable() {
     };
 
     setCurrentItem(app);
-    setOpen(true);
   }, []);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
-
-  // const statuses = [
-  //   {
-  //     id: 'IN',
-  //     name: 'Interested',
-  //   },
-  //   {
-  //     id: 'AP',
-  //     name: 'Applied',
-  //   },
-  //   {
-  //     id: 'CL',
-  //     name: 'Closed',
-  //   },
-  // ];
 
   return (
     <div className={classes.root}>

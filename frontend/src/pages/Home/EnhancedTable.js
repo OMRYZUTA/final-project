@@ -23,6 +23,7 @@ import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import SearchField from "./SearchField";
 import * as apServices from '../../services/AppProcServices';
 import { getStatuses } from "../../services/StaticServices";
+import { stableSort, getComparator, updateArray } from "../../utils/utils";
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -53,41 +54,6 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-function descendingComparator(a, b, orderBy) {
-  let x, y;
-  if (typeof a[orderBy] === "string") {
-    x = a[orderBy].toLowerCase();
-    y = b[orderBy].toLowerCase();
-  }
-  else {
-    x = a[orderBy];
-    y = b[orderBy];
-  }
-  if (y < x) {
-    return -1;
-  }
-  if (y > x) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 const headCells = [
   {
@@ -101,6 +67,7 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort } = props;
+
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -268,8 +235,8 @@ export default function EnhancedTable() {
 
       setRowEntries(applications.data.results.map(app => Object.create({
         id: app.id,
-        company_name: app.position.company_name,
-        job_title: app.position.job_title,
+        company_name: app.position?.company_name,
+        job_title: app.position?.job_title,
         status: app.status.name,
         last_modified: app.last_modified
       })));
@@ -283,10 +250,6 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 
-  const handleClick = (app, event) => {
-    setCurrentItem(app);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -296,9 +259,23 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
+    console.log(applications);
     setCurrentItem(null);
-  };
+  }, [applications]);
+
+  const handleSave = useCallback(async applicationProcess => {
+    console.log(applications);
+    let result;
+
+    if (applicationProcess.url) {
+      result = await apServices.update(applicationProcess);
+    } else {
+      result = await apServices.addNew(applicationProcess);
+    }
+
+    setApplications(updateArray(applications, result.data));
+  }, [applications]);
 
   const renderCurrentItem = (currentItem, statuses) => {
     return (
@@ -306,6 +283,7 @@ export default function EnhancedTable() {
         applicationProcess={currentItem}
         statuses={statuses}
         handleClose={handleClose}
+        handleSave={handleSave}
       />
     );
   };
@@ -317,7 +295,7 @@ export default function EnhancedTable() {
       stage_set: [],
       user_id: 2,
       last_modified: new Date().toISOString().split('T')[0],
-      status: 'CL'
+      status: 'CL' //TODO update these
     };
 
     setCurrentItem(app);
@@ -356,7 +334,7 @@ export default function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={() => { handleClick(applications.find(app => app.id === row.id)) }}
+                      onClick={() => { setCurrentItem(applications.find(app => app.id === row.id)) }}
                       tabIndex={-1}
                       key={row.id}
                       className={matchStatusToClassName(row.status, classes)}

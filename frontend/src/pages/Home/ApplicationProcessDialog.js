@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -19,7 +19,6 @@ import AddIcon from '@material-ui/icons/Add';
 import CountrySelect from "./CountrySelect";
 
 const useStyles = makeStyles((theme) => ({
-
   grid: {
     width: '100%',
     margin: '2px',
@@ -67,6 +66,7 @@ export default function ApplicationProcessDialog({
   applicationProcess,
   statuses,
   handleClose,
+  handleSave,
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
@@ -110,29 +110,6 @@ export default function ApplicationProcessDialog({
     console.log(currentApplication);
   };
 
-  const updateArray = (arr, newAppProc) => {
-    const tempArray = arr.filter(a => {
-      return a.id !== newAppProc.id;
-    });
-    tempArray.push(newAppProc);
-    return tempArray;
-
-  };
-
-  const handleSaveChanges = async (e) => {
-    console.log("application process: ", currentApplication);
-
-    // let result;
-
-    // if (currentApplication.url) {
-    //   result = await apServices.update(currentApplication);
-    // } else {
-    //   result = await apServices.addNew(currentApplication);
-    // }
-    // setData(updateArray(data, result.data));
-    handleClose();
-  };
-
   const handlePositionChange = (e) => {
     const position = {
       ...currentApplication.position,
@@ -156,19 +133,22 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
   };
 
+  const onSave = useCallback(() => {
+    handleSave(currentApplication);
+  }, [currentApplication, handleSave]);
+
   const classes = useStyles(theme);
 
   return (
     <Dialog
-      fullHeight={true}
       fullWidth={true}
       maxWidth={"xl"}
       onClose={handleClose}
       open={true}
     >
-      <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} backgroundColor={'#c9e8f2'}>
+      <Grid container className={classes.grid} spacing={2} alignItems={"stretch"}>
 
-        <Grid item alignItems={"stretch"} xs={12} md={4}>
+        <Grid item xs={12} md={4}>
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
             <Grid container direction={"column"}>
 
@@ -222,9 +202,9 @@ export default function ApplicationProcessDialog({
           </Paper>
         </Grid>
 
-        <Grid item alignItems={"stretch"} xs={12} md={4}>
+        <Grid item xs={12} md={4}>
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
-            <Grid container justify={"space-between"} direction={"column"}>
+            <Grid container justifyContent={"space-between"} direction={"column"}>
               <Grid item>
                 <Grid container>
                   <CountrySelect country={currentApplication.position.country} />
@@ -261,11 +241,11 @@ export default function ApplicationProcessDialog({
           </Paper>
         </Grid>
 
-        <Grid item alignItems={"stretch"} xs={12} md={4}>
+        <Grid item xs={12} md={4}>
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
             <Grid container alignItems="center" >
               <ButtonGroup
-                color="neutral"
+                color="primary"
                 aria-label="outlined primary button group"
               >
                 <Button
@@ -292,7 +272,7 @@ export default function ApplicationProcessDialog({
           </Paper>
         </Grid>
 
-        <Grid item alignItems={"stretch"} xs={12}>
+        <Grid item xs={12}>
           <Paper className={classes.paper}>
             <HorizontalStepper className={classes.stepper} stage_set={currentApplication.stage_set} />
           </Paper>
@@ -311,7 +291,7 @@ export default function ApplicationProcessDialog({
             <Button
               id="saveChanges"
               className={classes.button}
-              onClick={handleSaveChanges}
+              onClick={onSave}
             >
               Save changes
             </Button>

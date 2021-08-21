@@ -54,7 +54,6 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const headCells = [
   {
     id: "company_name", numeric: false, disablePadding: true, label: "Company",
@@ -260,7 +259,7 @@ export default function EnhancedTable() {
   };
 
   const handleClose = useCallback(() => {
-    setCurrentItem(null);
+    setCurrentItem(undefined);
   }, [applications]);
 
   const handleSave = useCallback(async applicationProcess => {
@@ -273,6 +272,7 @@ export default function EnhancedTable() {
     }
 
     setApplications(updateArray(applications, result.data));
+    setCurrentItem(undefined);
   }, [applications]);
 
   const renderCurrentItem = (currentItem, statuses) => {

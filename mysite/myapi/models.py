@@ -57,8 +57,6 @@ class Contact(models.Model):
 
 
 class Position(models.Model):
-    # owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
-    id = models.AutoField(primary_key=True)
     job_title = models.CharField(max_length=100, null=True, blank=True)
     company_name = models.CharField(max_length=100, null=True, blank=True)
     country_id = models.CharField(max_length=3, null=True, blank=True)
@@ -69,16 +67,9 @@ class Position(models.Model):
     # maybe change to textField?
     about_the_job = models.CharField(
         max_length=500, null=True, blank=True)  # roughly 2 paragraphs
-
-    #     class Restaurant(models.Model):
-    # place = models.OneToOneField(
-    #     Place,
-    #     on_delete=models.CASCADE,
-    #     primary_key=True,
-    # )
-
     application_process_id = models.OneToOneField(
-        'ApplicationProcess', null=True, on_delete=models.CASCADE)
+        'ApplicationProcess', null=False, on_delete=models.CASCADE, primary_key=True)
+# default
 
     def __str__(self):
         return self.job_title  # update later
@@ -107,11 +98,9 @@ class ApplicationProcess(models.Model):
     note = models.TextField(null=True, blank=True)
     reference = models.TextField(null=True, blank=True)
     last_modified = models.DateField(auto_now_add=True, null=True, blank=True)
-    # sent_resume= models.FileField()
     status = models.ForeignKey(
         'Status', null=False, default="IN", on_delete=models.DO_NOTHING)
-    # position = models.OneToOneField(
-    #     Position, on_delete=models.SET_NULL, null=True, blank=True)
+    # sent_resume= models.FileField()
 
     def __str__(self):
         return self.id

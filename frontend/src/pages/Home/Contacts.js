@@ -34,7 +34,6 @@ const Contacts = ({ contact_set }) => {
                             <TextField id="standard-basic" label="Contact Name" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].name : "contact name") : null}
                             />
                         </Grid>
-                        {console.log(contact_set)}
                     </Grid>
                 </Grid>
                 <Grid item>

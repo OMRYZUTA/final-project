@@ -37,7 +37,6 @@ const Stages = ({ stage_set, handleStagesChange, }) => {
         clone[index] = updated;
         setCurrentList(clone);
         handleStagesChange(e, clone);
-        console.log('in local updated: ', updated);
     }
 
     return (

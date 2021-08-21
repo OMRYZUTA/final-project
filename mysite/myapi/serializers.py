@@ -118,13 +118,15 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         #           'note', 'last_modified', 'status', 'stage_set', 'contact_set']
 
     def create(self, validated_data):
-        status_validated_data = validated_data.pop('status')
+        status_id = validated_data.pop('status_id')
 
-        if(status_validated_data != None):
+        if(status_id != None):
             status_serializer = self.fields['status']
-            status = status_serializer.create(status_validated_data)
+            status = status_serializer.get(status_id)
+            if status != None:
+                pass # to do invalid status id
             validated_data['status'] = status
-            status_validated_data = validated_data.pop('status')
+        
 
         position_validated_data = validated_data.pop('position')
 

@@ -44,11 +44,11 @@ const CountrySelect = ({ country }) => {
                 </React.Fragment>
             )}
             renderInput={(params) => {
-                console.log(params);
                 let enhancedParams = params;
-                if (country !== null) {
+                if (country !== undefined) {
                     enhancedParams.inputProps.value = country.name;
                 }
+
                 return (
                     <TextField
                         {...enhancedParams}

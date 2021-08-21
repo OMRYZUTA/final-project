@@ -74,7 +74,6 @@ export default function ApplicationProcessDialog({
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
-  console.log(applicationProcess)
   //TODO: cache the status, etc - receive from backend not ask from backend
   const [statusObjects, setStatusObjects] = useState([]);
   useEffect(() => {
@@ -114,18 +113,11 @@ export default function ApplicationProcessDialog({
   };
 
   const handleStatusChange = (e) => {
-    let status = {};
-    // switch(e.target.value){
-    //   case "Interested":
-    //     status["name"] = "Interested";
-    //     status["id"] ="IN";
-    //     break;
-    //   case ""
-    // }
     setCurrentApplication({
       ...currentApplication,
-      [e.target.id]: e.target.value,
+      status: e.target.value,
     });
+    console.log(currentApplication);
   };
 
   const updateArray = (arr, newAppProc) => {
@@ -139,14 +131,14 @@ export default function ApplicationProcessDialog({
   const handleSaveChanges = async (e) => {
     console.log("application process: ", currentApplication);
 
-    let result;
+    // let result;
 
-    if (currentApplication.url) {
-      result = await apServices.update(currentApplication);
-    } else {
-      result = await apServices.addNew(currentApplication);
-    }
-    setData(updateArray(data, result.data));
+    // if (currentApplication.url) {
+    //   result = await apServices.update(currentApplication);
+    // } else {
+    //   result = await apServices.addNew(currentApplication);
+    // }
+    // setData(updateArray(data, result.data));
     handleClose();
   };
 
@@ -161,6 +153,8 @@ export default function ApplicationProcessDialog({
   const handleStagesChange = (e, new_stage_set) => {
     setCurrentApplication({ ...currentApplication, stage_set: new_stage_set });
   };
+
+
 
   const handleContactsChange = (e, new_contact_set) => {
     setCurrentApplication({
@@ -230,6 +224,8 @@ export default function ApplicationProcessDialog({
                     currentValue={currentApplication.status.id}
                     keyPropName="id"
                     namePropName="name"
+                    onChange={handleStatusChange}
+
                   />
                 </Grid>
 
@@ -317,8 +313,7 @@ export default function ApplicationProcessDialog({
             <Grid item  >
               <Button
                 id="saveChanges"
-                onClick={() => {
-                }}
+                onClick={handleSaveChanges}
                 className={classes.button}
               >
                 Save changes

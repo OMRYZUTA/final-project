@@ -25,16 +25,21 @@ export default function DropDown({
     onChange,     // callback function that notifies "outside" that the user selected a different options
 }) {
     const classes = useStyles();
-    //const [optionsReceived, setOptionsReceived] = useState([{ undefined: "" }, ...options]);
+    const [optionsReceived, setOptionsReceived] = useState([...options, { undefined: "" }]);
+    const [currentOption, setCurrentOption] = useState(currentValue);
 
+    const handleChange = (e) => {
+        setCurrentOption(e.target.value)
+        onChange(e);
+    }
     return (
         <FormControl className={classes.formControl}>
             <InputLabel>{label}</InputLabel>
             <Select
-                value={currentValue}
-                onChange={onChange}
+                value={currentOption}
+                onChange={handleChange}
             >
-                {options.map((option) => <MenuItem id={option[keyPropName]} value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
+                {optionsReceived.map((option) => <MenuItem key={option[keyPropName]} value={option[keyPropName]}>{option[namePropName]}</MenuItem>)}
             </Select>
         </FormControl>
     );

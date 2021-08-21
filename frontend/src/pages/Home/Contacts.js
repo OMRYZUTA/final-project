@@ -7,7 +7,6 @@ import ContactMailIcon from '@material-ui/icons/ContactMail';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-
     root: {
         height: '100%',
         width: '100%',
@@ -16,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
         width: '100%',
     },
-}))
-
+}));
 
 const Contacts = ({ contact_set }) => {
     const classes = useStyles();
@@ -31,8 +29,7 @@ const Contacts = ({ contact_set }) => {
                             <PermContactCalendarIcon />
                         </Grid>
                         <Grid item>
-                            <TextField id="standard-basic" label="Contact Name" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].name : "contact name") : null}
-                            />
+                            <TextField id="standard-basic" label="Contact Name" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].name : "contact name") : null} />
                         </Grid>
                     </Grid>
                 </Grid>
@@ -45,7 +42,6 @@ const Contacts = ({ contact_set }) => {
                             <TextField id="standard-basic" label="Contact Phone" defaultValue={contact_set ? (contact_set.length >= 1 ? contact_set[0].phone_number1 : "Phone Number") : null} />
                         </Grid>
                     </Grid>
-
                 </Grid>
                 <Grid item>
                     <Grid container direction={'row'} alignContent={'center'} alignItems={'center'}>
@@ -59,6 +55,7 @@ const Contacts = ({ contact_set }) => {
                 </Grid>
             </Grid>
         </div>
-    )
+    );
 }
+
 export default Contacts

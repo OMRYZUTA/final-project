@@ -1,6 +1,9 @@
 import axios from "axios";
 import * as StaticServices from "./StaticServices";
 
+export async function getStaticData() {
+    
+}
 
 export async function getAll() {
     try {

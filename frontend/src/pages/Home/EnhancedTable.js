@@ -22,6 +22,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import SearchField from "./SearchField";
 import * as apServices from '../../services/AppProcServices';
+import { getStatuses } from "../../services/StaticServices";
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -141,7 +142,6 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
 
@@ -224,6 +224,7 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
 }));
+
 const matchStatusToClassName = (statusID, classes) => {
   let className = ''
   switch (statusID) {
@@ -241,7 +242,7 @@ const matchStatusToClassName = (statusID, classes) => {
       break;
   }
   return className;
-}
+};
 
 export default function EnhancedTable() {
   const classes = useStyles();
@@ -250,16 +251,30 @@ export default function EnhancedTable() {
   const [currentItem, setCurrentItem] = React.useState();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [statuses, setStatuses] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [rowEntries, setRowEntries] = React.useState([]);
 
   React.useEffect(() => {
-    const fetchApplications = async () => {
-      const result = await apServices.getAll()
-      setApplications(result.data.results);
-      setRowEntries(result.data.results.map(app => Object.create({ id: app.id, company_name: app.position.company_name, job_title: app.position.job_title, status: app.status.name, last_modified: app.last_modified })))
+    const fetchAllData = async () => {
+      // calling all API calls in parallel, and waiting until they ALL finish before setting
+      const [statuses, applications] = await Promise.all([
+        getStatuses(),
+        apServices.getAll(),
+      ]);
+
+      setStatuses(statuses.data.results);
+      setApplications(applications.data.results);
+
+      setRowEntries(applications.data.results.map(app => Object.create({
+        id: app.id,
+        company_name: app.position.company_name,
+        job_title: app.position.job_title,
+        status: app.status.name,
+        last_modified: app.last_modified
+      })));
     };
-    fetchApplications();
+    fetchAllData();
   }, []);
 
   const handleRequestSort = (event, property) => {
@@ -288,17 +303,16 @@ export default function EnhancedTable() {
     setCurrentItem(null);
   };
 
-  const renderCurrentItem = (currentItem) => {
+  const renderCurrentItem = (currentItem, statuses) => {
     return (
-      <div>
-        <ApplicationProcessDialog
-          open={open}
-          handleClose={handleClose}
-          applicationProcess={currentItem}
-          data={applications}
-          setData={setApplications}
-        />
-      </div>
+      <ApplicationProcessDialog
+        open={open}
+        handleClose={handleClose}
+        applicationProcess={currentItem}
+        data={applications}
+        statuses={statuses}
+        setData={setApplications}
+      />
     );
   };
 
@@ -319,9 +333,24 @@ export default function EnhancedTable() {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
 
+  // const statuses = [
+  //   {
+  //     id: 'IN',
+  //     name: 'Interested',
+  //   },
+  //   {
+  //     id: 'AP',
+  //     name: 'Applied',
+  //   },
+  //   {
+  //     id: 'CL',
+  //     name: 'Closed',
+  //   },
+  // ];
+
   return (
     <div className={classes.root}>
-      {currentItem && renderCurrentItem(currentItem)}
+      {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <IconButton position={"relative"} onClick={handleAddNew}>
@@ -341,11 +370,11 @@ export default function EnhancedTable() {
               onRequestSort={handleRequestSort}
               rowCount={applications.length}
             />
-            
+
             <TableBody>
               {stableSort(rowEntries, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
+                .map((row) => {
                   return (
                     <TableRow
                       hover
@@ -389,4 +418,4 @@ export default function EnhancedTable() {
       </Paper>
     </div>
   );
-}
+};

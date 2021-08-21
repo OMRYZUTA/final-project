@@ -69,20 +69,19 @@ export default function ApplicationProcessDialog({
   open,
   handleClose,
   applicationProcess,
-  data,
-  setData,
+  statuses,
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(true);
   //TODO: cache the status, etc - receive from backend not ask from backend
-  const [statusObjects, setStatusObjects] = useState([]);
-  useEffect(() => {
-    const fetchStatusObjects = async () => {
-      const result = await StaticServices.getStatuses();
-      setStatusObjects(result.data.results);
-    };
-    fetchStatusObjects();
-  }, []);
+  //const [statusObjects, setStatusObjects] = useState([]);
+  // useEffect(() => {
+  //   const fetchStatusObjects = async () => {
+  //     const result = await StaticServices.getStatuses();
+  //     setStatusObjects(result.data.results);
+  //   };
+  //   fetchStatusObjects();
+  // }, []);
 
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
@@ -126,7 +125,8 @@ export default function ApplicationProcessDialog({
     });
     tempArray.push(newAppProc);
     return tempArray;
-  }
+
+  };
 
   const handleSaveChanges = async (e) => {
     console.log("application process: ", currentApplication);
@@ -154,17 +154,16 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({ ...currentApplication, stage_set: new_stage_set });
   };
 
-
-
   const handleContactsChange = (e, new_contact_set) => {
     setCurrentApplication({
       ...currentApplication,
       contact_set: new_contact_set,
     });
   };
+
   const handleApplicationChange = (e) => {
     setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
-  }
+  };
   const classes = useStyles(theme);
 
   return (
@@ -220,12 +219,11 @@ export default function ApplicationProcessDialog({
                   <DropDown
                     className={classes.paperField}
                     label={"Status"}
-                    options={statusObjects}
+                    options={statuses}
                     currentValue={currentApplication.status.id}
                     keyPropName="id"
                     namePropName="name"
                     onChange={handleStatusChange}
-
                   />
                 </Grid>
 

@@ -43,7 +43,6 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(default=None, write_only=False)
     application_process_id = serializers.PrimaryKeyRelatedField(
         many=False, read_only=True)
-    country = CountrySerializer()
 
     class Meta:
         model = Position
@@ -56,11 +55,6 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
         return value
 
     def create(self, validated_data):
-        country_validated_data = validated_data.pop('country')
-        if(country_validated_data != None):
-            country_serializer = self.fields['country']
-            country = country_serializer.create(country_validated_data)
-            validated_data['country'] = country
         position = Position.objects.create(
             **validated_data)
         return position
@@ -118,15 +112,12 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         #           'note', 'last_modified', 'status', 'stage_set', 'contact_set']
 
     def create(self, validated_data):
-        status_id = validated_data.pop('status_id')
+        status_validated_data = validated_data.pop('status')
 
-        if(status_id != None):
-            status_serializer = self.fields['status']
-            status = status_serializer.get(status_id)
-            if status != None:
-                pass # to do invalid status id
+        if(status_validated_data != None):
+            status_name = status_validated_data['name']
+            status = Status.objects.get(name=status_name)
             validated_data['status'] = status
-        
 
         position_validated_data = validated_data.pop('position')
 
@@ -149,6 +140,12 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         return application_process
 
     def update(self, instance, validated_data):
+        status_validated_data = validated_data.pop('status')
+
+        if(status_validated_data != None):
+            status_name = status_validated_data['name']
+            status = Status.objects.get(name=status_name)
+            validated_data['status'] = status
         validated_data['last_modified'] = date.today()
 
         # CHANGE "position" here to match one-to-one field name

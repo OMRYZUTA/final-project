@@ -40,7 +40,6 @@ class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PositionSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.IntegerField(default=None, write_only=False)
     application_process_id = serializers.PrimaryKeyRelatedField(
         many=False, read_only=True)
 

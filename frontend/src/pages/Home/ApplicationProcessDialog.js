@@ -98,6 +98,18 @@ export default function ApplicationProcessDialog({
     });
   };
 
+  const handleCountryChange = useCallback((event) => {
+    const [span] = event.target.getElementsByTagName('span');
+    const country_id = span.getAttribute('data-code');
+    setCurrentApplication({
+      ...currentApplication,
+      position: {
+        ...currentApplication.position,
+        country_id,
+      },
+    });
+  }, [currentApplication])
+
   const handleStatusChange = (e) => {
     const newStatus = {
       id: e.target.value,
@@ -107,7 +119,6 @@ export default function ApplicationProcessDialog({
       ...currentApplication,
       status: newStatus,
     });
-    console.log(currentApplication);
   };
 
   const handlePositionChange = (e) => {
@@ -134,6 +145,7 @@ export default function ApplicationProcessDialog({
   };
 
   const onSave = useCallback(() => {
+    console.log('in dialog', currentApplication);
     handleSave(currentApplication);
   }, [currentApplication, handleSave]);
 
@@ -207,7 +219,8 @@ export default function ApplicationProcessDialog({
             <Grid container justifyContent={"space-between"} direction={"column"}>
               <Grid item>
                 <Grid container>
-                  <CountrySelect country={currentApplication.position.country} />
+                  <CountrySelect 
+                  country_id={ currentApplication.position.country_id} onChange={handleCountryChange} />
                 </Grid>
               </Grid>
               <Grid item>

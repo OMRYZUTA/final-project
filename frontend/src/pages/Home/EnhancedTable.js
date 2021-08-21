@@ -219,7 +219,6 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [statuses, setStatuses] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
-  const [rowEntries, setRowEntries] = React.useState([]);
 
   React.useEffect(() => {
     const fetchAllData = async () => {
@@ -231,14 +230,6 @@ export default function EnhancedTable() {
 
       setStatuses(statuses.data.results);
       setApplications(applications.data.results);
-
-      setRowEntries(applications.data.results.map(app => Object.create({
-        id: app.id,
-        company_name: app.position?.company_name,
-        job_title: app.position?.job_title,
-        status: app.status.name,
-        last_modified: app.last_modified
-      })));
     };
     fetchAllData();
   }, []);
@@ -260,18 +251,19 @@ export default function EnhancedTable() {
 
   const handleClose = useCallback(() => {
     setCurrentItem(undefined);
-  }, [applications]);
+  }, []);
 
   const handleSave = useCallback(async applicationProcess => {
     let result;
-
+    console.log('in enhanced', applicationProcess);
     if (applicationProcess.url) {
       result = await apServices.update(applicationProcess);
     } else {
       result = await apServices.addNew(applicationProcess);
     }
 
-    setApplications(updateArray(applications, result.data));
+    const newApplications = updateArray(applications, result.data)
+    setApplications(newApplications);
     setCurrentItem(undefined);
   }, [applications]);
 
@@ -293,7 +285,7 @@ export default function EnhancedTable() {
       stage_set: [],
       user_id: 2,
       last_modified: new Date().toISOString().split('T')[0],
-      status: 'CL' //TODO update these
+      status: { id: 'CL', name: "Closed" } //TODO update these
     };
 
     setCurrentItem(app);
@@ -326,31 +318,42 @@ export default function EnhancedTable() {
             />
 
             <TableBody>
-              {stableSort(rowEntries, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      onClick={() => { setCurrentItem(applications.find(app => app.id === row.id)) }}
-                      tabIndex={-1}
-                      key={row.id}
-                      className={matchStatusToClassName(row.status, classes)}
-                    >
-                      <TableCell align="left">
-                        {row.company_name}
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.job_title}
-                      </TableCell>
-                      <TableCell align="left">{row.status}</TableCell>
-                      <TableCell align="left">{row.last_modified}</TableCell>
-                      <TableCell align="left">
-                        <DeleteIcon className={classes.deleteBin} />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+              {
+                stableSort(
+                  applications.map(app => ({
+                    id: app.id,
+                    company_name: app.position?.company_name,
+                    job_title: app.position?.job_title,
+                    status: app.status.name,
+                    last_modified: app.last_modified
+                  })),
+                  getComparator(order, orderBy)
+                )
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    return (
+                      <TableRow
+                        hover
+                        onClick={() => { setCurrentItem(applications.find(app => app.id === row.id)) }}
+                        tabIndex={-1}
+                        key={row.id}
+                        className={matchStatusToClassName(row.status, classes)}
+                      >
+                        <TableCell align="left">
+                          {row.company_name}
+                        </TableCell>
+                        <TableCell align="left">
+                          {row.job_title}
+                        </TableCell>
+                        <TableCell align="left">{row.status}</TableCell>
+                        <TableCell align="left">{row.last_modified}</TableCell>
+                        <TableCell align="left">
+                          <DeleteIcon className={classes.deleteBin} />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+              }
               {emptyRows > 0 && (
                 <TableRow style={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={6} />

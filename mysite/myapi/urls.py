@@ -10,7 +10,6 @@ router.register(r'statuses', views.StatusViewSet)
 router.register(r'applicationprocesses', views.ApplicationProcessViewSet)
 router.register(r'contacts', views.ContactViewSet)
 router.register(r'stages', views.StageViewSet)
-router.register(r'countries', views.CountryViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

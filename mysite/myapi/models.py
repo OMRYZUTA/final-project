@@ -31,16 +31,6 @@ class Status(models.Model):
         managed = False
         db_table = 'status'
 
-
-class Countries(models.Model):
-    id = models.CharField(primary_key=True, max_length=2)
-    name = models.TextField()
-
-    class Meta:
-        managed = False
-        db_table = 'countries'
-
-
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, null=True, blank=True)

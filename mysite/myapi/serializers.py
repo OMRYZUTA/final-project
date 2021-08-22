@@ -1,15 +1,6 @@
 from rest_framework import serializers
-from .models import EventType, Position, ApplicationProcess, Countries, Contact, Stage, EventMedia, Status
+from .models import EventType, Position, ApplicationProcess, Contact, Stage, EventMedia, Status
 from datetime import date
-
-
-class CountrySerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.CharField(read_only=True)
-
-    class Meta:
-        managed = False
-        model = Countries
-        fields = '__all__'
 
 
 class EventMediaSerializer(serializers.HyperlinkedModelSerializer):
@@ -46,12 +37,6 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Position
         fields = '__all__'
-
-    def validate_country_id(self, value):
-        if value not in Countries.objects.values_list('id', flat=True):
-            raise serializers.ValidationError(
-                f'{value}  is not a valid country code')
-        return value
 
     def create(self, validated_data):
         position = Position.objects.create(
@@ -112,19 +97,21 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         status_validated_data = validated_data.pop('status')
+        position_validated_data = validated_data.pop('position')
+        contacts_data = validated_data.pop('contact_set')
+        stages_data = validated_data.pop('stage_set')
 
+        # status is a direct field in ApplicationProcess model
         if(status_validated_data != None):
             status_name = status_validated_data['name']
             status = Status.objects.get(name=status_name)
             validated_data['status'] = status
 
-        position_validated_data = validated_data.pop('position')
-        contacts_data = validated_data.pop('contact_set')
-        stages_data = validated_data.pop('stage_set')
-
         application_process = ApplicationProcess.objects.create(
             **validated_data)
 
+        # nested objects in ApplicationProcess
+        
         Position.objects.create(
             application_process_id=application_process, **position_validated_data)
 

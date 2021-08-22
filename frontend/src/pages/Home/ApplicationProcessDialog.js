@@ -17,7 +17,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import AddIcon from '@material-ui/icons/Add';
 import CountrySelect from "./CountrySelect";
-import { updateArray } from "../../utils/utils";
+import { updateArrayWithIDlessObject } from "../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -132,25 +132,9 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({ ...currentApplication, position: position });
   };
 
-  // const handleSave = useCallback(async applicationProcess => {
-  //   let result;
-
-  //   console.log('in enhancedTable, handleSave', applicationProcess);
-
-  //   if (applicationProcess.url) {
-  //     result = await apServices.update(applicationProcess);
-  //   } else {
-  //     result = await apServices.addNew(applicationProcess);
-  //   }
-
-  //   const newApplications = updateArray(applications, result.data)
-  //   setApplications(newApplications);
-  //   setCurrentItem(undefined);
-  // }, [applications]);
-
-
   const handleStagesChange = useCallback((newStage) => {
-    const newStages = updateArray(currentApplication.stage_set, newStage)
+
+    const newStages = updateArrayWithIDlessObject(currentApplication.stage_set, newStage)
     setCurrentApplication({ ...currentApplication, stage_set: newStages });
   }, [currentApplication]);
 

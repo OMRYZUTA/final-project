@@ -32,8 +32,7 @@ function renderEmptyState() {
     )
 }
 
-function RenderStepper(steps) {
-    const classes = useStyles();
+function RenderStepper(steps, classes) {
     return (
         <Stepper className={classes.root}>
             {steps
@@ -61,7 +60,7 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
     const handleAddStep = useCallback(() => {
         setCurrentStep({
             event_type: { id: "CV", name: "cv sent" },
-            media_type: { id: "EM", name: "email" },
+            event_media: { id: "EM", name: "email" },
         });
     }, [])
 
@@ -70,6 +69,7 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
     }, []);
 
     const handleStepDialogChange = useCallback((newStep) => {
+        console.log({ newStep })
         handleStagesChange(newStep);
         setCurrentStep();
     }, [handleStagesChange]);
@@ -83,11 +83,12 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
                     <AddIcon />
                 </IconButton>
             </Grid>
-            {hasSteps ? RenderStepper(stage_set) : renderEmptyState()}
+            {hasSteps && RenderStepper(stage_set, classes)}
+            {!hasSteps && renderEmptyState()}
             {currentStep && <StepDialog
                 initialStep={currentStep}
                 eventTypes={eventTypes}
-                mediaTypes={eventMedias}
+                eventMedias={eventMedias}
                 handleClose={handleStepDialogClose}
                 handleSave={handleStepDialogChange}
             />}

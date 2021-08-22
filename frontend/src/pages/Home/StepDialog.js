@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import DatePicker from './DatePicker'
 import DropDown from './DropDown'
 
-export default function StepDialog({ initialStep, eventTypes, mediaTypes, handleClose, handleSave }) {
+export default function StepDialog({ initialStep, eventTypes, eventMedias, handleClose, handleSave }) {
     const [step, setStep] = useState(initialStep);
 
 
@@ -72,7 +72,7 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, handle
                         <Grid item>
                             <DropDown
                                 label={"Media Type"}
-                                options={mediaTypes}
+                                options={eventMedias}
                                 currentValue={step.event_media.id}
                                 keyPropName="id"
                                 namePropName="name"

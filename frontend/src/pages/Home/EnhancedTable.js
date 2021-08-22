@@ -291,12 +291,12 @@ export default function EnhancedTable() {
 
   const handleAddNew = useCallback((e) => {
     const app = {
-      position: {},
+      position: { country_id: "IL" },
       contact_set: [],
       stage_set: [],
       user_id: 2,
       last_modified: new Date().toISOString().split('T')[0],
-      status: { id: 'CL', name: "Closed" } //TODO update these
+      status: { id: 'IN', name: "Interested" }
     };
 
     setCurrentItem(app);

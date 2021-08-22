@@ -28,3 +28,21 @@ export async function getStatuses() {
         throw new Error('Failed getting all statuses', err);
     }
 }
+
+export async function getEventTypes() {
+    try {
+        return await axios('/api/eventtypes/');
+    } catch (err) {
+        handleError(err);
+        throw new Error('Failed getting all stage event types', err);
+    }
+}
+
+export async function getEventMedia() {
+    try {
+        return await axios('/api/eventmedia/');
+    } catch (err) {
+        handleError(err);
+        throw new Error('Failed getting all stage event media', err);
+    }
+}

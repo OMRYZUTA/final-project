@@ -65,6 +65,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ApplicationProcessDialog({
   applicationProcess,
   statuses,
+  eventTypes,
+  eventMedia,
   handleClose,
   handleSave,
 }) {
@@ -219,8 +221,8 @@ export default function ApplicationProcessDialog({
             <Grid container justifyContent={"space-between"} direction={"column"}>
               <Grid item>
                 <Grid container>
-                  <CountrySelect 
-                  country_id={ currentApplication.position.country_id} onChange={handleCountryChange} />
+                  <CountrySelect
+                    country_id={currentApplication.position.country_id} onChange={handleCountryChange} />
                 </Grid>
               </Grid>
               <Grid item>

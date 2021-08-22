@@ -22,7 +22,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import SearchField from "./SearchField";
 import * as apServices from '../../services/AppProcServices';
-import { getStatuses } from "../../services/StaticServices";
+import { getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
 import { stableSort, getComparator, updateArray } from "../../utils/utils";
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -218,17 +218,23 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [statuses, setStatuses] = React.useState([]);
+  const [eventTypes, setEventTypes] = React.useState([]);
+  const [eventMedia, setEventMedia] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
 
   React.useEffect(() => {
     const fetchAllData = async () => {
       // calling all API calls in parallel, and waiting until they ALL finish before setting
-      const [statuses, applications] = await Promise.all([
+      const [statuses, eventTypes, eventMedia, applications] = await Promise.all([
         getStatuses(),
+        getEventTypes(),
+        getEventMedia(),
         apServices.getAll(),
       ]);
 
       setStatuses(statuses.data.results);
+      setEventTypes(eventTypes.data.results);
+      setEventMedia(eventMedia.data.results);
       setApplications(applications.data.results);
     };
     fetchAllData();
@@ -255,7 +261,9 @@ export default function EnhancedTable() {
 
   const handleSave = useCallback(async applicationProcess => {
     let result;
-    console.log('in enhanced', applicationProcess);
+
+    console.log('in enhancedTable, handleSave', applicationProcess);
+
     if (applicationProcess.url) {
       result = await apServices.update(applicationProcess);
     } else {
@@ -267,11 +275,13 @@ export default function EnhancedTable() {
     setCurrentItem(undefined);
   }, [applications]);
 
-  const renderCurrentItem = (currentItem, statuses) => {
+  const renderCurrentItem = (currentItem, statuses, eventTypes, eventMedia) => {
     return (
       <ApplicationProcessDialog
         applicationProcess={currentItem}
         statuses={statuses}
+        eventTypes={eventTypes}
+        eventMedia={eventMedia}
         handleClose={handleClose}
         handleSave={handleSave}
       />

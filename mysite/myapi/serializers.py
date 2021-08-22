@@ -111,7 +111,7 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             **validated_data)
 
         # nested objects in ApplicationProcess
-        
+
         Position.objects.create(
             application_process_id=application_process, **position_validated_data)
 
@@ -144,9 +144,9 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             status_name = status_validated_data['name']
             status = Status.objects.get(name=status_name)
             validated_data['status'] = status
+
         validated_data['last_modified'] = date.today()
 
-        # CHANGE "position" here to match one-to-one field name
         if 'position' in validated_data:
             nested_position_validated_data = validated_data.pop('position')
             nested_position_serializer = self.fields['position']
@@ -180,12 +180,28 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             stages_to_remove = {
                 stage.id: stage for stage in instance.stage_set.all()}
 
-            for stage in nested_stage_validated_data:
-                stage_id = stage.get('id', None)
+            for stage_data in nested_stage_validated_data:
+                stage_id = stage_data.get('id', None)
 
                 if stage_id is None:
                     # new stage to created
-                    instance.stage_set.create(**stage)
+                    event_type_validated_data = stage_data.pop('event_type')
+                    if(event_type_validated_data != None):
+                        event_type_name = event_type_validated_data['name']
+                        event_type = EventType.objects.get(
+                            name=event_type_name)
+                        stage_data['event_type'] = event_type
+
+                    event_media_validated_data = stage_data.pop('event_media')
+                    if(event_media_validated_data != None):
+                        event_media_name = event_media_validated_data['name']
+                        event_media = EventMedia.objects.get(
+                            name=event_media_name)
+                        stage_data['event_media'] = event_media
+
+                    Stage.objects.create(
+                        application_process_id=instance, **stage_data)
+
                 elif stages_to_remove.get(stage_id, None) is not None:
                     # update this item
                     instance_stage = stages_to_remove.pop(stage_id)

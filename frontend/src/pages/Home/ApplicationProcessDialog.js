@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paperField: {
     margin: "5px",
-    width: "auto",
+    // width: "auto",
+    width: '100%',
   }, container: {
     justifyContent: 'flex-start',
   },

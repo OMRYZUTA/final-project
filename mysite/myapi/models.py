@@ -59,7 +59,8 @@ class Contact(models.Model):
 class Position(models.Model):
     job_title = models.CharField(max_length=200, null=True, blank=True)
     company_name = models.CharField(max_length=200, null=True, blank=True)
-    country_id = models.CharField(max_length=3, null=True, blank=True)
+    country_id = models.CharField(
+        max_length=3, default="IL", null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     initial_contact_email_address = models.EmailField(
         max_length=100, null=True, blank=True)

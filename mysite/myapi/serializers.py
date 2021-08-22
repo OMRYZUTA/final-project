@@ -22,19 +22,20 @@ class EventMediaSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
-
-    class StatusSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.CharField(read_only=True)
-
-    class Meta:
-        managed = False
-        model = Status
-        fields = '__all__'
     id = serializers.CharField(read_only=True)
 
     class Meta:
         managed = False
         model = EventType
+        fields = '__all__'
+
+
+class StatusSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.CharField(read_only=True)
+
+    class Meta:
+        managed = False
+        model = Status
         fields = '__all__'
 
 

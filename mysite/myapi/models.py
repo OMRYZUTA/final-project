@@ -66,7 +66,7 @@ class Position(models.Model):
     job_posting_URL = models.URLField(max_length=250, null=True, blank=True)
     # maybe change to textField?
     about_the_job = models.CharField(
-        max_length=500, null=True, blank=True)  # roughly 2 paragraphs
+        max_length=5000, null=True, blank=True)  # roughly 2 paragraphs
     application_process_id = models.OneToOneField(
         'ApplicationProcess', null=False, on_delete=models.CASCADE, primary_key=True)
 # default

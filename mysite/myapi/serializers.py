@@ -70,7 +70,7 @@ class ContactSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class StageSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.IntegerField(default=None, write_only=False)
+    id = serializers.IntegerField(read_only=True)
     application_process_id = serializers.PrimaryKeyRelatedField(
         many=False, read_only=True)
     event_type = EventTypeSerializer()
@@ -81,17 +81,17 @@ class StageSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        event_type_validated_data = validated_data.pop('event_type')
-        if(event_type_validated_data != None):
-            event_type_name = event_type_validated_data['name']
-            event_type = EventType.objects.get(name=event_type_name)
-            validated_data['event_type'] = event_type
+        # event_type_validated_data = validated_data.pop('event_type')
+        # if(event_type_validated_data != None):
+        #     event_type_name = event_type_validated_data['name']
+        #     event_type = EventType.objects.get(name=event_type_name)
+        #     validated_data['event_type'] = event_type
 
-        event_media_validated_data = validated_data.pop('event_media')
-        if(event_media_validated_data != None):
-            event_media_name = event_media_validated_data['name']
-            event_media = EventMedia.objects.get(name=event_media_name)
-            validated_data['event_media'] = event_media
+        # event_media_validated_data = validated_data.pop('event_media')
+        # if(event_media_validated_data != None):
+        #     event_media_name = event_media_validated_data['name']
+        #     event_media = EventMedia.objects.get(name=event_media_name)
+        #     validated_data['event_media'] = event_media
 
         stage = Stage.objects.create(
             **validated_data)
@@ -119,9 +119,9 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             validated_data['status'] = status
 
         position_validated_data = validated_data.pop('position')
-
         contacts_data = validated_data.pop('contact_set')
         stages_data = validated_data.pop('stage_set')
+
         application_process = ApplicationProcess.objects.create(
             **validated_data)
 
@@ -133,6 +133,18 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
                 application_process_id=application_process, **contact_data)
 
         for stage_data in stages_data:
+            event_type_validated_data = stage_data.pop('event_type')
+            if(event_type_validated_data != None):
+                event_type_name = event_type_validated_data['name']
+                event_type = EventType.objects.get(name=event_type_name)
+                stage_data['event_type'] = event_type
+
+            event_media_validated_data = stage_data.pop('event_media')
+            if(event_media_validated_data != None):
+                event_media_name = event_media_validated_data['name']
+                event_media = EventMedia.objects.get(name=event_media_name)
+                stage_data['event_media'] = event_media
+
             Stage.objects.create(
                 application_process_id=application_process, **stage_data)
 

@@ -289,7 +289,13 @@ export default function ApplicationProcessDialog({
 
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <HorizontalStepper className={classes.stepper} stage_set={currentApplication.stage_set} />
+            <HorizontalStepper
+              className={classes.stepper}
+              stage_set={currentApplication.stage_set}
+              eventTypes={eventTypes}
+              eventMedia={eventMedia}
+              handleStagesChange = {handleStagesChange}
+            />
           </Paper>
         </Grid>
 

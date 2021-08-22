@@ -275,7 +275,7 @@ export default function EnhancedTable() {
     setCurrentItem(undefined);
   }, [applications]);
 
-  const renderCurrentItem = (currentItem, statuses, eventTypes, eventMedia) => {
+  const renderCurrentItem = (currentItem) => {
     return (
       <ApplicationProcessDialog
         applicationProcess={currentItem}

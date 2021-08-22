@@ -54,7 +54,7 @@ function RenderStepper(steps) {
 }
 
 
-export default function HorizontalStepper({ stage_set }) {
+export default function HorizontalStepper({ stage_set, eventTypes, eventMedia, handleStagesChange }) {
     const classes = useStyles();
     const [steps, setSteps] = useState(stage_set);
     const [currentStep, setCurrentStep] = useState();
@@ -65,40 +65,25 @@ export default function HorizontalStepper({ stage_set }) {
             mediaType: '',
         });
     }, [])
+
     const handleStepDialogClose = useCallback((newStep) => {
         setCurrentStep();
         if (newStep) {
             setSteps([...steps, newStep]);
         }
     }, [steps]);
-    const eventTypes = [
-        {
-            id: '',
-            name: 'none',
-        },
-        {
-            id: 'CV',
-            name: 'CV Sent',
-        },
-        {
-            id: 'HI',
-            name: 'HR Interview',
+
+    const handleStepDialogChange = useCallback((newStep) => {
+        //add step, change existing step
+        setCurrentStep();
+
+        if (newStep) {
+            setSteps([...steps, newStep]);
         }
-    ];
-    const mediaTypes = [
-        {
-            id: '',
-            name: 'none',
-        },
-        {
-            id: 'CV',
-            name: 'CV Sent',
-        },
-        {
-            id: 'FI',
-            name: 'F2F',
-        }
-    ];
+
+        handleStagesChange(steps)
+    }, [steps]);
+
 
     const hasSteps = steps.length;
 
@@ -113,8 +98,9 @@ export default function HorizontalStepper({ stage_set }) {
             {currentStep && <StepDialog
                 initialStep={currentStep}
                 eventTypes={eventTypes}
-                mediaTypes={mediaTypes}
-                onClose={handleStepDialogClose}
+                mediaTypes={eventMedia}
+                handleClose={handleStepDialogClose}
+                handleSave={handleStepDialogChange}
             />}
         </div>
     );

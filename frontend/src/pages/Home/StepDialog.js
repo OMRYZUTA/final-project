@@ -10,13 +10,17 @@ import TextField from '@material-ui/core/TextField';
 import DatePicker from './DatePicker'
 import DropDown from './DropDown'
 
-export default function StepDialog({ initialStep, eventTypes, mediaTypes, onClose }) {
+export default function StepDialog({ initialStep, eventTypes, mediaTypes, handleClose, handleSave }) {
     const [step, setStep] = useState(initialStep);
 
-    const handleEventTypeChange = useCallback((event) => {
+    const handleEventTypeChange = useCallback((e) => {
+        const newEventType = {
+            id: e.target.value,
+            name: e.target.name,
+        }
         setStep({
             ...step,
-            eventType: event.target.value,
+            event_type: newEventType,
         });
     }, [step]);
 
@@ -41,37 +45,36 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, onClos
         });
     }, [step]);
 
-    const handleSave = useCallback(() => {
-        onClose(step);
-    }, [step, onClose]);
+    // const handleSave = useCallback(() => {
+    //     onClose(step);
+    // }, [step, onClose]);
 
-    const handleCancel = useCallback(() => onClose(), [onClose])
 
     const isNew = !step.id; // change any value to boolean true/false
 
     return (
-        <Dialog open={true} onClose={handleCancel}>
+        <Dialog open={true} onClose={handleClose}>
             <DialogTitle>{isNew ? "Add Step" : "Edit Step"}</DialogTitle>
             <DialogContent>
                 <Grid container>
                     <Grid container item direction={'column'}>
                         <Grid item>
                             <DropDown
-                                label="Event Type"
+                                label={"Event Type"}
                                 options={eventTypes}
                                 currentValue={step.eventType}
                                 keyPropName="id"
-                                valuePropName="name"
+                                namePropName="name"
                                 onChange={handleEventTypeChange}
                             />
                         </Grid>
                         <Grid item>
                             <DropDown
-                                label="Media Type"
+                                label={"Media Type"}
                                 options={mediaTypes}
                                 currentValue={step.mediaType}
                                 keyPropName="id"
-                                valuePropName="name"
+                                namePropName="name"
                                 onChange={handleMediaTypeChange}
                             />
                         </Grid>
@@ -93,7 +96,7 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, onClos
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleCancel} color="primary">
+                <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
                 <Button onClick={handleSave} color="primary">

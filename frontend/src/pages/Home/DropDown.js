@@ -26,7 +26,7 @@ export default function DropDown({
     currentValue, // a single key value, must be a valid option
     keyPropName,  // the name of the "key" property from the pair
     namePropName, // the name of the "name" property from the pair
-    onChange,     // callback function that notifies "outside" that the user selected a different options
+    onChange,     // callback function that notifies "outside" that the user selected a different option
 }) {
     const classes = useStyles();
     const extendedOptions = [EMPTY_OPTION, ...options];

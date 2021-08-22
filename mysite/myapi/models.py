@@ -43,9 +43,9 @@ class Countries(models.Model):
 
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
     description = models.CharField(
-        default='main', max_length=100, null=True, blank=True)
+        default='main', max_length=300, null=True, blank=True)
     email_address = models.EmailField(max_length=100, null=True, blank=True)
     # later update phone fields with Local-Flavor library?
     phone_number1 = models.CharField(max_length=100, null=True, blank=True)
@@ -57,8 +57,8 @@ class Contact(models.Model):
 
 
 class Position(models.Model):
-    job_title = models.CharField(max_length=100, null=True, blank=True)
-    company_name = models.CharField(max_length=100, null=True, blank=True)
+    job_title = models.CharField(max_length=200, null=True, blank=True)
+    company_name = models.CharField(max_length=200, null=True, blank=True)
     country_id = models.CharField(max_length=3, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     initial_contact_email_address = models.EmailField(

@@ -34,19 +34,10 @@ export function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-
 export function updateArray(arr, newAppProc) {
-    const tempArray = arr.filter(a => {
+    const tempArray = newAppProc.id ? arr.filter(a => {
         return a.id !== newAppProc.id;
-    });
+    }) : [...arr];
     tempArray.push(newAppProc);
     return tempArray;
 }
-
-    export function updateArrayWithIDlessObject(arr, newAppProc) {
-      const tempArray = newAppProc.id ? arr.filter(a => {
-        return a.id !== newAppProc.id;
-      }) : [...arr];
-      tempArray.push(newAppProc);
-      return tempArray;
-    }

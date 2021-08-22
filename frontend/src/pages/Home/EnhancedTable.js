@@ -270,8 +270,9 @@ export default function EnhancedTable() {
       result = await apServices.addNew(applicationProcess);
     }
 
-    const newApplications = updateArray(applications, result.data)
-    setApplications(newApplications);
+    let newApplications = updateArray(applications, result.data)
+
+    setApplications(stableSort(newApplications, getComparator(order, orderBy)));
     setCurrentItem(undefined);
   }, [applications]);
 

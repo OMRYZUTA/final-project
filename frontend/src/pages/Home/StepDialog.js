@@ -15,22 +15,30 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
 
 
     const handleEventTypeChange = (e) => {
-        const newEventType = {
-            id: e.target.value,
-            name: e.target.name,
-        }
+        const oneElementArray = eventTypes.filter(a => {
+            return a.id == e.target.value;
+        })
+
+        const newEventType = oneElementArray[0]
+
         setStep({
             ...step,
             event_type: newEventType,
         });
     }
 
-    const handleMediaTypeChange = useCallback((event) => {
+    const handleMediaTypeChange = (e) => {
+        const oneElementArray = eventMedias.filter(a => {
+            return a.id == e.target.value;
+        })
+
+        const newEventMedia = oneElementArray[0]
+
         setStep({
             ...step,
-            event_media: event.target.value,
+            event_media: newEventMedia,
         });
-    }, [step]);
+    }
 
     const handleDateChange = useCallback((event) => {
         setStep({

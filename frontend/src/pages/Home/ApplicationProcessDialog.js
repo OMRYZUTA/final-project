@@ -17,7 +17,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import AddIcon from '@material-ui/icons/Add';
 import CountrySelect from "./CountrySelect";
-import { updateArrayWithIDlessObject } from "../../utils/utils";
+import { updateArray } from "../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -114,10 +114,13 @@ export default function ApplicationProcessDialog({
   }, [currentApplication])
 
   const handleStatusChange = (e) => {
-    const newStatus = {
-      id: e.target.value,
-      name: e.target.name,
-    }
+    const oneElementArray = statuses.filter(a => {
+      return a.id == e.target.value;
+    })
+
+    const newStatus = oneElementArray[0]
+
+
     setCurrentApplication({
       ...currentApplication,
       status: newStatus,
@@ -134,9 +137,10 @@ export default function ApplicationProcessDialog({
 
   const handleStagesChange = useCallback((newStage) => {
 
-    const newStages = updateArrayWithIDlessObject(currentApplication.stage_set, newStage)
+    const newStages = updateArray(currentApplication.stage_set, newStage).sort((s1, s2) => s1.date - s2.date)
     setCurrentApplication({ ...currentApplication, stage_set: newStages });
   }, [currentApplication]);
+
 
   const handleContactsChange = (e, new_contact_set) => {
     setCurrentApplication({

@@ -13,7 +13,8 @@ import DropDown from './DropDown'
 export default function StepDialog({ initialStep, eventTypes, mediaTypes, handleClose, handleSave }) {
     const [step, setStep] = useState(initialStep);
 
-    const handleEventTypeChange = useCallback((e) => {
+
+    const handleEventTypeChange = (e) => {
         const newEventType = {
             id: e.target.value,
             name: e.target.name,
@@ -22,19 +23,19 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, handle
             ...step,
             event_type: newEventType,
         });
-    }, [step]);
+    }
 
     const handleMediaTypeChange = useCallback((event) => {
         setStep({
             ...step,
-            eventMedia: event.target.value,
+            event_media: event.target.value,
         });
     }, [step]);
 
     const handleDateChange = useCallback((event) => {
         setStep({
             ...step,
-            date: event.target.value,
+            stage_date: event.target.value,
         });
     }, [step]);
 
@@ -45,10 +46,10 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, handle
         });
     }, [step]);
 
-    // const handleSave = useCallback(() => {
-    //     onClose(step);
-    // }, [step, onClose]);
 
+    const onSave = useCallback((e) => {
+        handleSave(step);
+    }, [step, handleSave]);
 
     const isNew = !step.id; // change any value to boolean true/false
 
@@ -62,7 +63,7 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, handle
                             <DropDown
                                 label={"Event Type"}
                                 options={eventTypes}
-                                currentValue={step.eventType}
+                                currentValue={step.event_type.id}
                                 keyPropName="id"
                                 namePropName="name"
                                 onChange={handleEventTypeChange}
@@ -72,7 +73,7 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, handle
                             <DropDown
                                 label={"Media Type"}
                                 options={mediaTypes}
-                                currentValue={step.mediaType}
+                                currentValue={step.event_media.id}
                                 keyPropName="id"
                                 namePropName="name"
                                 onChange={handleMediaTypeChange}
@@ -99,7 +100,7 @@ export default function StepDialog({ initialStep, eventTypes, mediaTypes, handle
                 <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={handleSave} color="primary">
+                <Button onClick={onSave} color="primary">
                     Save
                 </Button>
             </DialogActions>

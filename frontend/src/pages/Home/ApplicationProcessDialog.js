@@ -17,6 +17,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import AddIcon from '@material-ui/icons/Add';
 import CountrySelect from "./CountrySelect";
+import { updateArray } from "../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -66,7 +67,7 @@ export default function ApplicationProcessDialog({
   applicationProcess,
   statuses,
   eventTypes,
-  eventMedia,
+  eventMedias,
   handleClose,
   handleSave,
 }) {
@@ -131,9 +132,27 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({ ...currentApplication, position: position });
   };
 
-  const handleStagesChange = (e, new_stage_set) => {
-    setCurrentApplication({ ...currentApplication, stage_set: new_stage_set });
-  };
+  // const handleSave = useCallback(async applicationProcess => {
+  //   let result;
+
+  //   console.log('in enhancedTable, handleSave', applicationProcess);
+
+  //   if (applicationProcess.url) {
+  //     result = await apServices.update(applicationProcess);
+  //   } else {
+  //     result = await apServices.addNew(applicationProcess);
+  //   }
+
+  //   const newApplications = updateArray(applications, result.data)
+  //   setApplications(newApplications);
+  //   setCurrentItem(undefined);
+  // }, [applications]);
+
+
+  const handleStagesChange = useCallback((newStage) => {
+    const newStages = updateArray(currentApplication.stage_set, newStage)
+    setCurrentApplication({ ...currentApplication, stage_set: newStages });
+  }, [currentApplication]);
 
   const handleContactsChange = (e, new_contact_set) => {
     setCurrentApplication({
@@ -293,8 +312,8 @@ export default function ApplicationProcessDialog({
               className={classes.stepper}
               stage_set={currentApplication.stage_set}
               eventTypes={eventTypes}
-              eventMedia={eventMedia}
-              handleStagesChange = {handleStagesChange}
+              eventMedias={eventMedias}
+              handleStagesChange={handleStagesChange}
             />
           </Paper>
         </Grid>
@@ -319,6 +338,6 @@ export default function ApplicationProcessDialog({
           </Grid>
         </Grid>
       </Grid>
-    </Dialog >
+    </Dialog>
   );
 }

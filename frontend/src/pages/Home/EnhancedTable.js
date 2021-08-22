@@ -219,13 +219,13 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [statuses, setStatuses] = React.useState([]);
   const [eventTypes, setEventTypes] = React.useState([]);
-  const [eventMedia, setEventMedia] = React.useState([]);
+  const [eventMedias, setEventMedias] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
 
   React.useEffect(() => {
     const fetchAllData = async () => {
       // calling all API calls in parallel, and waiting until they ALL finish before setting
-      const [statuses, eventTypes, eventMedia, applications] = await Promise.all([
+      const [statuses, eventTypes, eventMedias, applications] = await Promise.all([
         getStatuses(),
         getEventTypes(),
         getEventMedia(),
@@ -234,7 +234,7 @@ export default function EnhancedTable() {
 
       setStatuses(statuses.data.results);
       setEventTypes(eventTypes.data.results);
-      setEventMedia(eventMedia.data.results);
+      setEventMedias(eventMedias.data.results);
       setApplications(applications.data.results);
     };
     fetchAllData();
@@ -281,7 +281,7 @@ export default function EnhancedTable() {
         applicationProcess={currentItem}
         statuses={statuses}
         eventTypes={eventTypes}
-        eventMedia={eventMedia}
+        eventMedias={eventMedias}
         handleClose={handleClose}
         handleSave={handleSave}
       />

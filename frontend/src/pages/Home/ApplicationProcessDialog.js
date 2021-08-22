@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#FFADE7',//pink
     margin: '5px',
   },
+  blueButton: {
+    backgroundColor: '#93F7FF'
+  },
   card: {
     backgroundColor: '#c3fff5',//veryLightBlue
     width: "100%",
@@ -72,7 +75,7 @@ export default function ApplicationProcessDialog({
   handleSave,
 }) {
   const theme = useTheme();
-  const [displayContacts, setDisplayContacts] = useState(true);
+  const [displayContacts, setDisplayContacts] = useState(false);
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
   const renderContactsOrNotes = () => {
@@ -267,7 +270,7 @@ export default function ApplicationProcessDialog({
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
             <Grid container alignItems="center" >
               <ButtonGroup
-                color="primary"
+                className={classes.blueButton}
                 aria-label="outlined primary button group"
               >
                 <Button

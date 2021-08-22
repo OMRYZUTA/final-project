@@ -16,7 +16,7 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
 
     const handleEventTypeChange = (e) => {
         const oneElementArray = eventTypes.filter(a => {
-            return a.id == e.target.value;
+            return a.id === e.target.value;
         })
 
         const newEventType = oneElementArray[0]
@@ -29,7 +29,7 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
 
     const handleMediaTypeChange = (e) => {
         const oneElementArray = eventMedias.filter(a => {
-            return a.id == e.target.value;
+            return a.id === e.target.value;
         })
 
         const newEventMedia = oneElementArray[0]

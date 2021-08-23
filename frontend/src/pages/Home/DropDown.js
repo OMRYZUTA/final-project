@@ -30,7 +30,6 @@ export default function DropDown({
 }) {
     const classes = useStyles();
     let tempOptions = options.sort((s1, s2) => (s1.name).localeCompare(s2.name))
-    console.log({ tempOptions })
 
     const extendedOptions = [EMPTY_OPTION, ...tempOptions];
 

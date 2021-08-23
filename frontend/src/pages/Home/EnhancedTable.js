@@ -262,7 +262,7 @@ export default function EnhancedTable() {
   const handleSave = useCallback(async applicationProcess => {
     let result;
 
-    console.log('in enhancedTable, handleSave', applicationProcess);
+    
 
     if (applicationProcess.url) {
       result = await apServices.update(applicationProcess);

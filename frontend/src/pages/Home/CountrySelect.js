@@ -23,7 +23,6 @@ const useStyles = makeStyles({
 
 const CountrySelect = ({ country_id, onChange }) => {
     const classes = useStyles();
-    console.log(country_id);
     return (
         <Autocomplete
             id="country-select-demo"

@@ -158,7 +158,6 @@ export default function ApplicationProcessDialog({
   };
 
   const onSave = useCallback(() => {
-    console.log('in dialog', currentApplication);
     handleSave(currentApplication);
   }, [currentApplication, handleSave]);
 

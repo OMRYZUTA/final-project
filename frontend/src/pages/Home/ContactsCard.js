@@ -28,7 +28,6 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
         handleContactsChange(e, clone);
     }
     const handleAddContact = useCallback((e) => {
-        console.log(contacts);
         const newContact = {
             email_address: "", name: "",
             phone_number1: ""

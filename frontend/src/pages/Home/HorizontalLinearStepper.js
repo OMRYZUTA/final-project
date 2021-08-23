@@ -69,7 +69,6 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
     }, []);
 
     const handleStepDialogChange = useCallback((newStep) => {
-        console.log({ newStep })
         handleStagesChange(newStep);
         setCurrentStep();
     }, [handleStagesChange]);

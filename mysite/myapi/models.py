@@ -31,6 +31,7 @@ class Status(models.Model):
         managed = False
         db_table = 'status'
 
+
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, null=True, blank=True)
@@ -70,8 +71,7 @@ class Stage(models.Model):
     id = models.AutoField(primary_key=True)
     application_process_id = models.ForeignKey(
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
-    stage_date = models.DateField(
-        auto_now_add=True, null=True, blank=True)
+    stage_date = models.DateField(null=True, blank=True)
     event_type = models.ForeignKey(
         EventType, null=False, default="OT", on_delete=models.DO_NOTHING)
     event_media = models.ForeignKey(

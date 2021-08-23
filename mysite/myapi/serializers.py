@@ -66,18 +66,6 @@ class StageSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        # event_type_validated_data = validated_data.pop('event_type')
-        # if(event_type_validated_data != None):
-        #     event_type_name = event_type_validated_data['name']
-        #     event_type = EventType.objects.get(name=event_type_name)
-        #     validated_data['event_type'] = event_type
-
-        # event_media_validated_data = validated_data.pop('event_media')
-        # if(event_media_validated_data != None):
-        #     event_media_name = event_media_validated_data['name']
-        #     event_media = EventMedia.objects.get(name=event_media_name)
-        #     validated_data['event_media'] = event_media
-
         stage = Stage.objects.create(
             **validated_data)
         return stage
@@ -206,7 +194,7 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
                     # update this item
                     instance_stage = stages_to_remove.pop(stage_id)
                     Stage.objects.filter(
-                        id=instance_stage.id).update(**stage)
+                        id=instance_stage.id).update(**stage_data)
 
             for stage in stages_to_remove.values():
                 stage.delete()

@@ -262,14 +262,12 @@ export default function EnhancedTable() {
   const handleSave = useCallback(async applicationProcess => {
     let result;
 
-    
 
     if (applicationProcess.url) {
       result = await apServices.update(applicationProcess);
     } else {
       result = await apServices.addNew(applicationProcess);
     }
-
     let newApplications = updateArray(applications, result.data)
 
     setApplications(stableSort(newApplications, getComparator(order, orderBy)));

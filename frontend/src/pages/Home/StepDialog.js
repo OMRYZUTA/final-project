@@ -6,11 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 import DatePicker from './DatePicker'
 import DropDown from './DropDown'
 
-export default function StepDialog({ initialStep, eventTypes, eventMedias, handleClose, handleSave }) {
+export default function StepDialog({ initialStep, eventTypes, eventMedias, handleClose, handleSave, onDeleteStage }) {
     const [step, setStep] = useState(initialStep);
 
 
@@ -59,6 +60,11 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
         handleSave(step);
     }, [step, handleSave]);
 
+    const handleDelete = useCallback((e) => {
+        console.log(step);
+        onDeleteStage(step);
+        handleClose();
+    })
     const isNew = !step.id; // change any value to boolean true/false
 
     return (
@@ -105,6 +111,9 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
                 </Grid>
             </DialogContent>
             <DialogActions>
+                <IconButton onClick={handleDelete}>
+                    <DeleteIcon />
+                </IconButton>
                 <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>

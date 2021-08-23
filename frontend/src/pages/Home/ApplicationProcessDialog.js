@@ -162,7 +162,12 @@ export default function ApplicationProcessDialog({
   const onDelete = useCallback(() => {
     handleDelete(currentApplication);
   }, [currentApplication, handleDelete]);
-
+  const onDeleteStage = useCallback((stageToDelete) => {
+    setCurrentApplication({
+      ...currentApplication, stage_set: currentApplication.stage_set.filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete)
+      )
+    });
+  })
   const onSave = useCallback(() => {
     handleSave(currentApplication);
   }, [currentApplication, handleSave]);
@@ -306,6 +311,7 @@ export default function ApplicationProcessDialog({
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <HorizontalStepper
+              onDeleteStage={onDeleteStage}
               className={classes.stepper}
               stage_set={currentApplication.stage_set}
               eventTypes={eventTypes}

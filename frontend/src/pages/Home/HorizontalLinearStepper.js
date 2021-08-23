@@ -37,13 +37,14 @@ function renderEmptyState() {
 
 function RenderStepper(steps, classes, setCurrentStep) {
     return (
-        <Stepper className={[classes.scrollable, classes.root]}>
+        <Stepper nonLinear className={[classes.scrollable, classes.root]}>
             {steps
                 .sort((s1, s2) => new Date(s1.stage_date) - new Date(s2.stage_date))
                 .map((stage) => {
                     return (
+
                         //past date - blue, future date pink
-                        <Step key={stage.id} active={true}>
+                        < Step key={stage.id} active={true} >
                             <StepButton onClick={() => setCurrentStep(stage)}>
                                 {/* change onclick */}
                                 <StepLabel>
@@ -51,14 +52,14 @@ function RenderStepper(steps, classes, setCurrentStep) {
                                     <div>{stage.stage_date}</div>
                                 </StepLabel>
                             </StepButton>
-                        </Step >
+                        </Step>
                     );
                 })}
-        </Stepper >
+        </Stepper>
     )
 }
 
-export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, handleStagesChange }) {
+export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, handleStagesChange, onDeleteStage }) {
     const classes = useStyles();
     const [currentStep, setCurrentStep] = useState();
 
@@ -90,6 +91,7 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
             {hasSteps && RenderStepper(stage_set, classes, setCurrentStep)}
             {!hasSteps && renderEmptyState()}
             {currentStep && <StepDialog
+                onDeleteStage={onDeleteStage}
                 initialStep={currentStep}
                 eventTypes={eventTypes}
                 eventMedias={eventMedias}

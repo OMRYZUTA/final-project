@@ -33,11 +33,6 @@ function renderEmptyState() {
 }
 
 function RenderStepper(steps, classes) {
-    let sortedSteps = steps.sort((s1, s2) => {
-        console.log('comparasion: ', new Date(s1.stage_date) - new Date(s2.stage_date))
-        return new Date(s1.stage_date) - new Date(s2.stage_date)
-    });
-    console.log(sortedSteps);
     return (
         <Stepper className={classes.root}>
             {steps

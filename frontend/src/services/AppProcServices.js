@@ -2,7 +2,7 @@ import axios from "axios";
 import * as StaticServices from "./StaticServices";
 
 export async function getStaticData() {
-    
+
 }
 
 export async function getAll() {
@@ -20,4 +20,8 @@ export async function addNew(app) {
 
 export async function update(app) {
     return await axios.put(app.url, app);
+}
+
+export async function remove(app) {
+    return await axios.delete(app.url);
 }

@@ -18,6 +18,8 @@ import Card from '@material-ui/core/Card';
 import AddIcon from '@material-ui/icons/Add';
 import CountrySelect from "./CountrySelect";
 import { updateArray } from "../../utils/utils";
+import DeleteIcon from '@material-ui/icons/Delete';
+import * as apServices from '../../services/AppProcServices';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -74,6 +76,7 @@ export default function ApplicationProcessDialog({
   eventMedias,
   handleClose,
   handleSave,
+  handleDelete,
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(false);
@@ -155,6 +158,10 @@ export default function ApplicationProcessDialog({
   const handleApplicationChange = (e) => {
     setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
   };
+
+  const onDelete = useCallback(() => {
+    handleDelete(currentApplication);
+  }, [currentApplication, handleDelete]);
 
   const onSave = useCallback(() => {
     handleSave(currentApplication);
@@ -309,6 +316,9 @@ export default function ApplicationProcessDialog({
         </Grid>
 
         <Grid container className={classes.footer}>
+          <IconButton className={classes.deleteBin} onClick={onDelete}>
+            <DeleteIcon />
+          </IconButton>
           <Grid item>
             <Button
               id="cancel"

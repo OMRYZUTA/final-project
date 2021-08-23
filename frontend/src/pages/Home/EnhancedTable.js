@@ -259,6 +259,13 @@ export default function EnhancedTable() {
     setCurrentItem(undefined);
   }, []);
 
+  const handleDelete = useCallback(async applicationProcess => {
+    // https://www.npmjs.com/package/react-confirm-alert
+    await apServices.remove(applicationProcess);
+    setApplications(applications.filter((app) => app.id !== applicationProcess.id));
+    setCurrentItem(undefined);
+  }, [applications]);
+
   const handleSave = useCallback(async applicationProcess => {
     let result;
 
@@ -282,6 +289,7 @@ export default function EnhancedTable() {
         eventTypes={eventTypes}
         eventMedias={eventMedias}
         handleClose={handleClose}
+        handleDelete={handleDelete}
         handleSave={handleSave}
       />
     );
@@ -309,6 +317,7 @@ export default function EnhancedTable() {
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <IconButton position={"relative"} onClick={handleAddNew}>
+          {/* need to disable button until all static data was fetched */}
           <AddIcon />
         </IconButton>
 
@@ -357,7 +366,9 @@ export default function EnhancedTable() {
                         <TableCell align="left">{row.status}</TableCell>
                         <TableCell align="left">{row.last_modified}</TableCell>
                         <TableCell align="left">
-                          <DeleteIcon className={classes.deleteBin} />
+                          {/* <IconButton className={classes.deleteBin} onClick={handleDelete}>
+                            <DeleteIcon />
+                          </IconButton> */}
                         </TableCell>
                       </TableRow>
                     );

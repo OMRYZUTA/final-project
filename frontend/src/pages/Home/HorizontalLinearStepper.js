@@ -5,6 +5,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
 import Typography from '@material-ui/core/Typography';
+import { StepButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid'
 import StepDialog from './StepDialog';
@@ -13,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         //width: '100%',
         backgroundColor: '#c3fff5',//veryLightBlue
+        padding: 12,
     },
     container: {
         justifyContent: 'flex-start',
@@ -24,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     step: {
         backgroundColor: '#FFADE7',//pink
     },
+    scrollable: { overflow: 'scroll', },
 }));
 
 function renderEmptyState() {
@@ -32,26 +35,28 @@ function renderEmptyState() {
     )
 }
 
-function RenderStepper(steps, classes) {
+function RenderStepper(steps, classes, setCurrentStep) {
     return (
-        <Stepper className={classes.root}>
+        <Stepper className={[classes.scrollable, classes.root]}>
             {steps
                 .sort((s1, s2) => new Date(s1.stage_date) - new Date(s2.stage_date))
                 .map((stage) => {
                     return (
                         //past date - blue, future date pink
                         <Step key={stage.id} active={true}>
-                            <StepLabel >
-                                <div>{stage.event_type.name}</div>
-                                <div>{stage.stage_date}</div>
-                            </StepLabel>
-                        </Step>
+                            <StepButton onClick={() => setCurrentStep(stage)}>
+                                {/* change onclick */}
+                                <StepLabel>
+                                    <div>{stage.event_type.name}</div>
+                                    <div>{stage.stage_date}</div>
+                                </StepLabel>
+                            </StepButton>
+                        </Step >
                     );
                 })}
-        </Stepper>
+        </Stepper >
     )
 }
-
 
 export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, handleStagesChange }) {
     const classes = useStyles();
@@ -82,7 +87,7 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
                     <AddIcon />
                 </IconButton>
             </Grid>
-            {hasSteps && RenderStepper(stage_set, classes)}
+            {hasSteps && RenderStepper(stage_set, classes, setCurrentStep)}
             {!hasSteps && renderEmptyState()}
             {currentStep && <StepDialog
                 initialStep={currentStep}

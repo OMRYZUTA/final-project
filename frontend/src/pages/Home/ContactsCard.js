@@ -1,20 +1,43 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        justifyContent: 'flex-start',
+    }
+}
+
+));
 
 const ContactsCard = ({ contact_set, handleContactsChange }) => {
+    const classes = useStyles();
     const [index, setIndex] = useState(0);
-    const [Contacts, setContacts] = useState(contact_set);
+    const [contacts, setContacts] = useState(contact_set);
 
     const handleListChange = (e) => {
-        const old = Contacts[index];
+        const old = contacts[index];
         const updated = { ...old, [e.target.id]: e.target.value }
-        const clone = [...Contacts];
+        const clone = [...contacts];
         clone[index] = updated;
         setContacts(clone);
         handleContactsChange(e, clone);
     }
+    const handleAddContact = useCallback((e) => {
+        console.log(contacts);
+        const newContact = {
+            email_address: "", name: "",
+            phone_number1: ""
+        }
+        const clone = [...contacts, newContact];
+        setContacts(clone);
+        handleContactsChange(e, clone);
+        setIndex(clone.length - 1);
+    }, [contacts, handleContactsChange])
     return (
         <Grid container direction={'column'}>
             <Grid item>
@@ -38,8 +61,8 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
                     <TextField
                         id="name"
                         label="Contact Name"
-                        value={Contacts.length > 0 ?
-                            Contacts[index].name : ''}
+                        value={contacts.length > 0 ?
+                            contacts[index].name : ''}
                         onChange={handleListChange}
                     />
                 </Grid>
@@ -50,8 +73,8 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
                     <TextField
                         id="phone_number1"
                         label="Contact Phone"
-                        value={Contacts.length > 0 ?
-                            Contacts[index].phone_number1 : ''}
+                        value={contacts.length > 0 ?
+                            contacts[index].phone_number1 : ''}
                         onChange={handleListChange} />
                 </Grid>
             </Grid>
@@ -60,11 +83,16 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
                     <TextField
                         id="email_address"
                         label="Contact Mail"
-                        value={Contacts.length > 0 ?
-                            Contacts[index].email_address :
+                        value={contacts.length > 0 ?
+                            contacts[index].email_address :
                             ''}
                         onChange={handleListChange} />
                 </Grid>
+            </Grid>
+            <Grid container className={classes.container}>
+                <IconButton onClick={handleAddContact}>
+                    <AddIcon />
+                </IconButton>
             </Grid>
         </Grid>
 

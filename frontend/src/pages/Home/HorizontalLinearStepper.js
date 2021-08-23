@@ -48,7 +48,7 @@ function RenderStepper(steps, classes) {
                         </Step>
                     );
                 })}
-        </Stepper >
+        </Stepper>
     )
 }
 

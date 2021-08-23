@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -37,6 +38,13 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
         handleContactsChange(e, clone);
         setIndex(clone.length - 1);
     }, [contacts, handleContactsChange])
+
+    const onDeleteContact = useCallback(() => {
+        setContacts(
+            contacts.filter(contact => JSON.stringify(contact) !== JSON.stringify(contacts[index]))
+        );
+        setIndex(index === 0 ? 0 : index - 1);
+    })
     return (
         <Grid container direction={'column'}>
             <Grid item>
@@ -49,7 +57,7 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
                         {"<"}
                     </Button>
                     <Button
-                        disabled={contact_set?.length - 1 === index}
+                        disabled={contacts?.length - 1 === index}
                         onClick={() => {
                             setIndex(index + 1);
                         }}>{">"}</Button>
@@ -91,6 +99,9 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
             <Grid container className={classes.container}>
                 <IconButton onClick={handleAddContact}>
                     <AddIcon />
+                </IconButton>
+                <IconButton onClick={onDeleteContact} disable={contacts.length < 0}>
+                    <DeleteIcon />
                 </IconButton>
             </Grid>
         </Grid>

@@ -108,9 +108,8 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = (props) => {
+const EnhancedTableToolbar = ({ handleSearchChanged }) => {
   const classes = useToolbarStyles();
-
   return (
     <Toolbar className={clsx(classes.root)}>
       <Typography
@@ -120,7 +119,7 @@ const EnhancedTableToolbar = (props) => {
       >
         Job Application Processes
       </Typography>
-      <SearchField className={classes.search} />
+      <SearchField className={classes.search} handleSearchChanged={handleSearchChanged} />
       <Tooltip title="Filter list">
         <IconButton aria-label="filter list">
           <FilterListIcon />
@@ -191,24 +190,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const matchStatusToClassName = (statusID, classes) => {
-  let className = ''
-  switch (statusID) {
-    case "Applied":
-      className = classes["yellowRow"];
-      break;
-    case "Closed":
-      className = classes["anakiwaRow"];
-      break;
-    case "Interested":
-      className = classes["otherBlueRow"];
-      break;
-    default:
-      className = "";
-      break;
-  }
-  return className;
-};
+
 
 export default function EnhancedTable() {
   const classes = useStyles();
@@ -221,6 +203,35 @@ export default function EnhancedTable() {
   const [eventTypes, setEventTypes] = React.useState([]);
   const [eventMedias, setEventMedias] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
+  const [query, setQuery] = React.useState("");
+  const matchStatusToClassName = (statusID, classes) => {
+    let className = ''
+    switch (statusID) {
+      case "Applied":
+        className = classes["yellowRow"];
+        break;
+      case "Closed":
+        className = classes["anakiwaRow"];
+        break;
+      case "Interested":
+        className = classes["otherBlueRow"];
+        break;
+      default:
+        className = "";
+        break;
+    }
+    return className;
+  };
+  const handleSearchChanged = useCallback(e => {
+
+    if (e.target.value) {
+      setQuery(e.target.value);
+    }
+    else {
+      setQuery("");
+    }
+
+  }, [applications])
 
   React.useEffect(() => {
     const fetchAllData = async () => {
@@ -281,6 +292,26 @@ export default function EnhancedTable() {
     setCurrentItem(undefined);
   }, [applications]);
 
+  const isMatching = (app, query) => {
+    console.log({ app }, { query });
+    let result = false;
+    if (!query) {
+      result = true;
+    }
+    else {
+      let normilizedQuery = query.toLowerCase();
+
+      if (app.position.company_name.toLowerCase().includes(normilizedQuery.toLowerCase())) {
+        result = true;
+      }
+      else if (app.position.job_title.toLowerCase().includes(normilizedQuery.toLowerCase())) {
+        result = true;
+      }
+    }
+    return result;
+  }
+
+
   const renderCurrentItem = (currentItem) => {
     return (
       <ApplicationProcessDialog
@@ -315,7 +346,7 @@ export default function EnhancedTable() {
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar />
+        <EnhancedTableToolbar handleSearchChanged={handleSearchChanged} />
         <IconButton position={"relative"} onClick={handleAddNew}>
           {/* need to disable button until all static data was fetched */}
           <AddIcon />
@@ -333,12 +364,13 @@ export default function EnhancedTable() {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               rowCount={applications.length}
+              handleSearchChanged={handleSearchChanged}
             />
 
             <TableBody>
               {
                 stableSort(
-                  applications.map(app => ({
+                  applications.filter((app) => isMatching(app, query)).map(app => ({
                     id: app.id,
                     company_name: app.position?.company_name,
                     job_title: app.position?.job_title,

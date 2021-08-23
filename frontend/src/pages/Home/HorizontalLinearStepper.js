@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
         //width: '100%',
         backgroundColor: '#c3fff5',//veryLightBlue
         padding: 12,
+        justifyContent: "space-between",
+        alignContent: "space-around"
+
     },
     container: {
         justifyContent: 'flex-start',
@@ -24,9 +27,10 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(1),
     },
     step: {
-        backgroundColor: '#FFADE7',//pink
+        marginRight: '100px',
     },
     scrollable: { overflow: 'scroll', },
+
 }));
 
 function renderEmptyState() {
@@ -37,24 +41,23 @@ function renderEmptyState() {
 
 function RenderStepper(steps, classes, setCurrentStep) {
     return (
-        <Stepper nonLinear className={[classes.scrollable, classes.root]}>
+        <Stepper nonLinear className={steps.length > 7 ? [classes.scrollable, classes.root] : classes.root}>
             {steps
                 .sort((s1, s2) => new Date(s1.stage_date) - new Date(s2.stage_date))
                 .map((stage) => {
                     return (
-
                         //past date - blue, future date pink
-                        < Step key={stage.id} active={true} >
-                            <StepButton onClick={() => setCurrentStep(stage)}>
-                                {/* change onclick */}
-                                <StepLabel>
-                                    <div>{stage.event_type.name}</div>
-                                    <div>{stage.stage_date}</div>
-                                </StepLabel>
-                            </StepButton>
+                        <Step key={stage.id} active={true} className={steps.length > 7 ? classes.step:null} >
+            <StepButton onClick={() => setCurrentStep(stage)}>
+                {/* change onclick */}
+                <StepLabel>
+                    <div>{stage.event_type.name}</div>
+                    <div fullWidth>{stage.stage_date}</div>
+                </StepLabel>
+            </StepButton>
                         </Step>
-                    );
-                })}
+    );
+})}
         </Stepper>
     )
 }

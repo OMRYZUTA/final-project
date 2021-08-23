@@ -24,13 +24,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchField() {
+export default function SearchField({ handleSearchChanged }) {
   const classes = useStyles();
-
+  const handleChange = (e) => {
+    handleSearchChanged(e)
+  }
   return (
     <div component="form" className={classes.root}>
 
       <InputBase
+        onChange={handleChange}
         className={classes.input}
         placeholder="search"
         inputProps={{ 'aria-label': 'search google maps' }}

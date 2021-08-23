@@ -88,7 +88,7 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
                             />
                         </Grid>
                         <Grid item>
-                            <DatePicker date={step.date} onChange={handleDateChange} />
+                            <DatePicker date={step.stage_date} onChange={handleDateChange} />
                         </Grid>
                     </Grid>
                     <Grid container item direction={'column'}>

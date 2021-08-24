@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    width: 300,
+    width: 460,
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -35,7 +35,7 @@ export default function SearchField({ handleSearchChanged }) {
       <InputBase
         onChange={handleChange}
         className={classes.input}
-        placeholder="search"
+        placeholder="search for job, company, reference..."
         inputProps={{ 'aria-label': 'search google maps' }}
       />
       <IconButton type="submit" className={classes.iconButton} aria-label="search">

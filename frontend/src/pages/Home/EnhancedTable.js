@@ -61,7 +61,6 @@ const headCells = [
   { id: "job_title", numeric: false, disablePadding: true, label: "Position" },
   { id: "status", numeric: false, disablePadding: true, label: "Status" },
   { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" },
-  { id: "delete", disablePadding: true, label: "" }, // for the delete bin
 ];
 
 function EnhancedTableHead(props) {
@@ -308,6 +307,9 @@ export default function EnhancedTable() {
       else if (app.position.job_title.toLowerCase().includes(normilizedQuery.toLowerCase())) {
         result = true;
       }
+      else if (app.reference?.toLowerCase().includes(normilizedQuery.toLowerCase())) {
+        result = true;
+      }
     }
     return result;
   }
@@ -396,11 +398,7 @@ export default function EnhancedTable() {
                           {row.job_title}
                         </TableCell>
                         <TableCell align="left">{row.status}</TableCell>
-                        <TableCell align="left">{row.last_modified}</TableCell>
-                        <TableCell align="left">
-                          {/* <IconButton className={classes.deleteBin} onClick={handleDelete}>
-                            <DeleteIcon />
-                          </IconButton> */}
+                        <TableCell align="left">{row.last_modified}
                         </TableCell>
                       </TableRow>
                     );

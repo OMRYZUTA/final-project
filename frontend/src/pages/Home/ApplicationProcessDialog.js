@@ -149,8 +149,13 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({ ...currentApplication, position: position });
   };
 
-  const handleStagesChange = useCallback((newStage) => {
-    const newStages = updateArray(currentApplication.stage_set, newStage).sort((s1, s2) => s1.stage_date - s2.stage_date)
+  const handleStagesChange = useCallback((newStage, isUpdate) => {
+    let newStages;
+    if (isUpdate) {
+      newStages = currentApplication.stage_set.filter(stage => JSON.stringify(stage) !== JSON.stringify(newStage)
+      )
+    }
+    newStages = updateArray(currentApplication.stage_set, newStage).sort((s1, s2) => new Date(s1.stage_date) - new Date(s2.stage_date))
     setCurrentApplication({ ...currentApplication, stage_set: newStages });
   }, [currentApplication]);
 

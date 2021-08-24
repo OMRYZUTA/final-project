@@ -1,5 +1,6 @@
 export function descendingComparator(a, b, orderBy) {
     let x, y;
+    console.log({ orderBy });
     if (typeof a[orderBy] === "string") {
         x = a[orderBy].toLowerCase();
         y = b[orderBy].toLowerCase();
@@ -24,6 +25,8 @@ export function getComparator(order, orderBy) {
 }
 
 export function stableSort(array, comparator) {
+    console.log({ comparator });
+    console.log(array, 'before');
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
 
@@ -31,6 +34,7 @@ export function stableSort(array, comparator) {
         if (order !== 0) return order;
         return a[1] - b[1];
     });
+    console.log(stabilizedThis, 'after');
     return stabilizedThis.map((el) => el[0]);
 }
 

@@ -110,7 +110,14 @@ export default function ApplicationProcessDialog({
 
   const handleCountryChange = useCallback((event) => {
     const [span] = event.target.getElementsByTagName('span');
-    const country_id = span.getAttribute('data-code');
+    let country_id;
+    if (span) {
+      country_id = span.getAttribute('data-code');
+    }
+    else {
+      country_id = null;
+    }
+
     setCurrentApplication({
       ...currentApplication,
       position: {
@@ -162,7 +169,7 @@ export default function ApplicationProcessDialog({
   const onDelete = useCallback(() => {
     handleDelete(currentApplication);
   }, [currentApplication, handleDelete]);
-  
+
   const onDeleteStage = useCallback((stageToDelete) => {
     setCurrentApplication({
       ...currentApplication, stage_set: currentApplication.stage_set.filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete)

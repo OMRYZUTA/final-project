@@ -23,11 +23,15 @@ const useStyles = makeStyles({
 
 const CountrySelect = ({ country_id, onChange }) => {
     const classes = useStyles();
+    const country = countries.find((country) => country.code === country_id);
+    const countryLable = country?.label;
+    console.log(countryLable);
     return (
         <Autocomplete
             id="country-select-demo"
             style={{ width: 300 }}
             options={countries}
+            defaultValue={country}
             classes={{
                 option: classes.option,
             }}
@@ -42,8 +46,6 @@ const CountrySelect = ({ country_id, onChange }) => {
                 </React.Fragment>
             )}
             renderInput={(params) => {
-                const country = countries.find((country) => country.code === country_id);
-                params.inputProps.value = country?.label;
 
                 return (
                     <TextField

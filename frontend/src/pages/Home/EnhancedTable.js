@@ -204,6 +204,7 @@ export default function EnhancedTable() {
   const [eventMedias, setEventMedias] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
+  const [isFetching, setIsFetching] = React.useState(true);
   const matchStatusToClassName = (statusID, classes) => {
     let className = ''
     switch (statusID) {
@@ -246,6 +247,7 @@ export default function EnhancedTable() {
       setStatuses(statuses.data.results);
       setEventTypes(eventTypes.data.results);
       setEventMedias(eventMedias.data.results);
+      setIsFetching(false);
       setApplications(applications.data.results);
     };
     fetchAllData();
@@ -347,8 +349,7 @@ export default function EnhancedTable() {
       {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar handleSearchChanged={handleSearchChanged} />
-        <IconButton position={"relative"} onClick={handleAddNew}>
-          {/* need to disable button until all static data was fetched */}
+        <IconButton disabled={isFetching} position={"relative"} onClick={handleAddNew}>
           <AddIcon />
         </IconButton>
 

@@ -44,7 +44,7 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
             contacts.filter(contact => JSON.stringify(contact) !== JSON.stringify(contacts[index]))
         );
         setIndex(index === 0 ? 0 : index - 1);
-    })
+    }, [contacts, index])
     return (
         <Grid container direction={'column'}>
             <Grid item>
@@ -57,7 +57,7 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
                         {"<"}
                     </Button>
                     <Button
-                        disabled={contacts?.length - 1 === index}
+                        disabled={contacts?.length === 0 || contacts?.length - 1 === index}
                         onClick={() => {
                             setIndex(index + 1);
                         }}>{">"}</Button>

@@ -292,10 +292,9 @@ export default function EnhancedTable() {
 
     setApplications(stableSort(newApplications, getComparator(order, orderBy)));
     setCurrentItem(undefined);
-  }, [applications]);
+  }, [applications, orderBy, order]);
 
   const isMatching = (app, query) => {
-    console.log({ app }, { query });
     let result = false;
     if (!query) {
       result = true;

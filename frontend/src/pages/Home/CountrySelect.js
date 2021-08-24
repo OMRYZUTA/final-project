@@ -24,8 +24,6 @@ const useStyles = makeStyles({
 const CountrySelect = ({ country_id, onChange }) => {
     const classes = useStyles();
     const country = countries.find((country) => country.code === country_id);
-    const countryLable = country?.label;
-    console.log(countryLable);
     return (
         <Autocomplete
             id="country-select-demo"

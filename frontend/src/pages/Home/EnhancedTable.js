@@ -20,6 +20,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
+
 import SearchField from "./SearchField";
 import * as apServices from '../../services/AppProcServices';
 import { getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
@@ -346,6 +347,7 @@ export default function EnhancedTable() {
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
 
   return (
+
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>

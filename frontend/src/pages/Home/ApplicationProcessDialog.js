@@ -17,6 +17,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import AddIcon from '@material-ui/icons/Add';
 import CountrySelect from "./CountrySelect";
+import AreYouSure from "./AreYouSure";
 import { updateArray } from "../../utils/utils";
 import DeleteIcon from '@material-ui/icons/Delete';
 import * as apServices from '../../services/AppProcServices';
@@ -80,6 +81,10 @@ export default function ApplicationProcessDialog({
 }) {
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(false);
+  const [showAreYouSure, setShowAreYouSure] = React.useState(false);
+  const [headLine, setHeadline] = React.useState("");
+  const [content, setContent] = React.useState("");
+  const [onSure, setOnSure] = useState(() => { });
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
   const renderContactsOrNotes = () => {
@@ -100,6 +105,17 @@ export default function ApplicationProcessDialog({
       </div>
     );
   };
+  const renderAreYouSure = (handleClose, onOK) => {
+    return (
+      <AreYouSure handleClose={handleClose} onOk={onOK} headLine={headLine} content={content} />
+    )
+  }
+
+
+  const handleAreYouSureClose = useCallback(() => {
+    setShowAreYouSure(false);
+  });
+
 
   const handleChange = (e) => {
     setCurrentApplication({
@@ -172,8 +188,16 @@ export default function ApplicationProcessDialog({
   };
 
   const onDelete = useCallback(() => {
-    handleDelete(currentApplication);
-  }, [currentApplication, handleDelete]);
+    setOnSure(() => {
+      // handleDelete(currentApplication);
+      console.log("on sure called");
+      handleAreYouSureClose();
+    })
+    setContent("It Will delete the application permanently, you can instead click cancel and set the status to close")
+    setHeadline("Are You Sure You want to delete the application?");
+    setShowAreYouSure(true);
+  }, [currentApplication, handleDelete, handleAreYouSureClose]);
+
 
   const onDeleteStage = useCallback((stageToDelete) => {
     setCurrentApplication({
@@ -194,6 +218,8 @@ export default function ApplicationProcessDialog({
       onClose={handleClose}
       open={true}
     >
+      {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
+
       <Grid container className={classes.grid} spacing={2} alignItems={"stretch"}>
 
         <Grid item xs={12} md={4}>

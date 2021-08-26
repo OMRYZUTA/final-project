@@ -82,9 +82,9 @@ export default function ApplicationProcessDialog({
   const theme = useTheme();
   const [displayContacts, setDisplayContacts] = useState(false);
   const [showAreYouSure, setShowAreYouSure] = React.useState(false);
-  const [headLine, setHeadline] = React.useState("");
+  const [headline, setHeadline] = React.useState("");
   const [content, setContent] = React.useState("");
-  const [onSure, setOnSure] = useState(() => { });
+  const [onSure, setOnSure] = useState();
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
   const renderContactsOrNotes = () => {
@@ -105,9 +105,9 @@ export default function ApplicationProcessDialog({
       </div>
     );
   };
-  const renderAreYouSure = (handleClose, onOK) => {
+  const renderAreYouSure = (handleClose) => {
     return (
-      <AreYouSure handleClose={handleClose} onOk={onOK} headLine={headLine} content={content} />
+      <AreYouSure handleClose={handleClose} onOK={onSure} headline={headline} content={content} />
     )
   }
 
@@ -186,13 +186,14 @@ export default function ApplicationProcessDialog({
   const handleApplicationChange = (e) => {
     setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
   };
+  const handleSureDeleteApp = useCallback(() => {
+    handleDelete(currentApplication);
+    handleAreYouSureClose();
+
+  }, [handleAreYouSureClose, handleAreYouSureClose, currentApplication, handleDelete]);
 
   const onDelete = useCallback(() => {
-    setOnSure(() => {
-      // handleDelete(currentApplication);
-      console.log("on sure called");
-      handleAreYouSureClose();
-    })
+    setOnSure(() => handleSureDeleteApp);
     setContent("It Will delete the application permanently, you can instead click cancel and set the status to close")
     setHeadline("Are You Sure You want to delete the application?");
     setShowAreYouSure(true);

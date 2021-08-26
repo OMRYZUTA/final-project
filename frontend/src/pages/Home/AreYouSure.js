@@ -7,7 +7,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function AreYouSure({ handleClose, headline, content, onOK }) {
-
     return (
         <div>
             <Dialog

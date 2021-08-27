@@ -62,8 +62,7 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
 
     const handleDelete = useCallback((e) => {
         console.log(step);
-        onDeleteStage(step);
-        handleClose();
+        onDeleteStage(step, handleClose);
     })
     const isNew = !step.id; // change any value to boolean true/false
 

@@ -189,7 +189,6 @@ export default function ApplicationProcessDialog({
   const handleSureDeleteApp = useCallback(() => {
     handleDelete(currentApplication);
     handleAreYouSureClose();
-
   }, [handleAreYouSureClose, handleAreYouSureClose, currentApplication, handleDelete]);
 
   const onDelete = useCallback(() => {
@@ -200,11 +199,23 @@ export default function ApplicationProcessDialog({
   }, [currentApplication, handleDelete, handleAreYouSureClose]);
 
 
-  const onDeleteStage = useCallback((stageToDelete) => {
+  const onDeleteStage = useCallback((stageToDelete, handleClose) => {
+    console.log(stageToDelete);
+    setOnSure(() => () => handleDeletStage(stageToDelete, handleClose));
+    setContent("It will delete the Stage permanently")
+    setHeadline("Are You Sure You want to delete the Stage?");
+    setShowAreYouSure(true);
+  }, [currentApplication, handleDelete, handleAreYouSureClose]);
+
+
+  const handleDeletStage = useCallback((stageToDelete, handleClose) => {
+    console.log(stageToDelete)
     setCurrentApplication({
       ...currentApplication, stage_set: currentApplication.stage_set.filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete)
       )
     });
+    setShowAreYouSure(false);
+    handleClose();
   })
   const onSave = useCallback(() => {
     handleSave(currentApplication);

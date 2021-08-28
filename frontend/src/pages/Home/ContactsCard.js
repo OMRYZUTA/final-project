@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import AreYouSure from "./AreYouSure";
 const useStyles = makeStyles((theme) => ({
     container: {
         justifyContent: 'flex-start',
@@ -19,6 +19,35 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
     const classes = useStyles();
     const [index, setIndex] = useState(0);
     const [contacts, setContacts] = useState(contact_set);
+    const [showAreYouSure, setShowAreYouSure] = React.useState(false);
+    const [headline, setHeadline] = React.useState("");
+    const [content, setContent] = React.useState("");
+    const [onSure, setOnSure] = useState();
+
+    const renderAreYouSure = (handleClose) => {
+        return (
+            <AreYouSure handleClose={handleClose} onOK={onSure} headline={headline} content={content} />
+        )
+    }
+    const handleAreYouSureClose = useCallback(() => {
+        setShowAreYouSure(false);
+    });
+    const onDeleteContact = useCallback(() => {
+        setContacts(
+            contacts.filter(contact => JSON.stringify(contact) !== JSON.stringify(contacts[index]))
+        );
+        setIndex(index === 0 ? 0 : index - 1);
+        setShowAreYouSure(false);
+    }, [contacts, index]);
+
+    const onDelete = useCallback(() => {
+        if (contacts.length > 0) {
+            setOnSure(() => onDeleteContact);
+            setContent("It Will delete the contact permanently")
+            setHeadline("Are You Sure You want to delete the contact?");
+            setShowAreYouSure(true);
+        }
+    }, [onDeleteContact,contacts]);
 
     const handleListChange = (e) => {
         const old = contacts[index];
@@ -39,14 +68,10 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
         setIndex(clone.length - 1);
     }, [contacts, handleContactsChange])
 
-    const onDeleteContact = useCallback(() => {
-        setContacts(
-            contacts.filter(contact => JSON.stringify(contact) !== JSON.stringify(contacts[index]))
-        );
-        setIndex(index === 0 ? 0 : index - 1);
-    }, [contacts, index])
+
     return (
         <Grid container direction={'column'}>
+            {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
             <Grid item>
                 <Grid container >
                     <Button
@@ -100,7 +125,7 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
                 <IconButton onClick={handleAddContact}>
                     <AddIcon />
                 </IconButton>
-                <IconButton onClick={onDeleteContact} disable={contacts.length < 0}>
+                <IconButton onClick={onDelete} disable={contacts.length < 0}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>

@@ -146,6 +146,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   malibuRow: {
+    '& td': {
+      fontWeight: 550,
+    },
     backgroundColor: '#5FE2FF'
   },
   anakiwaRow: {
@@ -159,7 +162,7 @@ const useStyles = makeStyles((theme) => ({
   },
   yellowRow: {
     '& td': {
-      fontWeight: 800,
+      fontWeight: 550,
     },
     backgroundColor: "#FFFFC5",
   },

@@ -4,6 +4,7 @@ import { createTheme } from '@material-ui/core/styles';
 import { makeStyles, ThemeProvider } from '@material-ui/styles';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
+import Profile from './pages/Profile';
 
 const theme = createTheme({
   palette: {
@@ -66,6 +67,11 @@ export default function App() {
             exact
             from='/'
             render={props => <Home {...props} />}
+          />
+          <Route
+            exact
+            from='/profile'
+            render={props => <Profile />}
           />
           <Route exact path='/home' render={props => <Home {...props} className={classes.container} />} />
         </Switch>

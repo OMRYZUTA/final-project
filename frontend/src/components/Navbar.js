@@ -117,8 +117,8 @@ const Navbar = props => {
                         </div>
                     ) : (
                         <div className={classes.headerOptions}>
-                            <a href="/" >
-                                <img className={classes.profilePhoto} src={ProfilePicture} alt="profile" onClick={() => handleButtonClick('/')} />
+                            <a href="/profile" >
+                                <img className={classes.profilePhoto} src={ProfilePicture} alt="profile" />
                             </a>
                         </div>
                     )}

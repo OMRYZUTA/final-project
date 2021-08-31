@@ -146,6 +146,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   malibuRow: {
+    '& td': {
+      fontWeight: 550,
+    },
     backgroundColor: '#5FE2FF'
   },
   anakiwaRow: {
@@ -158,7 +161,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#FFADE7'
   },
   yellowRow: {
-    backgroundColor: "#FFFFC5"
+    '& td': {
+      fontWeight: 550,
+    },
+    backgroundColor: "#FFFFC5",
   },
   whiteRow: {
     backgroundColor: "white"
@@ -190,8 +196,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -210,6 +214,9 @@ export default function EnhancedTable() {
     switch (statusID) {
       case "Applied":
         className = classes["yellowRow"];
+        break;
+      case "In Progress":
+        className = classes["malibuRow"];
         break;
       case "Closed":
         className = classes["anakiwaRow"];
@@ -315,7 +322,6 @@ export default function EnhancedTable() {
     return result;
   }
 
-
   const renderCurrentItem = (currentItem) => {
     return (
       <ApplicationProcessDialog
@@ -347,7 +353,6 @@ export default function EnhancedTable() {
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
 
   return (
-
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>
@@ -385,6 +390,7 @@ export default function EnhancedTable() {
                 )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
+
                     return (
                       <TableRow
                         hover

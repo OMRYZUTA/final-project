@@ -9,7 +9,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuIcon from '@material-ui/icons/Menu';
-
 import { ReactComponent as Logo } from '../../resources/images/logo.svg';
 import ProfilePicture from '../../resources/images/ProfilePhoto.jpg';
 

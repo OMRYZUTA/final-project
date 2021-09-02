@@ -1,3 +1,5 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer
@@ -34,6 +36,15 @@ class ContactViewSet(viewsets.ModelViewSet):
 class PositionViewSet(viewsets.ModelViewSet):
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
+
+
+class Stats(APIView):
+
+    def get(self, request,format= None):
+        stats = {}
+        stats["open_application"]= 2
+        stats["applicatitons with scheduled events"] =49
+        return Response(stats)
 
 
 class ApplicationProcessViewSet(viewsets.ModelViewSet):

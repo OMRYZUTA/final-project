@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     width: '100%',
     backgroundColor: "#FFFFC5", // yellow
+    height: 500
   },
 }));
 

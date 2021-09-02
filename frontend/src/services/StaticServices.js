@@ -46,3 +46,12 @@ export async function getEventMedia() {
         throw new Error('Failed getting all stage event media', err);
     }
 }
+
+export async function getStats() {
+    try {
+        return await axios('/api/stats/');
+    } catch (err) {
+        handleError(err);
+        throw new Error('Failed getting all stats', err);
+    }
+}

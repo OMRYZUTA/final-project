@@ -2,6 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import { getStats } from "../../services/StaticServices"
 import Cover from './Cover';
 import IconTabs from './IconTabs';
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +29,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Index = () => {
     const classes = useStyles();
+    const [stats, setStats] = React.useState();
+    // React.useEffect(() => {
+    //     const fetchAllData = async () => {
+    //         // calling all API calls in parallel, and waiting until they ALL finish before setting
+    //         const [stats] = await Promise.all([
+    //             getStats(),
+    //         ]);
+
+    //         setStats(stats.data.results);
+    //     };
+    //     fetchAllData();
+    // }, []);
 
     return (
         <Grid className={classes.root} container   >

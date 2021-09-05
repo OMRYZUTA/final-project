@@ -47,7 +47,6 @@ const theme = createTheme({
     fontFamily: 'Roboto',
     colors: '#62737B',
   },
-
 })
 
 const useStyles = makeStyles({

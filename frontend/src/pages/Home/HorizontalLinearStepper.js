@@ -9,6 +9,7 @@ import { StepButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid'
 import StepDialog from './StepDialog';
+import { blue } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
         padding: 12,
         justifyContent: "space-between",
         alignContent: "space-around"
-
     },
     container: {
         justifyContent: 'flex-start',
@@ -26,40 +26,53 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
-    step: {
-        marginRight: '100px',
+    past: {
+        color: 'blue',
     },
-    scrollable: { overflow: 'scroll', },
-
+    future: {
+        color: 'pink',
+    },
+    scrollable: {
+        overflow: 'scroll',
+    },
 }));
 
 function renderEmptyState() {
     return (
         <Typography>baby steps...</Typography>
-    )
+    );
 }
 
-function RenderStepper(steps, classes, setCurrentStep) {
+function renderStep(event, classes, onClick) {
+    const { past, future } = classes;
+    const isInPast = new Date(event.stage_date) < new Date();
     return (
-        <Stepper nonLinear className={steps.length > 7 ? [classes.scrollable, classes.root] : classes.root}>
-            {steps
-                .sort((s1, s2) => new Date(s1.stage_date) - new Date(s2.stage_date))
-                .map((stage) => {
-                    return (
-                        //past date - blue, future date pink
-                        <Step key={stage.id} active={true} className={steps.length > 7 ? classes.step:null} >
-            <StepButton onClick={() => setCurrentStep(stage)}>
-                {/* change onclick */}
-                <StepLabel>
-                    <div>{stage.event_type.name}</div>
-                    <div fullWidth>{stage.stage_date}</div>
+        //past date - blue, future date pink
+        <Step key={event.id}  >
+            <StepButton onClick={() => onClick(event)}>
+                <StepLabel className={isInPast ? past : future}>
+                    <div>{event.event_type.name}</div>
+                    <div fullWidth>{event.stage_date}</div>
                 </StepLabel>
             </StepButton>
-                        </Step>
+        </Step>
     );
-})}
-        </Stepper>
-    )
+}
+
+function EventStepper({ events, onStepClick }) {
+    const classes = useStyles();
+    const manyEvents = events.length > 7;
+    const { root, scrollable } = classes;
+    const className = manyEvents ? [scrollable, root] : root
+    return (
+        <Stepper nonLinear className={className}>
+            {events
+                .sort((e1, e2) => new Date(e1.stage_date) - new Date(e2.stage_date))
+                .map((event) => {
+                    return renderStep(event, classes, onStepClick);
+                })}
+        </Stepper >
+    );
 }
 
 export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, handleStagesChange, onDeleteStage }) {
@@ -91,7 +104,7 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
                     <AddIcon />
                 </IconButton>
             </Grid>
-            {hasSteps && RenderStepper(stage_set, classes, setCurrentStep)}
+            {hasSteps && <EventStepper events={stage_set} onStepClick={setCurrentStep} />}
             {!hasSteps && renderEmptyState()}
             {currentStep && <StepDialog
                 onDeleteStage={onDeleteStage}

@@ -76,16 +76,16 @@ export default function IconTabs({ stats }) {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
-          <Tab label="Stats" icon={<EqualizerIcon />} {...a11yProps(0)} />
-          <Tab label="Documents" icon={<DescriptionIcon />} {...a11yProps(1)} />
+          <Tab label="Documents" icon={<DescriptionIcon />} {...a11yProps(0)} />
+          <Tab label="Stats" icon={<EqualizerIcon />} {...a11yProps(1)} />
           <Tab label="Skills" icon={<StarsIcon />} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Stats stats={stats} />
+        <Documents />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Documents />
+        <Stats stats={stats} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Skills />

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer
-from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status
+from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status, StatsManager
 from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
 
@@ -38,12 +38,10 @@ class PositionViewSet(viewsets.ModelViewSet):
     queryset = Position.objects.all()
 
 
-class Stats(APIView):
+class StatsView(APIView):
 
     def get(self, request,format= None):
-        stats = {}
-        stats["open_application"]= 2
-        stats["applicatitons with scheduled events"] =49
+        stats = StatsManager.getStatsByUserID(2)
         return Response(stats)
 
 

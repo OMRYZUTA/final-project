@@ -13,4 +13,5 @@ router.register(r'stages', views.StageViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('stats', views.StatsView.as_view()),
 ]

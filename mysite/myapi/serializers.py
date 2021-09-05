@@ -1,23 +1,11 @@
 from rest_framework import serializers
 from .models import EventType, Position, ApplicationProcess, Contact, Stage, EventMedia, Status, Document
 from datetime import date
-
 from rest_framework.serializers import Serializer, FileField
 
 # Serializers define the API representation.
 
 
-class DocumentSerializer(serializers.ModelSerializer):
-    application_process_id = serializers.PrimaryKeyRelatedField(
-        many=False, read_only=True)
-    id = serializers.IntegerField(
-        read_only=True,
-        default=None,
-        write_only=False)
-
-    class Meta:
-        model = Document
-        fields = '__all__'
 
 
 class EventMediaSerializer(serializers.HyperlinkedModelSerializer):
@@ -74,7 +62,7 @@ class ContactSerializer(serializers.HyperlinkedModelSerializer):
 class StageSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)
     application_process_id = serializers.PrimaryKeyRelatedField(
-        many=False, read_only=True)
+        many=True, read_only=True)
     event_type = EventTypeSerializer()
     event_media = EventTypeSerializer()
 
@@ -222,3 +210,15 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         instance.save()
 
         return instance
+
+
+class DocumentSerializer(serializers.ModelSerializer):
+    application_process_id = ApplicationProcessSerializer(many=True, read_only=True)
+    id = serializers.IntegerField(
+        read_only=True,
+        default=None,
+        write_only=False)
+
+    class Meta:
+        model = Document
+        fields = '__all__'

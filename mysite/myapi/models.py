@@ -100,22 +100,30 @@ class ApplicationProcess(models.Model):
 class StatsManager(models.Model):
 
     def getStatsByUserID(id):
+        open_applications = StatsManager.get_open_applications_by_id(id)
+        future_stages = StatsManager.get_num_of_future_stages(open_applications)
+        
+        return {"open_applications": len(open_applications), "future_stages": future_stages}
+
+
+    def get_open_applications_by_id(id):
         applications = ApplicationProcess.objects.filter(user_id=id)
         open_applications = []
         for app in applications:
             if app.status.id == "AP" or app.status.id == "PR":
                 open_applications.append(app)
-
+        return open_applications
+    
+    def get_num_of_future_stages(open_applications):
+        future_stages = 0
         stages = []
         for app in open_applications:
-            stages.append(Stage.objects.filter(application_process_id=app.id))
+            stages.append(Stage.objects.filter(
+                application_process_id=app.id))
 
-        future_stages=0
+        
         for stage_query_set in stages:
             for stage in stage_query_set:
                 if stage.stage_date >= date.today():
                     future_stages += 1
-        return {"open_applications": len(open_applications), "future_events": future_stages}
-        # future_events =
-        #stats = {open_positions, future_events}
-        # return stats
+        return future_stages

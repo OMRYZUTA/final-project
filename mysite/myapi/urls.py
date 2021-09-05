@@ -1,10 +1,6 @@
 from django.urls import include, path
 from rest_framework import routers
 from . import views
-from .views import UploadViewSet
-
-
-
 
 
 router = routers.DefaultRouter()
@@ -15,7 +11,7 @@ router.register(r'statuses', views.StatusViewSet)
 router.register(r'applicationprocesses', views.ApplicationProcessViewSet)
 router.register(r'contacts', views.ContactViewSet)
 router.register(r'stages', views.StageViewSet)
-router.register(r'upload', UploadViewSet, basename="upload")
+router.register(r'documents', views.DocumentViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('stats', views.StatsView.as_view()),

@@ -64,7 +64,7 @@ class Position(models.Model):
 # default
 
     def __str__(self):
-        return self.job_title  # update later
+        return str(self.job_title)  # update later
 
 
 class Stage(models.Model):
@@ -80,7 +80,7 @@ class Stage(models.Model):
     # contact? nested contact per stage
 
     def __str__(self):
-        return self.stage_date  # update later
+        return str(self.stage_date)  # update later
 
 
 class ApplicationProcess(models.Model):
@@ -94,17 +94,19 @@ class ApplicationProcess(models.Model):
     # sent_resume= models.FileField()
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class StatsManager(models.Model):
+    class Meta:
+        managed = False
 
     def getStatsByUserID(id):
         open_applications = StatsManager.get_open_applications_by_id(id)
-        future_stages = StatsManager.get_num_of_future_stages(open_applications)
-        
-        return {"open_applications": len(open_applications), "future_stages": future_stages}
+        future_stages = StatsManager.get_num_of_future_stages(
+            open_applications)
 
+        return {"open_applications": len(open_applications), "future_stages": future_stages}
 
     def get_open_applications_by_id(id):
         applications = ApplicationProcess.objects.filter(user_id=id)
@@ -113,7 +115,7 @@ class StatsManager(models.Model):
             if app.status.id == "AP" or app.status.id == "PR":
                 open_applications.append(app)
         return open_applications
-    
+
     def get_num_of_future_stages(open_applications):
         future_stages = 0
         stages = []
@@ -121,9 +123,20 @@ class StatsManager(models.Model):
             stages.append(Stage.objects.filter(
                 application_process_id=app.id))
 
-        
         for stage_query_set in stages:
             for stage in stage_query_set:
                 if stage.stage_date >= date.today():
                     future_stages += 1
         return future_stages
+
+
+class Document(models.Model):
+    user_id = models.IntegerField(null=True)
+    application_process_id = models.ForeignKey(
+        'ApplicationProcess', null=True, on_delete=models.SET_NULL)
+    uploaded_at = models
+    document = models.FileField(upload_to='uploads/')
+    models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user_id)

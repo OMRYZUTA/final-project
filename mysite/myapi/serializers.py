@@ -1,14 +1,24 @@
 from rest_framework import serializers
-from .models import EventType, Position, ApplicationProcess, Contact, Stage, EventMedia, Status
+from .models import EventType, Position, ApplicationProcess, Contact, Stage, EventMedia, Status, Document
 from datetime import date
 
 from rest_framework.serializers import Serializer, FileField
 
 # Serializers define the API representation.
-class UploadSerializer(Serializer):
-    file_uploaded = FileField()
+
+
+class DocumentSerializer(serializers.ModelSerializer):
+    application_process_id = serializers.PrimaryKeyRelatedField(
+        many=False, read_only=True)
+    id = serializers.IntegerField(
+        read_only=True,
+        default=None,
+        write_only=False)
+
     class Meta:
-        fields = ['file_uploaded']
+        model = Document
+        fields = '__all__'
+
 
 class EventMediaSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.CharField(read_only=True)

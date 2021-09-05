@@ -2,24 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer
-from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status, StatsManager
+from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer, DocumentSerializer
+from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status, StatsManager, Document
 from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
-from .serializers import UploadSerializer
 
 # ViewSets define the view behavior.
-class UploadViewSet(viewsets.ViewSet):
-    serializer_class = UploadSerializer
-
-    def list(self, request):
-        return Response("GET API")
-
-    def create(self, request):
-        file_uploaded = request.FILES.get('file_uploaded')
-        content_type = file_uploaded.content_type
-        response = "POST API and you have uploaded a {} file".format(content_type)
-        return Response(response)
+class DocumentViewSet(viewsets.ModelViewSet):
+    serializer_class = DocumentSerializer
+    queryset = Document.objects.all()
 
 class StatusViewSet(viewsets.ModelViewSet):
     serializer_class = StatusSerializer

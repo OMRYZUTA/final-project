@@ -132,9 +132,10 @@ class StatsManager(models.Model):
 
 class Document(models.Model):
     user_id = models.IntegerField(null=True)
-    application_process_id = models.ManyToManyField(ApplicationProcess)
+    application_process_id = models.ForeignKey(
+        ApplicationProcess, on_delete=models.SET_NULL,null=True)
     uploaded_at = models.DateField(null=True, blank=True)
-    rename = models.FileField(upload_to='uploads/')
+    file = models.FileField(upload_to='uploads/')
 
     def __str__(self):
         return str(self.user_id)

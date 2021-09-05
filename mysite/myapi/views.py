@@ -6,7 +6,20 @@ from .serializers import PositionSerializer, ApplicationProcessSerializer, Conta
 from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status, StatsManager
 from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
+from .serializers import UploadSerializer
 
+# ViewSets define the view behavior.
+class UploadViewSet(viewsets.ViewSet):
+    serializer_class = UploadSerializer
+
+    def list(self, request):
+        return Response("GET API")
+
+    def create(self, request):
+        file_uploaded = request.FILES.get('file_uploaded')
+        content_type = file_uploaded.content_type
+        response = "POST API and you have uploaded a {} file".format(content_type)
+        return Response(response)
 
 class StatusViewSet(viewsets.ModelViewSet):
     serializer_class = StatusSerializer

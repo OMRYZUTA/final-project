@@ -49,7 +49,7 @@ export async function getEventMedia() {
 
 export async function getStats() {
     try {
-        return await axios('/api/stats/');
+        return await axios('/stats');
     } catch (err) {
         handleError(err);
         throw new Error('Failed getting all stats', err);

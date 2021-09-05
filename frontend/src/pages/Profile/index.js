@@ -30,17 +30,17 @@ const useStyles = makeStyles((theme) => ({
 const Index = () => {
     const classes = useStyles();
     const [stats, setStats] = React.useState();
-    // React.useEffect(() => {
-    //     const fetchAllData = async () => {
-    //         // calling all API calls in parallel, and waiting until they ALL finish before setting
-    //         const [stats] = await Promise.all([
-    //             getStats(),
-    //         ]);
-
-    //         setStats(stats.data.results);
-    //     };
-    //     fetchAllData();
-    // }, []);
+    React.useEffect(() => {
+        const fetchAllData = async () => {
+            // calling all API calls in parallel, and waiting until they ALL finish before setting
+            const [stats] = await Promise.all([
+                getStats(),
+            ]);
+            console.log(stats);
+            setStats(stats.data);
+        };
+        fetchAllData();
+    }, []);
 
     return (
         <Grid className={classes.root} container   >
@@ -48,7 +48,7 @@ const Index = () => {
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
                         <Cover />
-                        <IconTabs />
+                        <IconTabs stats={stats} />
                     </Paper>
                 </div>
             </Grid>

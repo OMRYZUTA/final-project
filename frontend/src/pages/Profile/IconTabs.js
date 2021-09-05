@@ -11,6 +11,7 @@ import Skills from './Skills'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Stats from './Stats'
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -53,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function IconTabs() {
+export default function IconTabs({stats}) {
+  console.log(stats);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -79,10 +81,10 @@ export default function IconTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Stats />
+        <Stats stats ={stats} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        {/* <Documents/> */}
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Skills />

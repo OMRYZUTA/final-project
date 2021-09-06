@@ -55,3 +55,12 @@ export async function getStats() {
         throw new Error('Failed getting all stats', err);
     }
 }
+
+export async function getFiles() {
+    try {
+        return await axios('/api/documents');
+    } catch (err) {
+        handleError(err);
+        throw new Error('Failed getting all files', err);
+    }
+}

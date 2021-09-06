@@ -20,7 +20,6 @@ import CountrySelect from "./CountrySelect";
 import AreYouSure from "./AreYouSure";
 import { updateArray } from "../../utils/utils";
 import DeleteIcon from '@material-ui/icons/Delete';
-import * as apServices from '../../services/AppProcServices';
 import DocumentChooser from "../../components/DocumentChooser";
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +75,7 @@ export default function ApplicationProcessDialog({
   statuses,
   eventTypes,
   eventMedias,
+  files,
   handleClose,
   handleSave,
   handleDelete,
@@ -89,6 +89,7 @@ export default function ApplicationProcessDialog({
   const [showFiles, setShowFiles] = React.useState(false);
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
+  console.log(files);
   const renderContactsOrNotes = () => {
     return (
       <div className={classes.card}>
@@ -247,7 +248,7 @@ export default function ApplicationProcessDialog({
       {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
 
       <Grid container className={classes.grid} spacing={2} alignItems={"stretch"}>
-        {showFiles && <DocumentChooser showFiles={showFiles} handleClose={handleCloseFiles} />}
+        {showFiles && <DocumentChooser files={files} showFiles={showFiles} handleClose={handleCloseFiles} />}
         <Grid item xs={12} md={4}>
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
             <Grid container direction={"column"}>

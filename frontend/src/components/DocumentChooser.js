@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 
 function SimpleDialog(props) {
     const classes = useStyles();
-    const { onClose, selectedValue, open } = props;
+    const { files, onClose, selectedValue, open } = props;
 
     const handleClose = () => {
         onClose(selectedValue);
@@ -38,14 +38,14 @@ function SimpleDialog(props) {
         <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
             <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
             <List>
-                {emails.map((email) => (
-                    <ListItem button onClick={() => handleListItemClick(email)} key={email}>
+                {files.map((file) => (
+                    <ListItem button onClick={() => handleListItemClick(file)} key={file}>
                         <ListItemAvatar>
                             <Avatar className={classes.avatar}>
                                 <DescriptionIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={email} />
+                        <ListItemText primary={file} />
                     </ListItem>
                 ))}
 
@@ -68,12 +68,12 @@ SimpleDialog.propTypes = {
     selectedValue: PropTypes.string.isRequired,
 };
 
-export default function DocumentChooser({ showFiles, handleClose }) {
+export default function DocumentChooser({ files, showFiles, handleClose }) {
 
     const [selectedFile, setSelectedFile] = React.useState(emails[1]);
 
 
     return (
-        <SimpleDialog selectedValue={selectedFile} open={showFiles} onClose={handleClose} />
+        <SimpleDialog files={files} selectedValue={selectedFile} open={showFiles} onClose={handleClose} />
     );
 }

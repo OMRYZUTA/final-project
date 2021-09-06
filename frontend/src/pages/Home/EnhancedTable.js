@@ -23,7 +23,7 @@ import ApplicationProcessDialog from "./ApplicationProcessDialog";
 
 import SearchField from "./SearchField";
 import * as apServices from '../../services/AppProcServices';
-import { getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
+import { getFiles, getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
 import { stableSort, getComparator, updateArray } from "../../utils/utils";
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -206,6 +206,7 @@ export default function EnhancedTable() {
   const [statuses, setStatuses] = React.useState([]);
   const [eventTypes, setEventTypes] = React.useState([]);
   const [eventMedias, setEventMedias] = React.useState([]);
+  const [files, setFiles] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
   const [isFetching, setIsFetching] = React.useState(true);
@@ -244,13 +245,14 @@ export default function EnhancedTable() {
   React.useEffect(() => {
     const fetchAllData = async () => {
       // calling all API calls in parallel, and waiting until they ALL finish before setting
-      const [statuses, eventTypes, eventMedias, applications] = await Promise.all([
+      const [files, statuses, eventTypes, eventMedias, applications] = await Promise.all([
+        getFiles(),
         getStatuses(),
         getEventTypes(),
         getEventMedia(),
         apServices.getAll(),
       ]);
-
+      setFiles(files.data);
       setStatuses(statuses.data.results);
       setEventTypes(eventTypes.data.results);
       setEventMedias(eventMedias.data.results);
@@ -326,6 +328,7 @@ export default function EnhancedTable() {
     return (
       <ApplicationProcessDialog
         applicationProcess={currentItem}
+        files={files}
         statuses={statuses}
         eventTypes={eventTypes}
         eventMedias={eventMedias}

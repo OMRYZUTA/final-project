@@ -333,7 +333,12 @@ export default function ApplicationProcessDialog({
                       <IconButton onClick={handleShowFiles} >
                         <AddIcon />
                       </IconButton>
-                      <Document text={"CV1"}></Document>
+                      {currentApplication.document_set.map(document => {
+                        return (
+                          <Document document={document}></Document>
+                        )
+                      })}
+
                     </Grid>
                   </Card>
                 </Grid>

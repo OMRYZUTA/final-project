@@ -76,7 +76,7 @@ class StageSerializer(serializers.HyperlinkedModelSerializer):
 
 class DocumentSerializer(serializers.ModelSerializer):
     application_process_id = serializers.PrimaryKeyRelatedField(
-        many=False, read_only=True)
+        many=False, queryset=ApplicationProcess.objects.all())
     id = serializers.IntegerField(
         read_only=True,
         default=None,

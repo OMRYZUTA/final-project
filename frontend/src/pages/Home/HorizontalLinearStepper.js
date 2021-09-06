@@ -9,7 +9,6 @@ import { StepButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid'
 import StepDialog from './StepDialog';
-import { blue } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,14 +25,17 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
-    past: {
-        color: 'blue',
-    },
-    future: {
-        color: 'pink',
-    },
     scrollable: {
         overflow: 'scroll',
+    },
+    stepIconRoot: {
+        color: "#5FE2FF",
+        "&.MuiStepIcon-active": {
+            color: "#FFADE7"
+        },
+        "&.MuiStepIcon-completed": {
+            color: "#5FE2FF"
+        }
     },
 }));
 
@@ -44,13 +46,14 @@ function renderEmptyState() {
 }
 
 function renderStep(event, classes, onClick) {
-    const { past, future } = classes;
     const isInPast = new Date(event.stage_date) < new Date();
     return (
         //past date - blue, future date pink
-        <Step key={event.id}  >
+        <Step key={event.id} active={!isInPast} >
             <StepButton onClick={() => onClick(event)}>
-                <StepLabel className={isInPast ? past : future}>
+                <StepLabel StepIconProps={{
+                    classes: { root: classes.stepIconRoot }
+                }}>
                     <div>{event.event_type.name}</div>
                     <div fullWidth>{event.stage_date}</div>
                 </StepLabel>

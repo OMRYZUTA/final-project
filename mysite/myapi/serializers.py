@@ -86,8 +86,6 @@ class DocumentSerializer(serializers.ModelSerializer):
         model = Document
         fields = '__all__'
 
-       
-
 
 class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -145,42 +143,25 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         return application_process
 
     def update(self, instance, validated_data):
-        status_validated_data = validated_data.pop('status')
-
-        if(status_validated_data != None):
-            status_name = status_validated_data['name']
-            status = Status.objects.get(name=status_name)
-            validated_data['status'] = status
-
         validated_data['last_modified'] = date.today()
+
+        if('status' in validated_data):
+            status_validated_data = validated_data.pop('status')
+            validated_data['status'] = self.update_status(
+                status_validated_data)
 
         if 'position' in validated_data:
             nested_position_validated_data = validated_data.pop('position')
-            nested_position_serializer = self.fields['position']
-            nested_position_instance = instance.position
-            # Runs the update on whatever serializer the nested data belongs to
-            nested_position_serializer.update(
-                nested_position_instance, nested_position_validated_data)
+            self.update_position(nested_position_validated_data, instance)
+
+        if 'document_set' in validated_data:
+            nested_documents_validated_data = validated_data.pop(
+                'document_set')
+            self.update_document_set(nested_documents_validated_data, instance)
 
         if 'contact_set' in validated_data:
             nested_contact_validated_data = validated_data.pop('contact_set')
-            contacts_to_remove = {
-                contact.id: contact for contact in instance.contact_set.all()}
-
-            for contact in nested_contact_validated_data:
-                contact_id = contact.get('id', None)
-
-                if contact_id is None:
-                    # new contact to created
-                    instance.contact_set.create(**contact)
-                elif contacts_to_remove.get(contact_id, None) is not None:
-                    # update this item
-                    instance_contact = contacts_to_remove.pop(contact_id)
-                    Contact.objects.filter(
-                        id=instance_contact.id).update(**contact)
-
-            for contact in contacts_to_remove.values():
-                contact.delete()
+            self.update_contact_set(nested_contact_validated_data, instance)
 
         if 'stage_set' in validated_data:
             nested_stage_validated_data = validated_data.pop('stage_set')
@@ -224,3 +205,51 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         instance.save()
 
         return instance
+
+    def update_status(self, status_validated_data):
+        status_name = status_validated_data['name']
+        status = Status.objects.get(name=status_name)
+        return status
+
+    def update_position(self, nested_position_validated_data, instance):
+        nested_position_serializer = self.fields['position']
+        nested_position_instance = instance.position
+        # Runs the update on whatever serializer the nested data belongs to
+        nested_position_serializer.update(
+            nested_position_instance, nested_position_validated_data)
+
+    def update_document_set(self, nested_documents_validated_data, instance):
+        documents_to_remove = {
+            document.id: document for document in instance.document_set.all()}
+        for document in nested_documents_validated_data:
+            document_id = document.get('id', None)
+            if document_id is None:
+                # new contact to created
+                instance.document_set.create(**document)
+            elif documents_to_remove.get(document_id, None) is not None:
+                # update this item
+                instance_document = documents_to_remove.pop(document_id)
+                Document.objects.filter(
+                    id=instance_document.id).update(**document)
+
+        for document in documents_to_remove.values():
+            document.delete()
+
+    def update_contact_set(self, nested_contact_validated_data, instance):
+        contacts_to_remove = {
+            contact.id: contact for contact in instance.contact_set.all()}
+
+        for contact in nested_contact_validated_data:
+            contact_id = contact.get('id', None)
+
+            if contact_id is None:
+                # new contact to created
+                instance.contact_set.create(**contact)
+            elif contacts_to_remove.get(contact_id, None) is not None:
+                # update this item
+                instance_contact = contacts_to_remove.pop(contact_id)
+                Contact.objects.filter(
+                    id=instance_contact.id).update(**contact)
+
+        for contact in contacts_to_remove.values():
+            contact.delete()

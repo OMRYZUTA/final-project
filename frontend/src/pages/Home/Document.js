@@ -5,17 +5,13 @@ import IconButton from '@material-ui/core/IconButton';
 
 const Document = ({ document }) => {
     console.log(document.file_name)
-    const handleFileClicked = (e) => {
-        console.log(document.file_url);
-    }
+
     return (
         <Grid>
-            {/* <IconButton onClick={handleFileClicked} > */}
             <a href={document.file_url}  >
                 <DescriptionIcon />
             </a>
-            {/* </IconButton> */ }
-    <Typography>{document.file_name}</Typography>
+            <Typography>{document.file_name}</Typography>
         </Grid>
     )
 }

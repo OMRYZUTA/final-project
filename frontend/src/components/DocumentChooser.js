@@ -14,7 +14,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import { blue } from '@material-ui/core/colors';
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
 const useStyles = makeStyles({
     avatar: {
         backgroundColor: blue[100],
@@ -25,7 +24,7 @@ const useStyles = makeStyles({
 function SimpleDialog(props) {
     const classes = useStyles();
     const { files, onClose, selectedValue, open } = props;
-
+    console.log(files);
     const handleClose = () => {
         onClose(selectedValue);
     };
@@ -36,27 +35,20 @@ function SimpleDialog(props) {
 
     return (
         <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
-            <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
+            <DialogTitle id="simple-dialog-title">Please choose a Document</DialogTitle>
             <List>
                 {files.map((file) => (
-                    <ListItem button onClick={() => handleListItemClick(file)} key={file}>
+                    <ListItem button onClick={() => handleListItemClick(file)} key={file.id}>
                         <ListItemAvatar>
                             <Avatar className={classes.avatar}>
                                 <DescriptionIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={file} />
+                        <ListItemText primary={file.file_name} />
                     </ListItem>
                 ))}
 
-                <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <AddIcon />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Add account" />
-                </ListItem>
+
             </List>
         </Dialog>
     );
@@ -70,7 +62,7 @@ SimpleDialog.propTypes = {
 
 export default function DocumentChooser({ files, showFiles, handleClose }) {
 
-    const [selectedFile, setSelectedFile] = React.useState(emails[1]);
+    const [selectedFile, setSelectedFile] = React.useState(null);
 
 
     return (

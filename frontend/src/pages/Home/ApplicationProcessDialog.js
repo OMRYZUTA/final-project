@@ -89,7 +89,6 @@ export default function ApplicationProcessDialog({
   const [showFiles, setShowFiles] = React.useState(false);
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
-  console.log(files);
   const renderContactsOrNotes = () => {
     return (
       <div className={classes.card}>

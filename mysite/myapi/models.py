@@ -132,10 +132,11 @@ class StatsManager(models.Model):
 
 class Document(models.Model):
     user_id = models.IntegerField(null=True)
+    file_name = models.CharField(max_length=100, null=True, blank=True)
     application_process_id = models.ForeignKey(
-        ApplicationProcess, on_delete=models.SET_NULL,null=True)
+        ApplicationProcess, on_delete=models.SET_NULL, null=True)
     uploaded_at = models.DateField(null=True, blank=True)
-    file = models.FileField(upload_to='uploads/',null=True, blank=True)
+    file = models.FileField(upload_to='uploads/', null=True, blank=True)
     file_url = models.URLField(null=True, blank=True)
 
     def __str__(self):

@@ -21,6 +21,7 @@ import AreYouSure from "./AreYouSure";
 import { updateArray } from "../../utils/utils";
 import DeleteIcon from '@material-ui/icons/Delete';
 import * as apServices from '../../services/AppProcServices';
+import DocumentChooser from "../../components/DocumentChooser";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -85,6 +86,7 @@ export default function ApplicationProcessDialog({
   const [headline, setHeadline] = React.useState("");
   const [content, setContent] = React.useState("");
   const [onSure, setOnSure] = useState();
+  const [showFiles, setShowFiles] = React.useState(false);
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
   const renderContactsOrNotes = () => {
@@ -110,6 +112,15 @@ export default function ApplicationProcessDialog({
       <AreYouSure handleClose={handleClose} onOK={onSure} headline={headline} content={content} />
     )
   }
+
+  const handleShowFiles = () => {
+    setShowFiles(true);
+  };
+
+  const handleCloseFiles = (value) => {
+    setShowFiles(false);
+    // setSelectedFile(value);
+  };
 
 
   const handleAreYouSureClose = useCallback(() => {
@@ -219,7 +230,7 @@ export default function ApplicationProcessDialog({
   })
 
 
-  
+
   const onSave = useCallback(() => {
     handleSave(currentApplication);
   }, [currentApplication, handleSave]);
@@ -236,7 +247,7 @@ export default function ApplicationProcessDialog({
       {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
 
       <Grid container className={classes.grid} spacing={2} alignItems={"stretch"}>
-
+        {showFiles && <DocumentChooser showFiles={showFiles} handleClose={handleCloseFiles} />}
         <Grid item xs={12} md={4}>
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
             <Grid container direction={"column"}>
@@ -319,7 +330,7 @@ export default function ApplicationProcessDialog({
                   <Typography>Documents</Typography>
                   <Card className={classes.card}>
                     <Grid container direction="row" className={classes.container}>
-                      <IconButton >
+                      <IconButton onClick={handleShowFiles} >
                         <AddIcon />
                       </IconButton>
                       <Document text={"CV1"}></Document>

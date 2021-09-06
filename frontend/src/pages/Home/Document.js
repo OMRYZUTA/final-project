@@ -10,10 +10,12 @@ const Document = ({ document }) => {
     }
     return (
         <Grid>
-            <IconButton onClick={handleFileClicked} >
+            {/* <IconButton onClick={handleFileClicked} > */}
+            <a href={document.file_url}  >
                 <DescriptionIcon />
-            </IconButton>
-            <Typography>{document.file_name}</Typography>
+            </a>
+            {/* </IconButton> */ }
+    <Typography>{document.file_name}</Typography>
         </Grid>
     )
 }

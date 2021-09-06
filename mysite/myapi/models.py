@@ -135,7 +135,7 @@ class Document(models.Model):
     file_name = models.CharField(max_length=100, null=True, blank=True)
     application_process_id = models.ForeignKey(
         ApplicationProcess, on_delete=models.SET_NULL, null=True)
-    uploaded_at = models.DateField(null=True, blank=True)
+    uploaded_at = models.DateField(auto_now_add=True, null=True, blank=True)
     file = models.FileField(upload_to='uploads/', null=True, blank=True)
     file_url = models.URLField(null=True, blank=True)
 

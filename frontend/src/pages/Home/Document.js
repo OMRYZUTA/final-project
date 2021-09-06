@@ -4,8 +4,6 @@ import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton';
 
 const Document = ({ document }) => {
-    console.log(document.file_name)
-
     return (
         <Grid>
             <a href={document.file_url}  >

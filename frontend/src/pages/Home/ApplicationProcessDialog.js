@@ -118,6 +118,12 @@ export default function ApplicationProcessDialog({
   };
 
   const handleCloseFiles = (value) => {
+    if (value) {
+      let newFiles = updateArray(currentApplication.document_set, value);
+      setCurrentApplication({ ...currentApplication, document_set: newFiles })
+    }
+
+    console.log({ value });
     setShowFiles(false);
     // setSelectedFile(value);
   };
@@ -335,7 +341,7 @@ export default function ApplicationProcessDialog({
                       </IconButton>
                       {currentApplication.document_set.map(document => {
                         return (
-                          <Document document={document}></Document>
+                          <Document m={4} document={document}></Document>
                         )
                       })}
 

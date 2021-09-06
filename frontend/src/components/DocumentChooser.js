@@ -26,11 +26,12 @@ function SimpleDialog(props) {
     const { files, onClose, selectedValue, open } = props;
     console.log(files);
     const handleClose = () => {
-        onClose(selectedValue);
+        onClose({ ...selectedValue, file: null, file_url: selectedValue.file });
     };
 
     const handleListItemClick = (value) => {
-        onClose(value);
+        console.log(value);
+        onClose({ ...value, file_url: value.file });
     };
 
     return (
@@ -63,7 +64,6 @@ SimpleDialog.propTypes = {
 export default function DocumentChooser({ files, showFiles, handleClose }) {
 
     const [selectedFile, setSelectedFile] = React.useState(null);
-
 
     return (
         <SimpleDialog files={files} selectedValue={selectedFile} open={showFiles} onClose={handleClose} />

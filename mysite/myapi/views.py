@@ -10,6 +10,7 @@ from .serializers import PositionSerializer, ApplicationProcessSerializer, Conta
 from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status, StatsManager, Document
 from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
+from datetime import datetime, date
 
 # ViewSets define the view behavior.
 
@@ -82,7 +83,9 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset
         #queryset = queryset.filter(user_id=self.request.user.id)
+        before = datetime.now()
         queryset = queryset.all()
+        print("after " + str(datetime.now() - before))
 
         position = self.request.query_params.get('position')
         if position is not None:

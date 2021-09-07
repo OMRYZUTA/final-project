@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import EventType, Position, ApplicationProcess, Contact, Stage, EventMedia, Status, Document
-from datetime import date
+from datetime import date, datetime
 from rest_framework.serializers import Serializer, FileField
 
 # Serializers define the API representation.
@@ -143,6 +143,8 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         return application_process
 
     def update(self, instance, validated_data):
+        before = datetime.now()
+
         validated_data['last_modified'] = date.today()
 
         if('status' in validated_data):
@@ -154,14 +156,23 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             nested_position_validated_data = validated_data.pop('position')
             self.update_position(nested_position_validated_data, instance)
 
+        print("serializers,after POSITION update: " +
+              str(datetime.now() - before))
+
         if 'document_set' in validated_data:
             nested_documents_validated_data = validated_data.pop(
                 'document_set')
             self.update_document_set(nested_documents_validated_data, instance)
 
+        print("serializers,after DOCUMENTS update: " +
+              str(datetime.now() - before))
+
         if 'contact_set' in validated_data:
             nested_contact_validated_data = validated_data.pop('contact_set')
             self.update_contact_set(nested_contact_validated_data, instance)
+
+        print("serializers,after CONTACTS update: " +
+              str(datetime.now() - before))
 
         if 'stage_set' in validated_data:
             nested_stage_validated_data = validated_data.pop('stage_set')
@@ -199,11 +210,16 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
             for stage in stages_to_remove.values():
                 stage.delete()
 
+        print("serializers,after STAGES update: " +
+              str(datetime.now() - before))
+
         for field in validated_data:
             setattr(instance, field, validated_data.get(
                 field, getattr(instance, field)))
         instance.save()
 
+        print("applicationProc serializer, update: after " +
+              str(datetime.now() - before))
         return instance
 
     def update_status(self, status_validated_data):

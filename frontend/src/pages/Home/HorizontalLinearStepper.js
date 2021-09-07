@@ -48,7 +48,7 @@ function renderEmptyState() {
 function renderStep(event, classes, onClick) {
     const isInPast = new Date(event.stage_date) < new Date();
     return (
-        //past date - blue, future date pink
+        //  date - blue, future date pink
         <Step key={event.id} active={!isInPast} >
             <StepButton onClick={() => onClick(event)}>
                 <StepLabel StepIconProps={{

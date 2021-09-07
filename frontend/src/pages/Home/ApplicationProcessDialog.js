@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     backgroundColor: '#c3fff5',//veryLightBlue
     width: "100%",
-  }
+  },
 }));
 
 // const DialogActions = withStyles((theme) => ({
@@ -339,12 +339,13 @@ export default function ApplicationProcessDialog({
                       <IconButton onClick={handleShowFiles} >
                         <AddIcon />
                       </IconButton>
-                      {currentApplication.document_set.map(document => {
-                        return (
-                          <Document m={4} document={document}></Document>
-                        )
-                      })}
-
+                      <Grid container direction="row" spacing={2}>
+                        {currentApplication.document_set.map(document => {
+                          return (
+                            <Document document={document} />
+                          )
+                        })}
+                      </Grid>
                     </Grid>
                   </Card>
                 </Grid>

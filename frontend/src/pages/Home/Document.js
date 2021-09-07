@@ -7,19 +7,23 @@ import { useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     a: {
-        textDecoration: 'none',
-        padddingLeft: 13
+        color: '#5FE2FF',//darkBlue
     }
 }));
 
 const Document = ({ document, a }) => {
     const theme = useTheme();
     const classes = useStyles(theme);
+
+    const openInNewTab = () => {
+        const newWindow = window.open(document.file_url, '_blank', 'noopener,noreferrer');
+        if (newWindow) newWindow.opener = null;
+    }
     return (
         <Grid item>
-            <a href={document.file_url} className={classes.a}  >
+            <IconButton onClick={openInNewTab} className={classes.a}  >
                 <DescriptionIcon />
-            </a>
+            </IconButton>
             <Typography>{document.file_name}</Typography>
         </Grid>
     )

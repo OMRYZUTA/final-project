@@ -2,6 +2,13 @@ import os
 import environ
 from pathlib import Path
 
+env = environ.Env(
+    CORS_ORIGIN_WHITELIST=(str, 'http://localhost:3000'),
+    DEBUG=(bool, False),
+    DJANGO_ALLOWED_HOSTS=(str, ''),
+    DJANGO_SECRET_KEY=(str, '')
+)
+
 env = environ.Env()
 environ.Env.read_env()  # reading .env file
 
@@ -9,13 +16,12 @@ environ.Env.read_env()  # reading .env file
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str("DJANGO_SECRET_KEY", default="SECRET_KEY")
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS =  env('DJANGO_ALLOWED_HOSTS').split(' ')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -43,9 +49,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
+CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST').split(' ')
 
 TEMPLATES = [
     {
@@ -151,8 +155,8 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
 ]
 
 CORS_ALLOW_METHODS = [

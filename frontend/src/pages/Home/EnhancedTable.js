@@ -208,9 +208,11 @@ export default function EnhancedTable() {
   const [files, setFiles] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
-  const [filterRule, setFilterRule] = React.useState("OPEN_STATUS");
+  const [filterRule, setFilterRule] = React.useState("");
   const [isFetching, setIsFetching] = React.useState(true);
   const [showCircular, setShowCircular] = React.useState(true);
+  const [countRows, setCountRows] = React.useState(0);
+
   const matchStatusToClassName = (statusID, classes) => {
     let className = ''
     switch (statusID) {
@@ -232,15 +234,14 @@ export default function EnhancedTable() {
     }
     return className;
   };
-  const handleSearchChanged = useCallback(e => {
 
+  const handleSearchChanged = useCallback(e => {
     if (e.target.value) {
       setQuery(e.target.value);
     }
     else {
       setQuery("");
     }
-
   }, [applications])
 
   React.useEffect(() => {
@@ -306,11 +307,20 @@ export default function EnhancedTable() {
   }, [applications, orderBy, order]);
 
   const applyFilterRule = (app, filterRule) => {
-    let result = true;
+    let result = false;
+
     if (filterRule === "OPEN_STATUS") {
       result = app.status.id !== "CL";
+    } else if (filterRule === "FUTURE_EVENT") {
+      return app.stage_set.some(element => {
+        console.log(new Date());
+        console.log("stage date " + new Date(element.stage_date));
+        return new Date(element.stage_date) >= new Date();
+      });
     }
-    
+    else {
+      result = true;//if there was no filterRule applied
+    }
 
     return result;
   }
@@ -402,41 +412,44 @@ export default function EnhancedTable() {
 
             <TableBody>
               {
-                stableSort( //filter takes precedent upon searching.
-                  applications.filter(app => applyFilterRule(app, filterRule))
-                    .filter((app) => isMatching(app, query)).map(app => ({
+                () => {
+                  const filteredArray = applications.filter(app => applyFilterRule(app, filterRule))
+                    .filter((app) => isMatching(app, query));
+                  setCountRows(filteredArray.length);
+
+                  return stableSort( //filter takes precedent upon searching.
+                    filteredArray.map(app => ({
                       id: app.id,
                       company_name: app.position?.company_name,
                       job_title: app.position?.job_title,
                       status: app.status.name,
                       last_modified: app.last_modified
                     })),
-                  getComparator(order, orderBy)
-                )
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-
-                    return (
-                      <TableRow
-                        hover
-                        onClick={() => { setCurrentItem(applications.find(app => app.id === row.id)) }}
-                        tabIndex={-1}
-                        key={row.id}
-                        className={matchStatusToClassName(row.status, classes)}
-                      >
-                        <TableCell align="left">
-                          {row.company_name}
-                        </TableCell>
-                        <TableCell align="left">
-                          {row.job_title}
-                        </TableCell>
-                        <TableCell align="left">{row.status}</TableCell>
-                        <TableCell align="left">{row.last_modified}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-              }
+                    getComparator(order, orderBy),
+                  )
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => {
+                      return (
+                        <TableRow
+                          hover
+                          onClick={() => { setCurrentItem(applications.find(app => app.id === row.id)) }}
+                          tabIndex={-1}
+                          key={row.id}
+                          className={matchStatusToClassName(row.status, classes)}
+                        >
+                          <TableCell align="left">
+                            {row.company_name}
+                          </TableCell>
+                          <TableCell align="left">
+                            {row.job_title}
+                          </TableCell>
+                          <TableCell align="left">{row.status}</TableCell>
+                          <TableCell align="left">{row.last_modified}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                }}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={6} />
@@ -449,7 +462,8 @@ export default function EnhancedTable() {
           className={classes.pagination}
           rowsPerPageOptions={[5, 10, 20, 30]}
           component="div"
-          count={applications.length}
+          // count={applications.length}
+          count={countRows}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

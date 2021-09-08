@@ -344,7 +344,7 @@ export default function ApplicationProcessDialog({
                         <AddIcon />
                       </IconButton>
                       <Grid container direction="row" spacing={2}>
-                        {currentApplication.document_set.map(document => {
+                        {currentApplication.document_set?.map(document => {
                           return (
                             <Document document={document} />
                           )

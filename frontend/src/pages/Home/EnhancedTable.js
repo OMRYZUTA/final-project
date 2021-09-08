@@ -208,7 +208,7 @@ export default function EnhancedTable() {
   const [files, setFiles] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
-  const [filterRule, setFilterRule] = React.useState("");
+  const [filterRule, setFilterRule] = React.useState("FUTURE_EVENT");
   const [isFetching, setIsFetching] = React.useState(true);
   const [showCircular, setShowCircular] = React.useState(true);
   const [countRows, setCountRows] = React.useState(0);
@@ -242,7 +242,8 @@ export default function EnhancedTable() {
     else {
       setQuery("");
     }
-  }, [applications])
+
+  }, [applications, query, filterRule]);
 
   React.useEffect(() => {
     const fetchAllData = async () => {
@@ -261,6 +262,7 @@ export default function EnhancedTable() {
       setIsFetching(false);
       setApplications(applications.data.results);
       setShowCircular(false);
+      setCountRows(applications.data.results.length);
     };
     fetchAllData();
   }, []);
@@ -313,8 +315,6 @@ export default function EnhancedTable() {
       result = app.status.id !== "CL";
     } else if (filterRule === "FUTURE_EVENT") {
       return app.stage_set.some(element => {
-        console.log(new Date());
-        console.log("stage date " + new Date(element.stage_date));
         return new Date(element.stage_date) >= new Date();
       });
     }
@@ -379,7 +379,46 @@ export default function EnhancedTable() {
   const handlefilterChanged = () => {
     setQuery('applied');
   }
+  const renderTable = (filteredArray) => {
+    return (
+      stableSort( //filter takes precedent upon searching.
+        filteredArray.map(app => ({
+          id: app.id,
+          company_name: app.position?.company_name,
+          job_title: app.position?.job_title,
+          status: app.status.name,
+          last_modified: app.last_modified
+        })),
+        getComparator(order, orderBy),
+      )
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((row) => {
+          return (
+            <TableRow
+              hover
+              onClick={() => { setCurrentItem(applications.find(app => app.id === row.id)) }}
+              tabIndex={-1}
+              key={row.id}
+              className={matchStatusToClassName(row.status, classes)}
+            >
+              <TableCell align="left">
+                {row.company_name}
+              </TableCell>
+              <TableCell align="left">
+                {row.job_title}
+              </TableCell>
+              <TableCell align="left">{row.status}</TableCell>
+              <TableCell align="left">{row.last_modified}
+              </TableCell>
+            </TableRow>
+          );
+        })
+    )
+  }
 
+  const filteredArray = applications
+    .filter(app => applyFilterRule(app, filterRule))
+    .filter(app => isMatching(app, query));
   return (
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem, statuses)}
@@ -412,44 +451,8 @@ export default function EnhancedTable() {
 
             <TableBody>
               {
-                () => {
-                  const filteredArray = applications.filter(app => applyFilterRule(app, filterRule))
-                    .filter((app) => isMatching(app, query));
-                  setCountRows(filteredArray.length);
-
-                  return stableSort( //filter takes precedent upon searching.
-                    filteredArray.map(app => ({
-                      id: app.id,
-                      company_name: app.position?.company_name,
-                      job_title: app.position?.job_title,
-                      status: app.status.name,
-                      last_modified: app.last_modified
-                    })),
-                    getComparator(order, orderBy),
-                  )
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      return (
-                        <TableRow
-                          hover
-                          onClick={() => { setCurrentItem(applications.find(app => app.id === row.id)) }}
-                          tabIndex={-1}
-                          key={row.id}
-                          className={matchStatusToClassName(row.status, classes)}
-                        >
-                          <TableCell align="left">
-                            {row.company_name}
-                          </TableCell>
-                          <TableCell align="left">
-                            {row.job_title}
-                          </TableCell>
-                          <TableCell align="left">{row.status}</TableCell>
-                          <TableCell align="left">{row.last_modified}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })
-                }}
+                renderTable(filteredArray)
+              }
               {emptyRows > 0 && (
                 <TableRow style={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={6} />
@@ -463,7 +466,7 @@ export default function EnhancedTable() {
           rowsPerPageOptions={[5, 10, 20, 30]}
           component="div"
           // count={applications.length}
-          count={countRows}
+          count={filteredArray.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

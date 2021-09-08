@@ -5,11 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { getStats } from "../../services/StaticServices"
 import Cover from './Cover';
 import IconTabs from './IconTabs';
+import { Typography, Card } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {
         border: 0,
         borderRadius: 3,
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         color: 'white',
         height: 48,
         padding: '0 70px',
@@ -22,8 +22,12 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         width: "100%",
         marginBottom: theme.spacing(2),
-        backgroundColor: "#FFFFC5"
+        backgroundColor: "#FFFFC5",
     },
+    details: {
+        padding: "15px",
+        backgroundColor: "#FFFFC5",
+    }
 
 }))
 
@@ -44,10 +48,14 @@ const Index = () => {
 
     return (
         <Grid className={classes.root} container   >
-            <Grid item style={{ width: "95%" }} >
+            <Grid item style={{ width: "95%", border: "none" }} >
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
                         <Cover />
+                        <Card className={classes.details}>
+                            <Typography>Omry Zuta </Typography>
+                            <Typography>Student at MTA</Typography>
+                        </Card>
                         <IconTabs stats={stats} />
                     </Paper>
                 </div>

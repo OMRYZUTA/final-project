@@ -76,6 +76,7 @@ export default function IconTabs({ stats }) {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
+          {"Omry Zuta"}
           <Tab label="Documents" icon={<DescriptionIcon />} {...a11yProps(0)} />
           <Tab label="Stats" icon={<EqualizerIcon />} {...a11yProps(1)} />
           <Tab label="Skills" icon={<StarsIcon />} {...a11yProps(2)} />

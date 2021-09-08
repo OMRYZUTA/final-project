@@ -1,9 +1,21 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
+import * as apServices from '../../services/AppProcServices';
+import AddIcon from '@material-ui/icons/Add';
+import ApplicationProcessDialog from "./ApplicationProcessDialog";
+import CircularIndeterminate from "../../components/CircularIndeterminate";
 import clsx from "clsx";
+import DropDown from "./DropDown";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import { getFiles, getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
+import Grid from '@material-ui/core/Grid';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
+import PropTypes from "prop-types";
+import React, { useCallback } from "react";
+import SearchField from "./SearchField";
+import { stableSort, getComparator, updateArray } from "../../utils/utils";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,15 +27,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import Grid from '@material-ui/core/Grid';
-import ApplicationProcessDialog from "./ApplicationProcessDialog";
-import CircularIndeterminate from "../../components/CircularIndeterminate";
-import SearchField from "./SearchField";
-import * as apServices from '../../services/AppProcServices';
-import { getFiles, getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
-import { stableSort, getComparator, updateArray } from "../../utils/utils";
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -107,8 +110,20 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = ({ handleSearchChanged, handlefilterChanged }) => {
+const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule }) => {
   const classes = useToolbarStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = (e) => {
+    console.log(e.target.innerText);
+    setFilterRule(e.target.innerText);
+    setAnchorEl(null);
+  };
+
   return (
     <Toolbar className={clsx(classes.root)}>
       <Typography
@@ -120,11 +135,21 @@ const EnhancedTableToolbar = ({ handleSearchChanged, handlefilterChanged }) => {
       </Typography>
       <SearchField className={classes.search} handleSearchChanged={handleSearchChanged} />
       <Tooltip title="Filter list">
-        <IconButton aria-label="filter list">
+        <IconButton aria-label="filter list" onClick={handleMenuClick} >
           <FilterListIcon />
         </IconButton>
       </Tooltip>
-    </Toolbar>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose}>Open Status</MenuItem>
+        <MenuItem onClick={handleMenuClose}>Future Event</MenuItem>
+      </Menu>
+    </Toolbar >
   );
 };
 
@@ -208,10 +233,9 @@ export default function EnhancedTable() {
   const [files, setFiles] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
-  const [filterRule, setFilterRule] = React.useState("FUTURE_EVENT");
+  const [filterRule, setFilterRule] = React.useState("");
   const [isFetching, setIsFetching] = React.useState(true);
   const [showCircular, setShowCircular] = React.useState(true);
-  const [countRows, setCountRows] = React.useState(0);
 
   const matchStatusToClassName = (statusID, classes) => {
     let className = ''
@@ -262,7 +286,6 @@ export default function EnhancedTable() {
       setIsFetching(false);
       setApplications(applications.data.results);
       setShowCircular(false);
-      setCountRows(applications.data.results.length);
     };
     fetchAllData();
   }, []);
@@ -311,9 +334,9 @@ export default function EnhancedTable() {
   const applyFilterRule = (app, filterRule) => {
     let result = false;
 
-    if (filterRule === "OPEN_STATUS") {
+    if (filterRule === "Open Status") {
       result = app.status.id !== "CL";
-    } else if (filterRule === "FUTURE_EVENT") {
+    } else if (filterRule === "Future Event") {
       return app.stage_set.some(element => {
         return new Date(element.stage_date) >= new Date();
       });
@@ -376,9 +399,7 @@ export default function EnhancedTable() {
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
-  const handlefilterChanged = () => {
-    setQuery('applied');
-  }
+
   const renderTable = (filteredArray) => {
     return (
       stableSort( //filter takes precedent upon searching.
@@ -423,7 +444,9 @@ export default function EnhancedTable() {
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar handleSearchChanged={handleSearchChanged} />
+        <EnhancedTableToolbar
+          handleSearchChanged={handleSearchChanged}
+          setFilterRule={setFilterRule} />
         <Grid container direction="row">
           <Grid item>
             <IconButton disabled={isFetching} position={"relative"} onClick={handleAddNew}>

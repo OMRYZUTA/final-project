@@ -1,27 +1,29 @@
-import React, { useCallback, useState } from "react";
-import { makeStyles } from '@material-ui/core/styles';
+
+import AddIcon from '@material-ui/icons/Add';
+import AreYouSure from "./AreYouSure";
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Card from '@material-ui/core/Card';
+import CircularIndeterminate from "../../components/CircularIndeterminate";
+import ContactsCard from "./ContactsCard";
+import CountrySelect from "./CountrySelect";
+import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
+import Document from "./Document";
+import DocumentChooser from "../../components/DocumentChooser";
+import DropDown from "./DropDown";
 import Grid from '@material-ui/core/Grid';
+import HorizontalStepper from "./HorizontalLinearStepper";
+import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
+import Notes from "./Notes";
 import Paper from '@material-ui/core/Paper';
+import React, { useCallback, useState } from "react";
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import ContactsCard from "./ContactsCard";
-import Notes from "./Notes";
-import DropDown from "./DropDown";
-import IconButton from '@material-ui/core/IconButton';
-import Document from "./Document";
-import HorizontalStepper from "./HorizontalLinearStepper";
-import { useTheme } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import AddIcon from '@material-ui/icons/Add';
-import CountrySelect from "./CountrySelect";
-import AreYouSure from "./AreYouSure";
 import { updateArray } from "../../utils/utils";
-import DeleteIcon from '@material-ui/icons/Delete';
-import DocumentChooser from "../../components/DocumentChooser";
-import CircularIndeterminate from "../../components/CircularIndeterminate";
+import { useTheme } from '@material-ui/core/styles';
+
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: '100%',

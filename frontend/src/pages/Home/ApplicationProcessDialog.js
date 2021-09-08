@@ -24,12 +24,12 @@ import Typography from '@material-ui/core/Typography';
 import { updateArray } from "../../utils/utils";
 import { useTheme } from '@material-ui/core/styles';
 
+
 const useStyles = makeStyles((theme) => ({
   grid: {
+    margin: 0,
     width: '100%',
-    margin: '2px',
     backgroundColor: '#FFFFC5',//yellow
-    spacing: 2,
     alignItems: 'stretch',
   },
   paper: {
@@ -61,16 +61,11 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     backgroundColor: '#c3fff5',//veryLightBlue
-    width: "100%",
+    width: "90%",
   },
 }));
 
-// const DialogActions = withStyles((theme) => ({
-//   root: {
-//     margin: 0,
-//     padding: theme.spacing(1),
-//   },
-// }))(DialogActions);
+
 
 export default function ApplicationProcessDialog({
   applicationProcess,
@@ -247,6 +242,7 @@ export default function ApplicationProcessDialog({
 
   const classes = useStyles(theme);
 
+
   return (
     <Dialog
       fullWidth={true}
@@ -257,7 +253,7 @@ export default function ApplicationProcessDialog({
 
       {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
 
-      <Grid container className={classes.grid} spacing={2} alignItems={"stretch"}>
+      <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} >
         {showFiles && <DocumentChooser files={files} showFiles={showFiles} handleClose={handleCloseFiles} />}
 
         <Grid item xs={12} md={4}>
@@ -428,6 +424,6 @@ export default function ApplicationProcessDialog({
           </Grid>
         </Grid>
       </Grid>
-    </Dialog>
+    </Dialog >
   );
 }

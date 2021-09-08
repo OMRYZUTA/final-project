@@ -21,7 +21,7 @@ import AreYouSure from "./AreYouSure";
 import { updateArray } from "../../utils/utils";
 import DeleteIcon from '@material-ui/icons/Delete';
 import DocumentChooser from "../../components/DocumentChooser";
-
+import CircularIndeterminate from "../../components/CircularIndeterminate";
 const useStyles = makeStyles((theme) => ({
   grid: {
     width: '100%',
@@ -87,6 +87,7 @@ export default function ApplicationProcessDialog({
   const [content, setContent] = React.useState("");
   const [onSure, setOnSure] = useState();
   const [showFiles, setShowFiles] = React.useState(false);
+  const [showCircular, setShowCircular] = React.useState(false);
   const [currentApplication, setCurrentApplication] =
     useState(applicationProcess);
   const renderContactsOrNotes = () => {
@@ -239,6 +240,7 @@ export default function ApplicationProcessDialog({
 
   const onSave = useCallback(() => {
     handleSave(currentApplication);
+    setShowCircular(true);
   }, [currentApplication, handleSave]);
 
   const classes = useStyles(theme);
@@ -250,10 +252,12 @@ export default function ApplicationProcessDialog({
       onClose={handleClose}
       open={true}
     >
+
       {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
 
       <Grid container className={classes.grid} spacing={2} alignItems={"stretch"}>
         {showFiles && <DocumentChooser files={files} showFiles={showFiles} handleClose={handleCloseFiles} />}
+
         <Grid item xs={12} md={4}>
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
             <Grid container direction={"column"}>
@@ -399,6 +403,7 @@ export default function ApplicationProcessDialog({
         </Grid>
 
         <Grid container className={classes.footer}>
+          {showCircular && <CircularIndeterminate />}
           <IconButton className={classes.deleteBin} onClick={onDelete}>
             <DeleteIcon />
           </IconButton>

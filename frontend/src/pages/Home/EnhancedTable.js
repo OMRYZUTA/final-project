@@ -16,11 +16,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
+import Grid from '@material-ui/core/Grid';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
-
+import CircularIndeterminate from "../../components/CircularIndeterminate";
 import SearchField from "./SearchField";
 import * as apServices from '../../services/AppProcServices';
 import { getFiles, getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
@@ -210,6 +209,7 @@ export default function EnhancedTable() {
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
   const [isFetching, setIsFetching] = React.useState(true);
+  const [showCircular, setShowCircular] = React.useState(true);
   const matchStatusToClassName = (statusID, classes) => {
     let className = ''
     switch (statusID) {
@@ -258,6 +258,7 @@ export default function EnhancedTable() {
       setEventMedias(eventMedias.data.results);
       setIsFetching(false);
       setApplications(applications.data.results);
+      setShowCircular(false);
     };
     fetchAllData();
   }, []);
@@ -360,10 +361,16 @@ export default function EnhancedTable() {
       {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar handleSearchChanged={handleSearchChanged} />
-        <IconButton disabled={isFetching} position={"relative"} onClick={handleAddNew}>
-          <AddIcon />
-        </IconButton>
-
+        <Grid container direction="row">
+          <Grid item>
+            <IconButton disabled={isFetching} position={"relative"} onClick={handleAddNew}>
+              <AddIcon />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            {showCircular && <CircularIndeterminate />}
+          </Grid>
+        </Grid>
         <TableContainer>
           <Table
             className={classes.table}

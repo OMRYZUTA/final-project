@@ -107,7 +107,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = ({ handleSearchChanged }) => {
+const EnhancedTableToolbar = ({ handleSearchChanged, handlefilterChanged }) => {
   const classes = useToolbarStyles();
   return (
     <Toolbar className={clsx(classes.root)}>
@@ -208,6 +208,7 @@ export default function EnhancedTable() {
   const [files, setFiles] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
+  const [filterRule, setFilterRule] = React.useState("OPEN_STATUS");
   const [isFetching, setIsFetching] = React.useState(true);
   const [showCircular, setShowCircular] = React.useState(true);
   const matchStatusToClassName = (statusID, classes) => {
@@ -304,6 +305,16 @@ export default function EnhancedTable() {
     setCurrentItem(undefined);
   }, [applications, orderBy, order]);
 
+  const applyFilterRule = (app, filterRule) => {
+    let result = true;
+    if (filterRule === "OPEN_STATUS") {
+      result = app.status.id !== "CL";
+    }
+    
+
+    return result;
+  }
+
   const isMatching = (app, query) => {
     let result = false;
     if (!query) {
@@ -355,6 +366,9 @@ export default function EnhancedTable() {
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
+  const handlefilterChanged = () => {
+    setQuery('applied');
+  }
 
   return (
     <div className={classes.root}>
@@ -388,14 +402,15 @@ export default function EnhancedTable() {
 
             <TableBody>
               {
-                stableSort(
-                  applications.filter((app) => isMatching(app, query)).map(app => ({
-                    id: app.id,
-                    company_name: app.position?.company_name,
-                    job_title: app.position?.job_title,
-                    status: app.status.name,
-                    last_modified: app.last_modified
-                  })),
+                stableSort( //filter takes precedent upon searching.
+                  applications.filter(app => applyFilterRule(app, filterRule))
+                    .filter((app) => isMatching(app, query)).map(app => ({
+                      id: app.id,
+                      company_name: app.position?.company_name,
+                      job_title: app.position?.job_title,
+                      status: app.status.name,
+                      last_modified: app.last_modified
+                    })),
                   getComparator(order, orderBy)
                 )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

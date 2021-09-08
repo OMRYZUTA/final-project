@@ -146,10 +146,11 @@ const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule, isFetching }
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
+        <MenuItem onClick={handleMenuClose}>No Filter</MenuItem>
         <MenuItem onClick={handleMenuClose}>Open Status</MenuItem>
         <MenuItem onClick={handleMenuClose}>Future Event</MenuItem>
       </Menu>
-    </Toolbar >
+    </Toolbar>
   );
 };
 

@@ -36,7 +36,7 @@ function SimpleDialog(props) {
 
     return (
         <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
-            <DialogTitle id="simple-dialog-title">Please choose a Document</DialogTitle>
+            <DialogTitle id="simple-dialog-title">Select a document</DialogTitle>
             <List>
                 {files.map((file) => (
                     <ListItem button onClick={() => handleListItemClick(file)} key={file.id}>

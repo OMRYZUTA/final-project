@@ -22,7 +22,8 @@ export function handleError(error) {
 
 export async function getStatuses() {
     try {
-        return await axios('/api/statuses/');
+        const result = await axios('/api/statuses/');
+        return result.data.results;
     } catch (err) {
         handleError(err);
         throw new Error('Failed getting all statuses', err);
@@ -31,7 +32,8 @@ export async function getStatuses() {
 
 export async function getEventTypes() {
     try {
-        return await axios('/api/eventtypes/');
+        const result = await axios('/api/eventtypes/');
+        return result.data.results;
     } catch (err) {
         handleError(err);
         throw new Error('Failed getting all stage event types', err);
@@ -40,7 +42,8 @@ export async function getEventTypes() {
 
 export async function getEventMedia() {
     try {
-        return await axios('/api/eventmedia/');
+        const result = await axios('/api/eventmedia/');
+        return result.data.results;
     } catch (err) {
         handleError(err);
         throw new Error('Failed getting all stage event media', err);
@@ -58,7 +61,8 @@ export async function getStats() {
 
 export async function getFiles() {
     try {
-        return await axios('/api/documents');
+        const result = await axios('/api/documents');
+        return result.data;
     } catch (err) {
         handleError(err);
         throw new Error('Failed getting all files', err);

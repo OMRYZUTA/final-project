@@ -1,5 +1,7 @@
 import * as apServices from '../../services/AppProcServices';
 import AddIcon from '@material-ui/icons/Add';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import CircularIndeterminate from "../../components/CircularIndeterminate";
 import clsx from "clsx";
@@ -28,6 +30,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
+const filters = ['No Filter', 'Future Event', 'Open Status'];
+
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -55,6 +59,9 @@ const useToolbarStyles = makeStyles((theme) => ({
   search: {
     backgroundColor: 'f7efd9',
   },
+  selectedFilter: {
+    fontWeight: 800,
+  },
 }));
 
 const headCells = [
@@ -65,7 +72,6 @@ const headCells = [
   { id: "status", numeric: false, disablePadding: true, label: "Status" },
   { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" },
 ];
-
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort } = props;
 
@@ -110,7 +116,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule, isFetching }) => {
+const EnhancedTableToolbar = ({ currentFilter, handleSearchChanged, setFilterRule, isFetching }) => {
   const classes = useToolbarStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -119,10 +125,12 @@ const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule, isFetching }
   };
 
   const handleMenuClose = (e) => {
-    console.log(e.target.innerText);
     setFilterRule(e.target.innerText);
     setAnchorEl(null);
   };
+  // <MenuItem onClick={handleMenuClose}>Future Event</MenuItem>
+  //       <MenuItem onClick={handleMenuClose}>Open Status</MenuItem>
+  //       <MenuItem onClick={handleMenuClose}>No Filter</MenuItem>
 
   return (
     <Toolbar className={clsx(classes.root)}>
@@ -134,8 +142,8 @@ const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule, isFetching }
         Job Application Processes
       </Typography>
       <SearchField className={classes.search} handleSearchChanged={handleSearchChanged} disabled={isFetching} />
-      <Tooltip title="Filter list">
-        <IconButton aria-label="filter list" onClick={handleMenuClick} disabled={isFetching}>
+      <Tooltip title="Filter List">
+        <IconButton aria-label="Filter List" onClick={handleMenuClick} disabled={isFetching}>
           <FilterListIcon />
         </IconButton>
       </Tooltip>
@@ -146,9 +154,12 @@ const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule, isFetching }
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>No Filter</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Open Status</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Future Event</MenuItem>
+        {
+          filters.map(filter => {
+            const className = filter === currentFilter ? classes.selectedFilter : undefined;
+            return <MenuItem key={filter} className={className} onClick={handleMenuClose}>{filter}</MenuItem>;
+          })
+        }
       </Menu>
     </Toolbar>
   );
@@ -221,8 +232,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const renderAlert = (alertText) => {
+  return (
+    <Alert severity="error">
+      <AlertTitle>Error</AlertTitle>
+      {alertText}
+    </Alert>
+  );
+}
+
 export default function EnhancedTable() {
   const classes = useStyles();
+  const [alertText, setAlertText] = React.useState('');
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("company_name");
   const [currentItem, setCurrentItem] = React.useState();
@@ -234,7 +255,7 @@ export default function EnhancedTable() {
   const [files, setFiles] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
   const [query, setQuery] = React.useState("");
-  const [filterRule, setFilterRule] = React.useState("");
+  const [filterRule, setFilterRule] = React.useState(filters[0]);
   const [isFetching, setIsFetching] = React.useState(true);
 
   const matchStatusToClassName = (statusID, classes) => {
@@ -272,19 +293,24 @@ export default function EnhancedTable() {
   React.useEffect(() => {
     const fetchAllData = async () => {
       // calling all API calls in parallel, and waiting until they ALL finish before setting
-      const [files, statuses, eventTypes, eventMedias, applications] = await Promise.all([
-        getFiles(),
-        getStatuses(),
-        getEventTypes(),
-        getEventMedia(),
-        apServices.getAll(),
-      ]);
-      setFiles(files.data);
-      setStatuses(statuses.data.results);
-      setEventTypes(eventTypes.data.results);
-      setEventMedias(eventMedias.data.results);
-      setIsFetching(false);
-      setApplications(applications.data.results);
+      try {
+        const [files, statuses, eventTypes, eventMedias, applications] = await Promise.all([
+          getFiles(),
+          getStatuses(),
+          getEventTypes(),
+          getEventMedia(),
+          apServices.getAll(),
+        ]);
+        setFiles(files);
+        setStatuses(statuses);
+        setEventTypes(eventTypes);
+        setEventMedias(eventMedias);
+        setApplications(applications);
+      } catch (e) {
+        setAlertText('Failed initializing app, please reload page');
+      } finally {
+        setIsFetching(false);
+      }
     };
     fetchAllData();
   }, []);
@@ -323,7 +349,7 @@ export default function EnhancedTable() {
     } else {
       result = await apServices.addNew(applicationProcess);
     }
-    let newApplications = updateArray(applications, result.data)
+    let newApplications = updateArray(applications, result)
 
     setApplications(stableSort(newApplications, getComparator(order, orderBy)));
     setCurrentItem(undefined);
@@ -401,8 +427,8 @@ export default function EnhancedTable() {
     setQuery("");//don't keep previous search results    
     setIsFetching(true);
 
-    const result = await apServices.getAll();
-    setApplications(stableSort(result.data.results, getComparator(order, orderBy)));
+    const applicationList = await apServices.getAll();
+    setApplications(stableSort(applicationList, getComparator(order, orderBy)));
     setIsFetching(false);
   }, [applications]);
 
@@ -453,7 +479,9 @@ export default function EnhancedTable() {
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem, statuses)}
       <Paper className={classes.paper}>
+        {alertText && renderAlert(alertText)}
         <EnhancedTableToolbar
+          currentFilter={filterRule}
           handleSearchChanged={handleSearchChanged}
           setFilterRule={setFilterRule}
           isFetching={isFetching} />

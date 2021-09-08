@@ -1,25 +1,24 @@
 import axios from "axios";
 import * as StaticServices from "./StaticServices";
 
-export async function getStaticData() {
-
-}
-
 export async function getAll() {
     try {
-        return await axios('/api/applicationprocesses/');
+        const result = await axios('/api/applicationprocesses/');
+        return result.data.results;
     } catch (err) {
         StaticServices.handleError(err);
-        throw new Error('Failed getting all application processes', err);
+        return []; //in case we have a problem getting the applications
     }
 }
 
 export async function addNew(app) {
-    return await axios.post("/api/applicationprocesses/", app);
+    const result = await axios.post("/api/applicationprocesses/", app);
+    return result.data;
 }
 
 export async function update(app) {
-    return await axios.put(app.url, app);
+    const result = await axios.put(app.url, app);
+    return result.data;
 }
 
 export async function remove(app) {

@@ -387,6 +387,7 @@ export default function EnhancedTable() {
       position: { country_id: "IL" },
       contact_set: [],
       stage_set: [],
+      document_set: [],
       user_id: 2,
       last_modified: new Date().toISOString().split('T')[0],
       status: { id: 'IN', name: "Interested" }

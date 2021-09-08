@@ -105,6 +105,7 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
         position_validated_data = validated_data.pop('position')
         contacts_data = validated_data.pop('contact_set')
         stages_data = validated_data.pop('stage_set')
+        documents_data = validated_data.pop('document_set')
 
         # status is a direct field in ApplicationProcess model
         if(status_validated_data != None):
@@ -119,6 +120,10 @@ class ApplicationProcessSerializer(serializers.HyperlinkedModelSerializer):
 
         Position.objects.create(
             application_process_id=application_process, **position_validated_data)
+
+        for document_data in documents_data:
+            Document.objects.create(
+                application_process_id=application_process, **document_data)
 
         for contact_data in contacts_data:
             Contact.objects.create(

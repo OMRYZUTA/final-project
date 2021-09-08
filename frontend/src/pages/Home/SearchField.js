@@ -24,21 +24,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchField({ handleSearchChanged }) {
+export default function SearchField({ handleSearchChanged, disabled }) {
   const classes = useStyles();
   const handleChange = (e) => {
     handleSearchChanged(e)
   }
   return (
-    <div component="form" className={classes.root}>
+    <div component="form" className={classes.root} disabled={disabled}>
 
       <InputBase
         onChange={handleChange}
         className={classes.input}
         placeholder="search for job, company, reference..."
         inputProps={{ 'aria-label': 'search google maps' }}
+        disabled={disabled}
       />
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
+      <IconButton type="submit" className={classes.iconButton} aria-label="search" disabled={disabled}>
         <SearchIcon />
       </IconButton>
 

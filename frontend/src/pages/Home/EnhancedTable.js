@@ -3,7 +3,6 @@ import AddIcon from '@material-ui/icons/Add';
 import ApplicationProcessDialog from "./ApplicationProcessDialog";
 import CircularIndeterminate from "../../components/CircularIndeterminate";
 import clsx from "clsx";
-import DropDown from "./DropDown";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { getFiles, getEventMedia, getEventTypes, getStatuses } from "../../services/StaticServices";
 import Grid from '@material-ui/core/Grid';
@@ -14,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from "prop-types";
 import React, { useCallback } from "react";
+import RefreshIcon from '@material-ui/icons/Refresh';
 import SearchField from "./SearchField";
 import { stableSort, getComparator, updateArray } from "../../utils/utils";
 import Table from '@material-ui/core/Table';
@@ -110,7 +110,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule }) => {
+const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule, isFetching }) => {
   const classes = useToolbarStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -133,9 +133,9 @@ const EnhancedTableToolbar = ({ handleSearchChanged, setFilterRule }) => {
       >
         Job Application Processes
       </Typography>
-      <SearchField className={classes.search} handleSearchChanged={handleSearchChanged} />
+      <SearchField className={classes.search} handleSearchChanged={handleSearchChanged} disabled={isFetching} />
       <Tooltip title="Filter list">
-        <IconButton aria-label="filter list" onClick={handleMenuClick} >
+        <IconButton aria-label="filter list" onClick={handleMenuClick} disabled={isFetching}>
           <FilterListIcon />
         </IconButton>
       </Tooltip>
@@ -235,7 +235,6 @@ export default function EnhancedTable() {
   const [query, setQuery] = React.useState("");
   const [filterRule, setFilterRule] = React.useState("");
   const [isFetching, setIsFetching] = React.useState(true);
-  const [showCircular, setShowCircular] = React.useState(true);
 
   const matchStatusToClassName = (statusID, classes) => {
     let className = ''
@@ -285,7 +284,6 @@ export default function EnhancedTable() {
       setEventMedias(eventMedias.data.results);
       setIsFetching(false);
       setApplications(applications.data.results);
-      setShowCircular(false);
     };
     fetchAllData();
   }, []);
@@ -318,7 +316,6 @@ export default function EnhancedTable() {
 
   const handleSave = useCallback(async applicationProcess => {
     let result;
-
 
     if (applicationProcess.url) {
       result = await apServices.update(applicationProcess);
@@ -397,6 +394,16 @@ export default function EnhancedTable() {
     setCurrentItem(app);
   }, []);
 
+  const handleRefresh = useCallback(async () => {
+    setFilterRule(""); //don't keep previous filter
+    setQuery("");//don't keep previous search results    
+    setIsFetching(true);
+
+    const result = await apServices.getAll();
+    setApplications(stableSort(result.data.results, getComparator(order, orderBy)));
+    setIsFetching(false);
+  }, [applications]);
+
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);
 
@@ -446,15 +453,19 @@ export default function EnhancedTable() {
       <Paper className={classes.paper}>
         <EnhancedTableToolbar
           handleSearchChanged={handleSearchChanged}
-          setFilterRule={setFilterRule} />
+          setFilterRule={setFilterRule}
+          isFetching={isFetching} />
         <Grid container direction="row">
           <Grid item>
             <IconButton disabled={isFetching} position={"relative"} onClick={handleAddNew}>
               <AddIcon />
             </IconButton>
+            <IconButton disabled={isFetching} position={"relative"} onClick={handleRefresh}>
+              <RefreshIcon />
+            </IconButton>
           </Grid>
           <Grid item>
-            {showCircular && <CircularIndeterminate />}
+            {isFetching && <CircularIndeterminate />}
           </Grid>
         </Grid>
         <TableContainer>

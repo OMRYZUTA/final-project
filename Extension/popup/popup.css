@@ -1,0 +1,65 @@
+body {
+  height: 350px;
+  width: 350px;
+  background-color: #ffade7;
+  font-family: "Roboto", sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  height: 45px;
+  padding: 15px;
+}
+
+#name {
+  text-align: center;
+  font-size: 25px;
+  margin: 10px;
+  font-weight: bold;
+  color: rgb(167, 159, 159);
+}
+
+#btn-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#btn-container > button {
+  color: rgb(144 138 138);
+  background-color: #69ffe6;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  width: 120px;
+  cursor: pointer;
+}
+#position-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.task-input {
+  border-radius: 4px;
+  border: none;
+  font-family: "Roboto", sans-serif;
+  margin: 5px;
+  padding: 5px 10px 5px 10px;
+  width: 250px;
+}
+
+.checkboxLink {
+  align-self: baseline;
+  border: none;
+  outline: none;
+  padding-top: 10px;
+  padding-left: 27px;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(121, 112, 112);
+}

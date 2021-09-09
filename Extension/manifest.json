@@ -1,0 +1,33 @@
+{
+  "name": "Save Position",
+  "description": "Save a poistion",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "128": "/images/actionIcon.PNG"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "search",
+    "tabs",
+    "scripting",
+    "contextMenus",
+    "tts"
+  ],
+  "action": {
+    "default_icon": "/images/actionIcon.PNG",
+    "default_title": "Save Position",
+    "default_popup": "/popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.linkedin.com/*", "*://*.indeed.com/*"],
+      "run_at": "document_end",
+      "js": ["contentScript.js"]
+    }
+  ]
+}

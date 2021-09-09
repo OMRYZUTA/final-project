@@ -159,7 +159,7 @@ export default function ApplicationProcessDialog({
     });
   };
 
-  function updateStatusByEvent(currStatus, eventType) {
+  function updateStatusByStage(currStatus, eventType) {
     let status = currStatus;
     let statusID = status.id;
 
@@ -190,7 +190,7 @@ export default function ApplicationProcessDialog({
   const handleStagesChange = useCallback((newStage, isUpdate) => {
     let { stage_set: stages, status } = currentApplication;
 
-    status = updateStatusByEvent(status, newStage.event_type);
+    status = updateStatusByStage(status, newStage.event_type);
 
     if (isUpdate) {
       stages = stages
@@ -238,10 +238,10 @@ export default function ApplicationProcessDialog({
     setShowCircular(true);
   }, [currentApplication, handleDelete]);
 
-  const handleDeleteEvent = useCallback((eventToDelete, handleClose) => {
+  const handleDeleteStage = useCallback((stageToDelete, handleClose) => {
     setCurrentApplication({
       ...currentApplication, stage_set: currentApplication.stage_set
-        .filter(stage => JSON.stringify(stage) !== JSON.stringify(eventToDelete))
+        .filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete))
     });
 
     setShowDeleteConfirmation(false);
@@ -255,8 +255,8 @@ export default function ApplicationProcessDialog({
     setShowDeleteConfirmation(true);
   }, [currentApplication, handleDelete]);
 
-  const onDeleteEvent = useCallback((eventToDelete, handleClose) => {
-    setOnConfirmDelete(() => () => handleDeleteEvent(eventToDelete, handleClose));
+  const onDeleteStage = useCallback((stageToDelete, handleClose) => {
+    setOnConfirmDelete(() => () => handleDeleteStage(stageToDelete, handleClose));
     setContent("It will be permanently deleted")
     setHeadline("Are you sure you'd like to delete the event?");
     setShowDeleteConfirmation(true);
@@ -401,7 +401,7 @@ export default function ApplicationProcessDialog({
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <HorizontalStepper
-              onDeleteStage={onDeleteEvent}
+              onDeleteStage={onDeleteStage}
               className={classes.stepper}
               stage_set={currentApplication.stage_set}
               eventTypes={eventTypes}

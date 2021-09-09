@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function AreYouSure({ handleClose, headline, content, onOK }) {
+export default function DeleteConfirmationAlert({ handleClose, headline, content, onOK }) {
     return (
         <div>
             <Dialog
@@ -26,7 +26,7 @@ export default function AreYouSure({ handleClose, headline, content, onOK }) {
                         Cancel
                     </Button>
                     <Button onClick={onOK} color="primary" autoFocus>
-                        OK
+                        Yes
                     </Button>
                 </DialogActions>
             </Dialog>

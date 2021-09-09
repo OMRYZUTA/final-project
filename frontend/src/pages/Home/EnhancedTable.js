@@ -32,7 +32,6 @@ import Typography from '@material-ui/core/Typography';
 
 const filters = ['No Filter', 'Future Event', 'Open Status'];
 
-//delete later: can we combine the 2 makeStyles?
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',

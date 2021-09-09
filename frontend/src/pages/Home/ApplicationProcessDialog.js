@@ -1,6 +1,6 @@
 
 import AddIcon from '@material-ui/icons/Add';
-import AreYouSure from "./AreYouSure";
+import DeleteConfirmationAlert from "./DeleteConfirmationAlert";
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Card from '@material-ui/core/Card';
@@ -80,9 +80,9 @@ export default function ApplicationProcessDialog({
   const [currentApplication, setCurrentApplication] = React.useState(applicationProcess);
   const [displayContacts, setDisplayContacts] = React.useState(false);
   const [headline, setHeadline] = React.useState("");
-  const [onSure, setOnSure] = React.useState();
-  const [showAreYouSure, setShowAreYouSure] = React.useState(false);
+  const [onConfirmDelete, setOnConfirmDelete] = React.useState();
   const [showCircular, setShowCircular] = React.useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = React.useState(false);
   const [showFiles, setShowFiles] = React.useState(false);
   const theme = useTheme();
 
@@ -107,16 +107,6 @@ export default function ApplicationProcessDialog({
     );
   };
 
-  const renderAreYouSure = (handleClose) => {
-    return (
-      <AreYouSure handleClose={handleClose} onOK={onSure} headline={headline} content={content} />
-    )
-  }
-
-  const handleAreYouSureClose = useCallback(() => {
-    setShowAreYouSure(false);
-  });
-
   const handleShowFiles = () => {
     setShowFiles(true);
   };
@@ -128,7 +118,6 @@ export default function ApplicationProcessDialog({
     }
 
     setShowFiles(false);
-    // setSelectedFile(value);
   };
 
   const handlePositionChange = (e) => {
@@ -222,45 +211,59 @@ export default function ApplicationProcessDialog({
     setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
   };
 
-  const handleSureDeleteApp = useCallback(() => {
-    handleDelete(currentApplication);
-    handleAreYouSureClose();
-    setShowCircular(true);
-  }, [currentApplication, handleDelete, handleAreYouSureClose]);
-
-  const handleDeleteStage = useCallback((stageToDelete, handleClose) => {
-    setCurrentApplication({
-      ...currentApplication, stage_set: currentApplication.stage_set
-        .filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete))
-    });
-
-    setShowAreYouSure(false);
-    handleClose();
-  })
-
-  const onDelete = useCallback(() => {
-    setOnSure(() => handleSureDeleteApp);
-    setContent("It will be permanently deleted. You can click cancel and then set the status to Closed instead.")
-    setHeadline("Are You Sure You want to delete the application process?");
-    setShowAreYouSure(true);
-  }, [currentApplication, handleDelete, handleAreYouSureClose]);
-
-  const onDeleteStage = useCallback((stageToDelete, handleClose) => {
-    setOnSure(() => () => handleDeleteStage(stageToDelete, handleClose));
-    setContent("It will delete the it permanently")
-    setHeadline("Are You Sure You want to delete the event?");
-    setShowAreYouSure(true);
-  }, [currentApplication, handleDelete, handleAreYouSureClose]);
-
   const onSave = useCallback(() => {
     handleSave(currentApplication);
     setShowCircular(true);
   }, [currentApplication, handleSave]);
 
+  const handleCloseDeleteConfirmAlert = useCallback(() => {
+    // we're wrapping this useState in a function so that when sent in renderDeleteConfirmAlert
+    // it won't revaluate the function every time
+    setShowDeleteConfirmation(false);
+  }, [setShowDeleteConfirmation]);
+
+  const renderDeleteConfirmAlert = () => {
+    return (
+      <DeleteConfirmationAlert handleClose={handleCloseDeleteConfirmAlert}
+        onOK={onConfirmDelete}
+        headline={headline}
+        content={content} />
+    )
+  }
+
+  const handleDeleteAppProcess = useCallback(() => {
+    handleDelete(currentApplication); //handleDelete sent from EnhancedTable
+    setShowDeleteConfirmation(false);
+    setShowCircular(true);
+  }, [currentApplication, handleDelete]);
+
+  const handleDeleteEvent = useCallback((eventToDelete, handleClose) => {
+    setCurrentApplication({
+      ...currentApplication, stage_set: currentApplication.stage_set
+        .filter(stage => JSON.stringify(stage) !== JSON.stringify(eventToDelete))
+    });
+
+    setShowDeleteConfirmation(false);
+    handleClose();
+  })
+
+  const onDeleteAppProcess = useCallback(() => {
+    setOnConfirmDelete(() => handleDeleteAppProcess);
+    setContent("It will be permanently deleted. You can click cancel and then set the status to Closed instead.")
+    setHeadline("Are you sure you'd like to delete the application process?");
+    setShowDeleteConfirmation(true);
+  }, [currentApplication, handleDelete]);
+
+  const onDeleteEvent = useCallback((eventToDelete, handleClose) => {
+    setOnConfirmDelete(() => () => handleDeleteEvent(eventToDelete, handleClose));
+    setContent("It will be permanently deleted")
+    setHeadline("Are you sure you'd like to delete the event?");
+    setShowDeleteConfirmation(true);
+  }, [currentApplication, handleDelete]);
 
   return (
     <Dialog onClose={handleClose} fullWidth={true} maxWidth={"xl"} open={true}>
-      {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
+      {showDeleteConfirmation && renderDeleteConfirmAlert()}
       <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} >
         {showFiles && <DocumentChooser files={files} showFiles={showFiles} handleClose={handleCloseFiles} />}
 
@@ -397,7 +400,7 @@ export default function ApplicationProcessDialog({
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <HorizontalStepper
-              onDeleteStage={onDeleteStage}
+              onDeleteStage={onDeleteEvent}
               className={classes.stepper}
               stage_set={currentApplication.stage_set}
               eventTypes={eventTypes}
@@ -409,7 +412,7 @@ export default function ApplicationProcessDialog({
 
         <Grid container className={classes.footer}>
           {showCircular && <CircularIndeterminate />}
-          <IconButton className={classes.deleteBin} onClick={onDelete}>
+          <IconButton className={classes.deleteBin} onClick={onDeleteAppProcess}>
             <DeleteIcon />
           </IconButton>
           <Grid item>

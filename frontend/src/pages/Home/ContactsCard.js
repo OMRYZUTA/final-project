@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AreYouSure from "./AreYouSure";
+import DeleteConfirmationAlert from "./DeleteConfirmationAlert";
 const useStyles = makeStyles((theme) => ({
     container: {
         justifyContent: 'flex-start',
@@ -26,7 +26,7 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
 
     const renderAreYouSure = (handleClose) => {
         return (
-            <AreYouSure handleClose={handleClose} onOK={onSure} headline={headline} content={content} />
+            <DeleteConfirmationAlert handleClose={handleClose} onOK={onSure} headline={headline} content={content} />
         )
     }
     const handleAreYouSureClose = useCallback(() => {
@@ -43,11 +43,11 @@ const ContactsCard = ({ contact_set, handleContactsChange }) => {
     const onDelete = useCallback(() => {
         if (contacts.length > 0) {
             setOnSure(() => onDeleteContact);
-            setContent("It Will delete the contact permanently")
-            setHeadline("Are You Sure You want to delete the contact?");
+            setContent("It will be permanently deleted.")
+            setHeadline("Are you sure you'd like to delete the contact?");
             setShowAreYouSure(true);
         }
-    }, [onDeleteContact,contacts]);
+    }, [onDeleteContact, contacts]);
 
     const handleListChange = (e) => {
         const old = contacts[index];

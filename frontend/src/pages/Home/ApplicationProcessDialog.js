@@ -169,6 +169,7 @@ export default function ApplicationProcessDialog({
           statusID = 'AP';
         }
         break;
+      case 'OA':
       case 'RJ':
       case 'WD':
         statusID = 'CL';

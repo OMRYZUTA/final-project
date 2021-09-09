@@ -8,8 +8,6 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer, DocumentSerializer
 from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status, StatsManager, Document
-from django.contrib.auth.decorators import login_required
-from rest_framework import permissions
 from datetime import datetime, date
 
 # ViewSets define the view behavior.
@@ -76,9 +74,6 @@ class StatsView(APIView):
 class ApplicationProcessViewSet(viewsets.ModelViewSet):
     serializer_class = ApplicationProcessSerializer
     queryset = ApplicationProcess.objects.all()
-    # permission_classes  = [permissions.IsAuthenticatedOrReadOnly]
-
-    # @login_required
 
     def get_queryset(self):
         queryset = self.queryset

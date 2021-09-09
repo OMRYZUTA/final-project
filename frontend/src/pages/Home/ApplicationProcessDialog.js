@@ -425,6 +425,6 @@ export default function ApplicationProcessDialog({
           </Grid>
         </Grid>
       </Grid>
-    </Dialog >
+    </Dialog>
   );
 }

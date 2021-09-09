@@ -338,11 +338,12 @@ export default function EnhancedTable() {
     try {
       await appServices.remove(applicationProcess);
       setApplications(applications.filter((app) => app.id !== applicationProcess.id));
-      setCurrentItem(undefined);
     } catch (e) {
       setAlertText('Something went wrong, please reload page');
+    } finally {
+      handleClose();
     }
-  }, [applications]);
+  }, [applications, handleClose]);
 
   const handleSave = useCallback(async applicationProcess => {
     try {
@@ -355,12 +356,14 @@ export default function EnhancedTable() {
       let newApplications = updateArray(applications, result)
 
       setApplications(stableSort(newApplications, getComparator(order, orderBy)));
-      setCurrentItem(undefined);
+
     } catch (e) {
       setAlertText('Something went wrong, please reload page');
+    } finally {
+      handleClose();
     }
 
-  }, [applications, orderBy, order]);
+  }, [applications, orderBy, order, handleClose]);
 
   const applyFilterRule = (app, filterRule) => {
     let result = false;

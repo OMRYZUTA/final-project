@@ -89,6 +89,8 @@ django-countries = "*"
 psycopg2 = "*"
 django-cors-headers = "*"
 gunicorn = "*"
+environ = "*"
+django-environ = "*"
 
 [dev-packages]
 rope = "*"

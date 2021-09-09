@@ -36,10 +36,15 @@ export function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
+// this function receives an array of items with ID and an item to add or update in the array
 export function updateArray(arr, newAppProc) {
+    // if there's already an ID to the new item, we assume it's an update to an existing one
+    // and we remove the previous version of it  
     const tempArray = newAppProc.id ? arr.filter(a => {
         return a.id !== newAppProc.id;
     }) : [...arr];
+
     tempArray.push(newAppProc);
+
     return tempArray;
 }

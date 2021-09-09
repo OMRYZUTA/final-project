@@ -66,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 export default function ApplicationProcessDialog({
   applicationProcess,
   statuses,
@@ -77,16 +76,18 @@ export default function ApplicationProcessDialog({
   handleSave,
   handleDelete,
 }) {
-  const theme = useTheme();
-  const [displayContacts, setDisplayContacts] = useState(false);
-  const [showAreYouSure, setShowAreYouSure] = React.useState(false);
-  const [headline, setHeadline] = React.useState("");
   const [content, setContent] = React.useState("");
-  const [onSure, setOnSure] = useState();
-  const [showFiles, setShowFiles] = React.useState(false);
+  const [currentApplication, setCurrentApplication] = React.useState(applicationProcess);
+  const [displayContacts, setDisplayContacts] = React.useState(false);
+  const [headline, setHeadline] = React.useState("");
+  const [onSure, setOnSure] = React.useState();
+  const [showAreYouSure, setShowAreYouSure] = React.useState(false);
   const [showCircular, setShowCircular] = React.useState(false);
-  const [currentApplication, setCurrentApplication] =
-    useState(applicationProcess);
+  const [showFiles, setShowFiles] = React.useState(false);
+  const theme = useTheme();
+
+  const classes = useStyles(theme);
+
   const renderContactsOrNotes = () => {
     return (
       <div className={classes.card}>
@@ -105,11 +106,16 @@ export default function ApplicationProcessDialog({
       </div>
     );
   };
+
   const renderAreYouSure = (handleClose) => {
     return (
       <AreYouSure handleClose={handleClose} onOK={onSure} headline={headline} content={content} />
     )
   }
+
+  const handleAreYouSureClose = useCallback(() => {
+    setShowAreYouSure(false);
+  });
 
   const handleShowFiles = () => {
     setShowFiles(true);
@@ -121,22 +127,16 @@ export default function ApplicationProcessDialog({
       setCurrentApplication({ ...currentApplication, document_set: newFiles })
     }
 
-    console.log({ value });
     setShowFiles(false);
     // setSelectedFile(value);
   };
 
-
-  const handleAreYouSureClose = useCallback(() => {
-    setShowAreYouSure(false);
-  });
-
-
-  const handleChange = (e) => {
-    setCurrentApplication({
-      ...currentApplication,
+  const handlePositionChange = (e) => {
+    const position = {
+      ...currentApplication.position,
       [e.target.id]: e.target.value,
-    });
+    };
+    setCurrentApplication({ ...currentApplication, position: position });
   };
 
   const handleCountryChange = useCallback((event) => {
@@ -165,31 +165,27 @@ export default function ApplicationProcessDialog({
 
     const newStatus = oneElementArray[0]
 
-
     setCurrentApplication({
-      ...currentApplication,
-      status: newStatus,
+      ...currentApplication, status: newStatus
     });
   };
 
-  const handlePositionChange = (e) => {
-    const position = {
-      ...currentApplication.position,
-      [e.target.id]: e.target.value,
-    };
-    setCurrentApplication({ ...currentApplication, position: position });
-  };
-
   const handleStagesChange = useCallback((newStage, isUpdate) => {
-    let newStages;
-    if (isUpdate) {
-      newStages = currentApplication.stage_set.filter(stage => JSON.stringify(stage) !== JSON.stringify(newStage)
-      )
-    }
-    newStages = updateArray(currentApplication.stage_set, newStage).sort((s1, s2) => new Date(s1.stage_date) - new Date(s2.stage_date))
-    setCurrentApplication({ ...currentApplication, stage_set: newStages });
-  }, [currentApplication]);
+    let { stage_set: stages, status } = currentApplication;
 
+    if (newStage.event_type.id === 'RJ' || newStage.event_type.id === 'WD') {
+      //if rejected or withdrawn - change process status to CLOSED
+      status = statuses.find((item) => item.id === 'CL');
+    }
+
+    if (isUpdate) {
+      stages = stages
+        .filter(stage => JSON.stringify(stage) !== JSON.stringify(newStage));
+    }
+
+    stages = updateArray(stages, newStage);
+    setCurrentApplication({ ...currentApplication, status, stage_set: stages });
+  }, [currentApplication]);
 
   const handleContactsChange = (e, new_contact_set) => {
     setCurrentApplication({
@@ -201,59 +197,46 @@ export default function ApplicationProcessDialog({
   const handleApplicationChange = (e) => {
     setCurrentApplication({ ...currentApplication, [e.target.id]: e.target.value });
   };
+
   const handleSureDeleteApp = useCallback(() => {
     handleDelete(currentApplication);
     handleAreYouSureClose();
     setShowCircular(true);
   }, [currentApplication, handleDelete, handleAreYouSureClose]);
 
-  const onDelete = useCallback(() => {
-    setOnSure(() => handleSureDeleteApp);
-    setContent("It Will delete the application permanently, you can instead click cancel and set the status to close")
-    setHeadline("Are You Sure You want to delete the application?");
-    setShowAreYouSure(true);
-  }, [currentApplication, handleDelete, handleAreYouSureClose]);
-
-
-  const onDeleteStage = useCallback((stageToDelete, handleClose) => {
-    console.log(stageToDelete);
-    setOnSure(() => () => handleDeletStage(stageToDelete, handleClose));
-    setContent("It will delete the Stage permanently")
-    setHeadline("Are You Sure You want to delete the Stage?");
-    setShowAreYouSure(true);
-  }, [currentApplication, handleDelete, handleAreYouSureClose]);
-
-
-  const handleDeletStage = useCallback((stageToDelete, handleClose) => {
-    console.log(stageToDelete)
+  const handleDeleteStage = useCallback((stageToDelete, handleClose) => {
     setCurrentApplication({
-      ...currentApplication, stage_set: currentApplication.stage_set.filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete)
-      )
+      ...currentApplication, stage_set: currentApplication.stage_set
+        .filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete))
     });
+
     setShowAreYouSure(false);
     handleClose();
   })
 
+  const onDelete = useCallback(() => {
+    setOnSure(() => handleSureDeleteApp);
+    setContent("It will be permanently deleted. You can click cancel and then set the status to Closed instead.")
+    setHeadline("Are You Sure You want to delete the application process?");
+    setShowAreYouSure(true);
+  }, [currentApplication, handleDelete, handleAreYouSureClose]);
 
+  const onDeleteStage = useCallback((stageToDelete, handleClose) => {
+    setOnSure(() => () => handleDeleteStage(stageToDelete, handleClose));
+    setContent("It will delete the it permanently")
+    setHeadline("Are You Sure You want to delete the event?");
+    setShowAreYouSure(true);
+  }, [currentApplication, handleDelete, handleAreYouSureClose]);
 
   const onSave = useCallback(() => {
     handleSave(currentApplication);
     setShowCircular(true);
   }, [currentApplication, handleSave]);
 
-  const classes = useStyles(theme);
-
 
   return (
-    <Dialog
-      fullWidth={true}
-      maxWidth={"xl"}
-      onClose={handleClose}
-      open={true}
-    >
-
+    <Dialog onClose={handleClose} fullWidth={true} maxWidth={"xl"} open={true}>
       {showAreYouSure && renderAreYouSure(handleAreYouSureClose, onSure)}
-
       <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} >
         {showFiles && <DocumentChooser files={files} showFiles={showFiles} handleClose={handleCloseFiles} />}
 
@@ -295,7 +278,6 @@ export default function ApplicationProcessDialog({
               </Grid>
 
               <Grid item>
-                {/* need to add onchange and component id */}
                 <DropDown
                   className={classes.paperField}
                   label={"Status"}

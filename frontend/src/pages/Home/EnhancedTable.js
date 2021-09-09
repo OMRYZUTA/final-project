@@ -32,6 +32,7 @@ import Typography from '@material-ui/core/Typography';
 
 const filters = ['No Filter', 'Future Event', 'Open Status'];
 
+//delete later: can we combine the 2 makeStyles?
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -63,107 +64,6 @@ const useToolbarStyles = makeStyles((theme) => ({
     fontWeight: 800,
   },
 }));
-
-const headCells = [
-  {
-    id: "company_name", numeric: false, disablePadding: true, label: "Company",
-  },
-  { id: "job_title", numeric: false, disablePadding: true, label: "Position" },
-  { id: "status", numeric: false, disablePadding: true, label: "Status" },
-  { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" },
-];
-function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort } = props;
-
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead className={classes.tableHeader}>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align="left"
-            padding={"normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-EnhancedTableHead.propTypes = {
-  classes: PropTypes.object.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
-const EnhancedTableToolbar = ({ currentFilter, handleSearchChanged, setFilterRule, isFetching }) => {
-  const classes = useToolbarStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = (e) => {
-    setFilterRule(e.target.innerText);
-    setAnchorEl(null);
-  };
-  // <MenuItem onClick={handleMenuClose}>Future Event</MenuItem>
-  //       <MenuItem onClick={handleMenuClose}>Open Status</MenuItem>
-  //       <MenuItem onClick={handleMenuClose}>No Filter</MenuItem>
-
-  return (
-    <Toolbar className={clsx(classes.root)}>
-      <Typography
-        className={classes.title}
-        variant="h6"
-        id="tableTitle"
-      >
-        Job Application Processes
-      </Typography>
-      <SearchField className={classes.search} handleSearchChanged={handleSearchChanged} disabled={isFetching} />
-      <Tooltip title="Filter List">
-        <IconButton aria-label="Filter List" onClick={handleMenuClick} disabled={isFetching}>
-          <FilterListIcon />
-        </IconButton>
-      </Tooltip>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-      >
-        {
-          filters.map(filter => {
-            const className = filter === currentFilter ? classes.selectedFilter : undefined;
-            return <MenuItem key={filter} className={className} onClick={handleMenuClose}>{filter}</MenuItem>;
-          })
-        }
-      </Menu>
-    </Toolbar>
-  );
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -232,6 +132,102 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const headCells = [
+  {
+    id: "company_name", numeric: false, disablePadding: true, label: "Company",
+  },
+  { id: "job_title", numeric: false, disablePadding: true, label: "Position" },
+  { id: "status", numeric: false, disablePadding: true, label: "Status" },
+  { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" },
+];
+function EnhancedTableHead(props) {
+  const { classes, order, orderBy, onRequestSort } = props;
+
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead className={classes.tableHeader}>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align="left"
+            padding={"normal"}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : "asc"}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <span className={classes.visuallyHidden}>
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
+EnhancedTableHead.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onRequestSort: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
+
+const EnhancedTableToolbar = ({ currentFilter, handleSearchChanged, setFilterRule, isFetching }) => {
+  const classes = useToolbarStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = (e) => {
+    setFilterRule(e.target.innerText);
+    setAnchorEl(null);
+  };
+
+  return (
+    <Toolbar className={clsx(classes.root)}>
+      <Typography className={classes.title} variant="h6" id="tableTitle">
+        Job Application Processes
+      </Typography>
+
+      <SearchField className={classes.search} handleSearchChanged={handleSearchChanged} disabled={isFetching} />
+
+      <Tooltip title="Filter List">
+        <IconButton aria-label="Filter List" onClick={handleMenuClick} disabled={isFetching}>
+          <FilterListIcon />
+        </IconButton>
+      </Tooltip>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        {
+          filters.map(filter => {
+            const className = filter === currentFilter ? classes.selectedFilter : undefined;
+            return <MenuItem key={filter} className={className} onClick={handleMenuClose}>{filter}</MenuItem>;
+          })
+        }
+      </Menu>
+    </Toolbar>
+  );
+};
+
 const renderAlert = (alertText) => {
   return (
     <Alert severity="error">
@@ -244,51 +240,19 @@ const renderAlert = (alertText) => {
 export default function EnhancedTable() {
   const classes = useStyles();
   const [alertText, setAlertText] = React.useState('');
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("company_name");
-  const [currentItem, setCurrentItem] = React.useState();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [statuses, setStatuses] = React.useState([]);
-  const [eventTypes, setEventTypes] = React.useState([]);
-  const [eventMedias, setEventMedias] = React.useState([]);
-  const [files, setFiles] = React.useState([]);
   const [applications, setApplications] = React.useState([]);
-  const [query, setQuery] = React.useState("");
+  const [currentItem, setCurrentItem] = React.useState();
+  const [eventMedias, setEventMedias] = React.useState([]);
+  const [eventTypes, setEventTypes] = React.useState([]);
+  const [files, setFiles] = React.useState([]);
   const [filterRule, setFilterRule] = React.useState(filters[0]);
   const [isFetching, setIsFetching] = React.useState(true);
-
-  const matchStatusToClassName = (statusID, classes) => {
-    let className = ''
-    switch (statusID) {
-      case "Applied":
-        className = classes["yellowRow"];
-        break;
-      case "In Progress":
-        className = classes["malibuRow"];
-        break;
-      case "Closed":
-        className = classes["anakiwaRow"];
-        break;
-      case "Interested":
-        className = classes["otherBlueRow"];
-        break;
-      default:
-        className = "";
-        break;
-    }
-    return className;
-  };
-
-  const handleSearchChanged = useCallback(e => {
-    if (e.target.value) {
-      setQuery(e.target.value);
-    }
-    else {
-      setQuery("");
-    }
-
-  }, [applications, query, filterRule]);
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("company_name");
+  const [page, setPage] = React.useState(0);
+  const [query, setQuery] = React.useState("");
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [statuses, setStatuses] = React.useState([]);
 
   React.useEffect(() => {
     const fetchAllData = async () => {
@@ -314,6 +278,59 @@ export default function EnhancedTable() {
     };
     fetchAllData();
   }, []);
+
+  const matchStatusToClassName = (statusID, classes) => {
+    let className = ''
+    switch (statusID) {
+      case "Applied":
+        className = classes["yellowRow"];
+        break;
+      case "In Progress":
+        className = classes["malibuRow"];
+        break;
+      case "Closed":
+        className = classes["anakiwaRow"];
+        break;
+      case "Interested":
+        className = classes["otherBlueRow"];
+        break;
+      default:
+        className = "";
+        break;
+    }
+    return className;
+  };
+
+  const isMatching = (app, query) => {
+    let result = false;
+    if (!query) {
+      result = true;
+    }
+    else {
+      let normilizedQuery = query.toLowerCase();
+
+      if (app.position.company_name.toLowerCase().includes(normilizedQuery.toLowerCase())) {
+        result = true;
+      }
+      else if (app.position.job_title.toLowerCase().includes(normilizedQuery.toLowerCase())) {
+        result = true;
+      }
+      else if (app.reference?.toLowerCase().includes(normilizedQuery.toLowerCase())) {
+        result = true;
+      }
+    }
+    return result;
+  }
+
+  const handleSearchChanged = useCallback(e => {
+    if (e.target.value) {
+      setQuery(e.target.value);
+    }
+    else {
+      setQuery("");
+    }
+
+  }, [applications, query, filterRule]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -382,27 +399,6 @@ export default function EnhancedTable() {
     return result;
   }
 
-  const isMatching = (app, query) => {
-    let result = false;
-    if (!query) {
-      result = true;
-    }
-    else {
-      let normilizedQuery = query.toLowerCase();
-
-      if (app.position.company_name.toLowerCase().includes(normilizedQuery.toLowerCase())) {
-        result = true;
-      }
-      else if (app.position.job_title.toLowerCase().includes(normilizedQuery.toLowerCase())) {
-        result = true;
-      }
-      else if (app.reference?.toLowerCase().includes(normilizedQuery.toLowerCase())) {
-        result = true;
-      }
-    }
-    return result;
-  }
-
   const renderCurrentItem = (currentItem) => {
     return (
       <ApplicationProcessDialog
@@ -452,7 +448,7 @@ export default function EnhancedTable() {
 
   const renderTable = (filteredArray) => {
     return (
-      stableSort( //filter takes precedent upon searching.
+      stableSort( //filter takes precedence over search
         filteredArray.map(app => ({
           id: app.id,
           company_name: app.position?.company_name,
@@ -490,6 +486,7 @@ export default function EnhancedTable() {
   const filteredArray = applications
     .filter(app => applyFilterRule(app, filterRule))
     .filter(app => isMatching(app, query));
+
   return (
     <div className={classes.root}>
       {currentItem && renderCurrentItem(currentItem, statuses)}
@@ -544,7 +541,6 @@ export default function EnhancedTable() {
           className={classes.pagination}
           rowsPerPageOptions={[5, 10, 20, 30]}
           component="div"
-          // count={applications.length}
           count={filteredArray.length}
           rowsPerPage={rowsPerPage}
           page={page}

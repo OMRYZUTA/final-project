@@ -2,7 +2,6 @@ from django.db import models
 from django.core import serializers
 from datetime import datetime, date
 from django.core.exceptions import ValidationError
-import django
 
 
 class EventType(models.Model):
@@ -38,11 +37,10 @@ class Contact(models.Model):
     description = models.CharField(
         default='main', max_length=300, null=True, blank=True)
     email_address = models.EmailField(max_length=100, null=True, blank=True)
-    # later update phone fields with Local-Flavor library?
     phone_number1 = models.CharField(max_length=100, null=True, blank=True)
     phone_number2 = models.CharField(max_length=100, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
-    # null=true ??
+    # null=true ?? delete later
     application_process_id = models.ForeignKey(
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
 
@@ -56,15 +54,14 @@ class Position(models.Model):
     initial_contact_email_address = models.EmailField(
         max_length=100, null=True, blank=True)
     job_posting_URL = models.URLField(max_length=250, null=True, blank=True)
-    # maybe change to textField?
+    # maybe change to textField? delete later
     about_the_job = models.CharField(
         max_length=5000, null=True, blank=True)  # roughly 2 paragraphs
     application_process_id = models.OneToOneField(
         'ApplicationProcess', null=False, on_delete=models.CASCADE, primary_key=True)
-# default
 
     def __str__(self):
-        return str(self.job_title)  # update later
+        return str(self.job_title)
 
 
 class Stage(models.Model):
@@ -77,10 +74,9 @@ class Stage(models.Model):
     event_media = models.ForeignKey(
         'EventMedia', null=False, default="OT", on_delete=models.DO_NOTHING)
     notes = models.TextField(null=True, blank=True)
-    # contact? nested contact per stage
 
     def __str__(self):
-        return str(self.stage_date)  # update later
+        return str(self.stage_date)
 
 
 class ApplicationProcess(models.Model):
@@ -91,7 +87,6 @@ class ApplicationProcess(models.Model):
     last_modified = models.DateField(auto_now_add=True, null=True, blank=True)
     status = models.ForeignKey(
         'Status', null=False, default="IN", on_delete=models.DO_NOTHING)
-    # sent_resume= models.FileField()
 
     def __str__(self):
         return str(self.id)

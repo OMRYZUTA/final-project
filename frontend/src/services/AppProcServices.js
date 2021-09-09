@@ -2,13 +2,13 @@ import axios from "axios";
 import * as StaticServices from "./StaticServices";
 
 export async function getAll() {
-    try {
-        const result = await axios('/api/applicationprocesses/');
-        return result.data.results;
-    } catch (err) {
-        StaticServices.handleError(err);
-        return []; //in case we have a problem getting the applications
-    }
+    // try {
+    const result = await axios('/api/applicationprocesses/');
+    return result.data.results;
+    // } catch (err) {
+    //     StaticServices.handleError(err);
+    //     return []; //in case we have a problem getting the applications
+    // }
 }
 
 export async function addNew(app) {

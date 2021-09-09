@@ -8,12 +8,24 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
 import DatePicker from './DatePicker'
 import DropDown from './DropDown'
 
+const useStyles = makeStyles((theme) => ({
+    step: {
+        backgroundColor: '#FFFFC5',//yellow
+    },
+    button: {
+        backgroundColor: '#FFADE7',//pink
+        margin: '5px',
+    },
+}));
+
+
 export default function StepDialog({ initialStep, eventTypes, eventMedias, handleClose, handleSave, onDeleteStage }) {
     const [step, setStep] = useState(initialStep);
-
+    const classes = useStyles();
 
     const handleEventTypeChange = (e) => {
         const oneElementArray = eventTypes.filter(a => {
@@ -68,9 +80,9 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
 
     return (
         <Dialog open={true} onClose={handleClose}>
-            <DialogTitle>{isNew ? "Add Step" : "Edit Step"}</DialogTitle>
-            <DialogContent>
-                <Grid container>
+            <DialogTitle className={classes.step}>{isNew ? "Add Step" : "Edit Step"} </DialogTitle>
+            <DialogContent className={classes.step}>
+                <Grid container >
                     <Grid container item direction={'column'}>
                         <Grid item>
                             <DropDown
@@ -109,14 +121,14 @@ export default function StepDialog({ initialStep, eventTypes, eventMedias, handl
                     </Grid>
                 </Grid>
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={classes.step}>
                 <IconButton onClick={handleDelete}>
                     <DeleteIcon />
                 </IconButton>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} className={classes.button}>
                     Cancel
                 </Button>
-                <Button onClick={onSave} color="primary">
+                <Button onClick={onSave} className={classes.button}>
                     Save
                 </Button>
             </DialogActions>

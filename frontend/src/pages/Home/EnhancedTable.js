@@ -227,7 +227,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     padding: 0,
     position: "absolute",
-    top: 20,
+    top: 10,
     width: 1,
   },
 }));
@@ -434,13 +434,14 @@ export default function EnhancedTable() {
 
   const handleRefresh = useCallback(async () => {
     try {
+      setAlertText('');//remove alert message
       setFilterRule(""); //don't keep previous filter
       setQuery("");//don't keep previous search results    
       setIsFetching(true);
       const applicationList = await appServices.getAll();
       setApplications(stableSort(applicationList, getComparator(order, orderBy)));
     } catch (e) {
-      setAlertText('Something went wrong, please reload page');
+      setAlertText('Something went wrong, please try refreshing again');
     } finally {
       setIsFetching(false);
     }

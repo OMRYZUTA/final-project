@@ -173,7 +173,7 @@ export default function ApplicationProcessDialog({
   function updateStatusByEvent(currStatus, eventType) {
     let status = currStatus;
     let statusID = status.id;
-    // value = cond ? valueIfTrue : valueIfFalse
+
     switch (eventType.id) {
       case 'CV':
         if (statusID === 'IN') {

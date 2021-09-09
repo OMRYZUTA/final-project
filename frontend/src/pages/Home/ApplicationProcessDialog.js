@@ -204,7 +204,8 @@ export default function ApplicationProcessDialog({
   const handleSureDeleteApp = useCallback(() => {
     handleDelete(currentApplication);
     handleAreYouSureClose();
-  }, [handleAreYouSureClose, handleAreYouSureClose, currentApplication, handleDelete]);
+    setShowCircular(true);
+  }, [currentApplication, handleDelete, handleAreYouSureClose]);
 
   const onDelete = useCallback(() => {
     setOnSure(() => handleSureDeleteApp);

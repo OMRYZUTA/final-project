@@ -1,4 +1,4 @@
-import * as apServices from '../../services/AppProcServices';
+import * as appServices from '../../services/AppProcServices';
 import AddIcon from '@material-ui/icons/Add';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
@@ -299,7 +299,7 @@ export default function EnhancedTable() {
           getStatuses(),
           getEventTypes(),
           getEventMedia(),
-          apServices.getAll(),
+          appServices.getAll(),
         ]);
         setFiles(files);
         setStatuses(statuses);
@@ -335,24 +335,31 @@ export default function EnhancedTable() {
   }, []);
 
   const handleDelete = useCallback(async applicationProcess => {
-    // https://www.npmjs.com/package/react-confirm-alert
-    await apServices.remove(applicationProcess);
-    setApplications(applications.filter((app) => app.id !== applicationProcess.id));
-    setCurrentItem(undefined);
+    try {
+      await appServices.remove(applicationProcess);
+      setApplications(applications.filter((app) => app.id !== applicationProcess.id));
+      setCurrentItem(undefined);
+    } catch (e) {
+      setAlertText('Something went wrong, please reload page');
+    }
   }, [applications]);
 
   const handleSave = useCallback(async applicationProcess => {
-    let result;
+    try {
+      let result;
+      if (applicationProcess.url) {
+        result = await appServices.update(applicationProcess);
+      } else {
+        result = await appServices.addNew(applicationProcess);
+      }
+      let newApplications = updateArray(applications, result)
 
-    if (applicationProcess.url) {
-      result = await apServices.update(applicationProcess);
-    } else {
-      result = await apServices.addNew(applicationProcess);
+      setApplications(stableSort(newApplications, getComparator(order, orderBy)));
+      setCurrentItem(undefined);
+    } catch (e) {
+      setAlertText('Something went wrong, please reload page');
     }
-    let newApplications = updateArray(applications, result)
 
-    setApplications(stableSort(newApplications, getComparator(order, orderBy)));
-    setCurrentItem(undefined);
   }, [applications, orderBy, order]);
 
   const applyFilterRule = (app, filterRule) => {
@@ -423,14 +430,18 @@ export default function EnhancedTable() {
   }, []);
 
   const handleRefresh = useCallback(async () => {
-    setFilterRule(""); //don't keep previous filter
-    setQuery("");//don't keep previous search results    
-    setIsFetching(true);
-
-    const applicationList = await apServices.getAll();
-    setApplications(stableSort(applicationList, getComparator(order, orderBy)));
-    setIsFetching(false);
-  }, [applications]);
+    try {
+      setFilterRule(""); //don't keep previous filter
+      setQuery("");//don't keep previous search results    
+      setIsFetching(true);
+      const applicationList = await appServices.getAll();
+      setApplications(stableSort(applicationList, getComparator(order, orderBy)));
+    } catch (e) {
+      setAlertText('Something went wrong, please reload page');
+    } finally {
+      setIsFetching(false);
+    }
+  }, [order, orderBy]);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, applications.length - page * rowsPerPage);

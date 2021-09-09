@@ -170,13 +170,37 @@ export default function ApplicationProcessDialog({
     });
   };
 
+  function updateStatusByEvent(currStatus, eventType) {
+    let status = currStatus;
+    let statusID = status.id;
+    // value = cond ? valueIfTrue : valueIfFalse
+    switch (eventType.id) {
+      case 'CV':
+        if (statusID === 'IN') {
+          statusID = 'AP';
+        }
+        break;
+      case 'RJ':
+      case 'WD':
+        statusID = 'CL';
+        break;
+      case 'OT': //just wanted to catch eventType "other" so the rest will go to default
+        break;
+      default:
+        if (statusID === 'AP') {
+          statusID = 'PR'
+        }
+        break;
+    }
+
+    status = statuses.find((item) => item.id === statusID);
+    return status;
+  }
+
   const handleStagesChange = useCallback((newStage, isUpdate) => {
     let { stage_set: stages, status } = currentApplication;
 
-    if (newStage.event_type.id === 'RJ' || newStage.event_type.id === 'WD') {
-      //if rejected or withdrawn - change process status to CLOSED
-      status = statuses.find((item) => item.id === 'CL');
-    }
+    status = updateStatusByEvent(status, newStage.event_type);
 
     if (isUpdate) {
       stages = stages

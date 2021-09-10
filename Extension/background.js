@@ -15,6 +15,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   }
 }
 )
+
 chrome.runtime.onMessage.addListener(function (request) {
   console.log({ request })
   let appProcess = {}

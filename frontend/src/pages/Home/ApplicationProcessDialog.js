@@ -15,6 +15,7 @@ import DropDown from "./DropDown";
 import Grid from '@material-ui/core/Grid';
 import HorizontalStepper from "./HorizontalLinearStepper";
 import IconButton from '@material-ui/core/IconButton';
+import InfoAlert from './InfoAlert';
 import { makeStyles } from '@material-ui/core/styles';
 import Notes from "./Notes";
 import Paper from '@material-ui/core/Paper';
@@ -84,6 +85,7 @@ export default function ApplicationProcessDialog({
   const [showCircular, setShowCircular] = React.useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = React.useState(false);
   const [showFiles, setShowFiles] = React.useState(false);
+  const [showInfoAlert, setShowInfoAlert] = React.useState(false);
   const theme = useTheme();
 
   const classes = useStyles(theme);
@@ -165,6 +167,7 @@ export default function ApplicationProcessDialog({
 
     switch (eventType.id) {
       case 'CV':
+        setShowInfoAlert(true);
         if (statusID === 'IN') {
           statusID = 'AP';
         }
@@ -223,12 +226,25 @@ export default function ApplicationProcessDialog({
     setShowDeleteConfirmation(false);
   }, [setShowDeleteConfirmation]);
 
+
+
   const renderDeleteConfirmAlert = () => {
     return (
       <DeleteConfirmationAlert handleClose={handleCloseDeleteConfirmAlert}
         onOK={onConfirmDelete}
         headline={headline}
         content={content} />
+    )
+  }
+
+  const handleCloseInfoAlert = useCallback(() => {
+    setShowInfoAlert(false);
+  }, [setShowInfoAlert]);
+
+  const renderInfoAlert = () => {
+    setTimeout(() => { handleCloseInfoAlert(); }, 2000);
+    return (
+      <InfoAlert handleClose={handleCloseInfoAlert} headline={"Don't forget to save your CV  to Documents"} />
     )
   }
 
@@ -352,6 +368,7 @@ export default function ApplicationProcessDialog({
                       <IconButton onClick={handleShowFiles} >
                         <AddIcon />
                       </IconButton>
+                      {showInfoAlert && renderInfoAlert()}
                       <Grid container direction="row" spacing={2}>
                         {currentApplication.document_set?.map(document => {
                           return (
@@ -365,7 +382,7 @@ export default function ApplicationProcessDialog({
               </Grid>
             </Grid>
           </Paper>
-        </Grid>
+        </Grid >
 
         <Grid item xs={12} md={4}>
           <Paper className={classes.paper + " " + classes.paperWithHeight}>
@@ -434,7 +451,7 @@ export default function ApplicationProcessDialog({
             </Button>
           </Grid>
         </Grid>
-      </Grid>
-    </Dialog>
+      </Grid >
+    </Dialog >
   );
 }

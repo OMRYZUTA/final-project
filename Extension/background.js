@@ -17,7 +17,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 )
 
 chrome.runtime.onMessage.addListener(function (request) {
-  console.log({ request })
   let appProcess = {}
   appProcess["position"] = request;
   appProcess["status"] = { name: "Interested" };
@@ -25,10 +24,8 @@ chrome.runtime.onMessage.addListener(function (request) {
   appProcess["stage_set"] = [];
   appProcess["document_set"] = [];
   appProcess["user_id"] = 2;
-  console.log('app pro: ' + { appProcess });
   postData('http://127.0.0.1:8000/api/applicationprocesses/', appProcess)
     .then(data => {
-      console.log(data); // JSON data parsed by `data.json()` call
     });
 });
 

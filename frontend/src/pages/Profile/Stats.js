@@ -1,7 +1,6 @@
 import Grid from '@material-ui/core/Grid'
 
 const Stats = ({stats}) => {
-    console.log(stats);
 
     return (
         <Grid container spacing={5}>

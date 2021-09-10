@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 function SimpleDialog(props) {
     const classes = useStyles();
     const { files, onClose, selectedValue, open } = props;
-    console.log(files);
     const handleClose = () => {
         onClose();
     };

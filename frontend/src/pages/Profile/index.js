@@ -40,7 +40,6 @@ const Index = () => {
             const [stats] = await Promise.all([
                 getStats(),
             ]);
-            console.log(stats);
             setStats(stats.data);
         };
         fetchAllData();

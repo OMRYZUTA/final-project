@@ -365,11 +365,13 @@ export default function ApplicationProcessDialog({
                   <Typography>Documents</Typography>
                   <Card className={classes.card}>
                     <Grid container direction="row" className={classes.container}>
-                      <IconButton onClick={handleShowFiles} >
-                        <AddIcon />
-                      </IconButton>
-                      {showInfoAlert && renderInfoAlert()}
                       <Grid container direction="row" spacing={2}>
+                        <Grid item>
+                          <IconButton onClick={handleShowFiles} >
+                            <AddIcon />
+                          </IconButton>
+                        </Grid>
+                        {showInfoAlert && renderInfoAlert()}
                         {currentApplication.document_set?.map(document => {
                           return (
                             <Document document={document} />

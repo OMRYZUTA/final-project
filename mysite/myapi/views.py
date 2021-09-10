@@ -78,9 +78,7 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset
         #queryset = queryset.filter(user_id=self.request.user.id)
-        before = datetime.now()
         queryset = queryset.all()
-        print("after " + str(datetime.now() - before))
 
         position = self.request.query_params.get('position')
         if position is not None:

@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
     step: {
         backgroundColor: '#FFFFC5',//yellow
+        color: '#5f676e',// gray
     },
 
 }));

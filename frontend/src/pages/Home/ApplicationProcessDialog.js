@@ -1,12 +1,12 @@
 
 import AddIcon from '@material-ui/icons/Add';
-import DeleteConfirmationAlert from "./DeleteConfirmationAlert";
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Card from '@material-ui/core/Card';
 import CircularIndeterminate from "../../components/CircularIndeterminate";
 import ContactsCard from "./ContactsCard";
 import CountrySelect from "./CountrySelect";
+import DeleteConfirmationAlert from "./DeleteConfirmationAlert";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
 import Document from "./Document";
@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
   },
 }));
-
 
 export default function ApplicationProcessDialog({
   applicationProcess,
@@ -175,7 +174,7 @@ export default function ApplicationProcessDialog({
       case 'OA':
       case 'RJ':
       case 'WD':
-        statusID = 'CL';
+        statusID = 'CL'; //if offer-accepted, received-rejection or withdrawn -> status CLOSED
         break;
       case 'OT': //just wanted to catch eventType "other" so the rest will go to default
         break;
@@ -225,8 +224,6 @@ export default function ApplicationProcessDialog({
     // it won't revaluate the function every time
     setShowDeleteConfirmation(false);
   }, [setShowDeleteConfirmation]);
-
-
 
   const renderDeleteConfirmAlert = () => {
     return (
@@ -278,157 +275,175 @@ export default function ApplicationProcessDialog({
     setShowDeleteConfirmation(true);
   }, [currentApplication, handleDelete]);
 
+  const renderLeftCard = () => {
+    return (
+      <Grid item xs={12} md={4}>
+        <Paper className={classes.paper + " " + classes.paperWithHeight}>
+          <Grid container direction={"column"}>
+
+            <Grid item>
+              <TextField
+                className={classes.paperField}
+                onChange={handlePositionChange}
+                id="company_name"
+                label="Company Name"
+                type="text"
+                defaultValue={applicationProcess.position.company_name}
+              />
+            </Grid>
+
+            <Grid item>
+              <TextField
+                className={classes.paperField}
+                id="job_title"
+                label="Job Title"
+                defaultValue={applicationProcess.position.job_title}
+                onChange={handlePositionChange}
+              />
+            </Grid>
+
+            <Grid item>
+              <TextField
+                className={classes.paperField}
+                id="job_posting_URL"
+                label="Job URL"
+                defaultValue={
+                  currentApplication.position.job_posting_URL
+                }
+                onChange={handlePositionChange}
+              />
+            </Grid>
+
+            <Grid item>
+              <DropDown
+                className={classes.paperField}
+                label={"Status"}
+                options={statuses}
+                currentValue={currentApplication.status.id}
+                keyPropName="id"
+                namePropName="name"
+                onChange={handleStatusChange}
+              />
+            </Grid>
+
+          </Grid>
+        </Paper>
+      </Grid>
+    );
+  }
+
+  const renderMiddleCard = () => {
+    return (<Grid item xs={12} md={4}>
+      <Paper className={classes.paper + " " + classes.paperWithHeight}>
+        <Grid container justifyContent={"space-between"} direction={"column"}>
+          <Grid item>
+            <Grid container>
+              <CountrySelect
+                country_id={currentApplication.position.country_id} onChange={handleCountryChange} />
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid container direction="column">
+              <TextField
+                className={classes.paperField}
+                id="city"
+                label="City"
+                value={currentApplication.position.city}
+                onChange={handlePositionChange}
+              />
+              <TextField
+                className={classes.paperField}
+                id="reference"
+                label="Reference"
+                value={currentApplication.reference}
+                onChange={handleApplicationChange}
+              />
+              <Typography>Documents</Typography>
+              <Card className={classes.card}>
+                <Grid container direction="row" className={classes.container}>
+                  <Grid container direction="row" spacing={2}>
+                    <Grid item>
+                      <IconButton onClick={handleShowFiles} >
+                        <AddIcon />
+                      </IconButton>
+                    </Grid>
+                    {showInfoAlert && renderInfoAlert()}
+                    {currentApplication.document_set?.map(document => {
+                      return (
+                        <Document document={document} />
+                      )
+                    })}
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Grid >);
+  }
+
+  const renderRightCard = () => {
+    return (<Grid item xs={12} md={4}>
+      <Paper className={classes.paper + " " + classes.paperWithHeight}>
+        <Grid container alignItems="center" >
+          <ButtonGroup
+            className={classes.blueButton}
+            aria-label="outlined primary button group"
+          >
+            <Button
+              id="ContactsButton"
+              onClick={() => {
+                setDisplayContacts(true);
+              }}
+            >
+              Contacts
+            </Button>
+            <Button
+              id="NotesButton"
+              onClick={() => {
+                setDisplayContacts(false);
+              }}
+            >
+              Notes
+            </Button>
+          </ButtonGroup>
+        </Grid>
+        <Grid item>
+          <Grid container>{renderContactsOrNotes()}</Grid>
+        </Grid>
+      </Paper>
+    </Grid>);
+  }
+
+  const renderStageStepper = () => {
+    return (<Grid item xs={12}>
+      <Paper className={classes.paper}>
+        <HorizontalStepper
+          onDeleteStage={onDeleteStage}
+          className={classes.stepper}
+          stage_set={currentApplication.stage_set}
+          eventTypes={eventTypes}
+          eventMedias={eventMedias}
+          handleStagesChange={handleStagesChange}
+        />
+      </Paper>
+    </Grid>);
+  }
+
   return (
     <Dialog onClose={handleClose} fullWidth={true} maxWidth={"xl"} open={true}>
+
       {showDeleteConfirmation && renderDeleteConfirmAlert()}
+
       <Grid container className={classes.grid} spacing={2} alignItems={"stretch"} >
+
         {showFiles && <DocumentChooser files={files} showFiles={showFiles} handleClose={handleCloseFiles} />}
 
-        <Grid item xs={12} md={4}>
-          <Paper className={classes.paper + " " + classes.paperWithHeight}>
-            <Grid container direction={"column"}>
-
-              <Grid item>
-                <TextField
-                  className={classes.paperField}
-                  onChange={handlePositionChange}
-                  id="company_name"
-                  label="Company Name"
-                  type="text"
-                  defaultValue={applicationProcess.position.company_name}
-                />
-              </Grid>
-
-              <Grid item>
-                <TextField
-                  className={classes.paperField}
-                  id="job_title"
-                  label="Job Title"
-                  defaultValue={applicationProcess.position.job_title}
-                  onChange={handlePositionChange}
-                />
-              </Grid>
-
-              <Grid item>
-                <TextField
-                  className={classes.paperField}
-                  id="job_posting_URL"
-                  label="Job URL"
-                  defaultValue={
-                    currentApplication.position.job_posting_URL
-                  }
-                  onChange={handlePositionChange}
-                />
-              </Grid>
-
-              <Grid item>
-                <DropDown
-                  className={classes.paperField}
-                  label={"Status"}
-                  options={statuses}
-                  currentValue={currentApplication.status.id}
-                  keyPropName="id"
-                  namePropName="name"
-                  onChange={handleStatusChange}
-                />
-              </Grid>
-
-            </Grid>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Paper className={classes.paper + " " + classes.paperWithHeight}>
-            <Grid container justifyContent={"space-between"} direction={"column"}>
-              <Grid item>
-                <Grid container>
-                  <CountrySelect
-                    country_id={currentApplication.position.country_id} onChange={handleCountryChange} />
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Grid container direction="column">
-                  <TextField
-                    className={classes.paperField}
-                    id="city"
-                    label="City"
-                    value={currentApplication.position.city}
-                    onChange={handlePositionChange}
-                  />
-                  <TextField
-                    className={classes.paperField}
-                    id="reference"
-                    label="Reference"
-                    value={currentApplication.reference}
-                    onChange={handleApplicationChange}
-                  />
-                  <Typography>Documents</Typography>
-                  <Card className={classes.card}>
-                    <Grid container direction="row" className={classes.container}>
-                      <Grid container direction="row" spacing={2}>
-                        <Grid item>
-                          <IconButton onClick={handleShowFiles} >
-                            <AddIcon />
-                          </IconButton>
-                        </Grid>
-                        {showInfoAlert && renderInfoAlert()}
-                        {currentApplication.document_set?.map(document => {
-                          return (
-                            <Document document={document} />
-                          )
-                        })}
-                      </Grid>
-                    </Grid>
-                  </Card>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid >
-
-        <Grid item xs={12} md={4}>
-          <Paper className={classes.paper + " " + classes.paperWithHeight}>
-            <Grid container alignItems="center" >
-              <ButtonGroup
-                className={classes.blueButton}
-                aria-label="outlined primary button group"
-              >
-                <Button
-                  id="ContactsButton"
-                  onClick={() => {
-                    setDisplayContacts(true);
-                  }}
-                >
-                  Contacts
-                </Button>
-                <Button
-                  id="NotesButton"
-                  onClick={() => {
-                    setDisplayContacts(false);
-                  }}
-                >
-                  Notes
-                </Button>
-              </ButtonGroup>
-            </Grid>
-            <Grid item>
-              <Grid container>{renderContactsOrNotes()}</Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <HorizontalStepper
-              onDeleteStage={onDeleteStage}
-              className={classes.stepper}
-              stage_set={currentApplication.stage_set}
-              eventTypes={eventTypes}
-              eventMedias={eventMedias}
-              handleStagesChange={handleStagesChange}
-            />
-          </Paper>
-        </Grid>
+        {renderLeftCard()}
+        {renderMiddleCard()}
+        {renderRightCard()}
+        {renderStageStepper()}
 
         <Grid container className={classes.footer}>
           {showCircular && <CircularIndeterminate />}

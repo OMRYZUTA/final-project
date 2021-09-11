@@ -1,8 +1,6 @@
 from rest_framework import serializers
-from .models import EventType, Position, ApplicationProcess, Contact, Stage, EventMedia, Status, Document
-from datetime import date, datetime
-from rest_framework.serializers import Serializer, FileField
-
+from .models import ApplicationProcess, Contact, Document, EventMedia, EventType, Position, Stage, Status
+from datetime import date
 # Serializers define the API representation.
 
 

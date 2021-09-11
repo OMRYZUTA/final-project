@@ -1,7 +1,5 @@
 from django.db import models
 from datetime import date
-from django.core import serializers
-
 
 
 class EventType(models.Model):
@@ -33,36 +31,35 @@ class Status(models.Model):
 
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=200, null=True, blank=True)
-    description = models.CharField(
-        default='main', max_length=300, null=True, blank=True)
-    email_address = models.EmailField(max_length=100, null=True, blank=True)
-    phone_number1 = models.CharField(max_length=100, null=True, blank=True)
-    phone_number2 = models.CharField(max_length=100, null=True, blank=True)
-    address = models.TextField(null=True, blank=True)
-    # null=true ?? delete later
     application_process_id = models.ForeignKey(
         'ApplicationProcess', null=True, on_delete=models.CASCADE)
 
+    name = models.CharField(max_length=200, null=True, blank=True)
+    email_address = models.EmailField(max_length=100, null=True, blank=True)
+    phone_number1 = models.CharField(max_length=100, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    description = models.CharField(
+        default='main', max_length=300, null=True, blank=True)
+    phone_number2 = models.CharField(max_length=100, null=True, blank=True)
+
 
 class Position(models.Model):
+    application_process_id = models.OneToOneField(
+        'ApplicationProcess', null=False, on_delete=models.CASCADE, primary_key=True)
+
     job_title = models.CharField(max_length=200, null=True, blank=True)
     company_name = models.CharField(max_length=200, null=True, blank=True)
     country_id = models.CharField(
         max_length=3, default="IL", null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
-    initial_contact_email_address = models.EmailField(
-        max_length=100, null=True, blank=True)
     job_posting_URL = models.URLField(max_length=250, null=True, blank=True)
-    # maybe change to textField? delete later
     about_the_job = models.CharField(
         max_length=5000, null=True, blank=True)  # roughly 2 paragraphs
-    application_process_id = models.OneToOneField(
-        'ApplicationProcess', null=False, on_delete=models.CASCADE, primary_key=True)
+    initial_contact_email_address = models.EmailField(
+        max_length=100, null=True, blank=True)
 
     def __str__(self):
         return str(self.job_title)
-
 
 class Stage(models.Model):
     id = models.AutoField(primary_key=True)
@@ -77,7 +74,6 @@ class Stage(models.Model):
 
     def __str__(self):
         return str(self.stage_date)
-
 
 class ApplicationProcess(models.Model):
     id = models.AutoField(primary_key=True)

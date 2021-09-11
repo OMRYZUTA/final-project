@@ -1,17 +1,13 @@
 
-from django.http import FileResponse
+from django.shortcuts import render
+from .models import ApplicationProcess, Contact, Document, EventMedia, EventType, Position,  Stage,  Status, StatsManager
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, renderers
 from rest_framework.decorators import action
-from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer, DocumentSerializer
-from .models import Position, ApplicationProcess, Contact, Stage, EventType, EventMedia, Status, StatsManager, Document
-from datetime import datetime, date
-
 # ViewSets define the view behavior.
-
 
 class PassthroughRenderer(renderers.BaseRenderer):
     """
@@ -33,43 +29,34 @@ class DocumentViewSet(viewsets.ModelViewSet):
         serializer = DocumentSerializer(queryset, many=True)
         return Response(serializer.data)
 
-
 class StatusViewSet(viewsets.ModelViewSet):
     serializer_class = StatusSerializer
     queryset = Status.objects.all()
-
 
 class EventTypeViewSet(viewsets.ModelViewSet):
     serializer_class = EventTypeSerializer
     queryset = EventType.objects.all()
 
-
 class EventMediaViewSet(viewsets.ModelViewSet):
     serializer_class = EventMediaSerializer
     queryset = EventMedia.objects.all()
-
 
 class StageViewSet(viewsets.ModelViewSet):
     serializer_class = StageSerializer
     queryset = Stage.objects.all()
 
-
 class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
-
 
 class PositionViewSet(viewsets.ModelViewSet):
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
 
-
 class StatsView(APIView):
-
     def get(self, request, format=None):
         stats = StatsManager.getStatsByUserID(2)
         return Response(stats)
-
 
 class ApplicationProcessViewSet(viewsets.ModelViewSet):
     serializer_class = ApplicationProcessSerializer
@@ -81,6 +68,7 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
         queryset = queryset.all()
 
         position = self.request.query_params.get('position')
+        
         if position is not None:
             queryset = queryset.filter(position_id=position)
 

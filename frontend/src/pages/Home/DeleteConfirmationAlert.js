@@ -16,8 +16,10 @@ const useStyles = makeStyles((theme) => ({
         margin: '5px',
     },
 }));
+
 export default function DeleteConfirmationAlert({ handleClose, headline, content, onOK }) {
     const classes = useStyles();
+
     return (
         <div>
             <Dialog

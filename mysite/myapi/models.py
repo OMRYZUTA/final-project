@@ -1,7 +1,7 @@
 from django.db import models
+from datetime import date
 from django.core import serializers
-from datetime import datetime, date
-from django.core.exceptions import ValidationError
+
 
 
 class EventType(models.Model):

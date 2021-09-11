@@ -19,6 +19,7 @@ const Document = ({ document, a }) => {
         const newWindow = window.open(document.file_url, '_blank', 'noopener,noreferrer');
         if (newWindow) newWindow.opener = null;
     }
+
     return (
         <Grid item>
             <IconButton onClick={openInNewTab} className={classes.a}  >
@@ -28,4 +29,5 @@ const Document = ({ document, a }) => {
         </Grid>
     )
 }
+
 export default Document;

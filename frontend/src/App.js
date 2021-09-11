@@ -8,11 +8,6 @@ import Profile from './pages/Profile';
 
 const theme = createTheme({
   palette: {
-    // Pink #FFADE7
-    // yellow #FFFFC5
-    // lightBlue #5FE2FF
-    // blurBlue #93F7FF
-    //veryLightBlue #c3fff5
     lightBlue: {
       backgroundColor: '#5FE2FF'
     },
@@ -39,9 +34,6 @@ const theme = createTheme({
     neutral: {// yellow 
       main: '#FFFFC5'
     }
-
-
-    // secondary: ''
   },
   typography: {
     fontFamily: 'Roboto',
@@ -55,8 +47,10 @@ const useStyles = makeStyles({
     marginRight: "50px",
   }
 });
+
 export default function App() {
   const classes = useStyles();
+
   return (
     <ThemeProvider theme={theme}>
       <Router >

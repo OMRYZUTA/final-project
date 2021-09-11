@@ -126,9 +126,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const headCells = [
-  {
-    id: "company_name", numeric: false, disablePadding: true, label: "Company",
-  },
+  { id: "company_name", numeric: false, disablePadding: true, label: "Company" },
   { id: "job_title", numeric: false, disablePadding: true, label: "Position" },
   { id: "status", numeric: false, disablePadding: true, label: "Status" },
   { id: "last_modified", numeric: true, disablePadding: true, label: "Last Modified" },
@@ -296,6 +294,7 @@ export default function EnhancedTable() {
 
   const isMatching = (app, query) => {
     let result = false;
+
     if (!query) {
       result = true;
     }
@@ -312,17 +311,18 @@ export default function EnhancedTable() {
         result = true;
       }
     }
+
     return result;
   }
 
   const handleSearchChanged = useCallback(e => {
+
     if (e.target.value) {
       setQuery(e.target.value);
     }
     else {
       setQuery("");
     }
-
   }, [applications, query, filterRule]);
 
   const handleRequestSort = (event, property) => {

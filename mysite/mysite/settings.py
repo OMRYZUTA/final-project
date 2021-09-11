@@ -123,13 +123,6 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
 
-
-# SOCIAL_AUTH_FACEBOOK_KEY	=	''	# Facebook App	ID
-# SOCIAL_AUTH_FACEBOOK_SECRET	=	''	# Facebook App Secret
-
-# SOCIAL_AUTH_GITHUB_KEY = ''     # github id
-# SOCIAL_AUTH_GITHUB_SECRET = ''  # github secret key
-
 SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = env.str(
     'LINKEDIN_ID', default='Client ID')  # Client ID
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = env.str(

@@ -1,16 +1,16 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import MenuIcon from '@material-ui/icons/Menu';
+import ProfilePicture from '../resources/images/ProfilePhoto.jpg';
+import React from 'react';
+import { ReactComponent as Logo } from '../resources/images/logo.svg';
 import Toolbar from '@material-ui/core/Toolbar';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import MenuIcon from '@material-ui/icons/Menu';
-import { ReactComponent as Logo } from '../resources/images/logo.svg';
-import ProfilePicture from '../resources/images/ProfilePhoto.jpg';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,12 +45,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Navbar = props => {
-    const { history } = props;
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
     const theme = useTheme();
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const classes = useStyles();
+    const { history } = props;
     const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+    const open = Boolean(anchorEl);
 
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -61,15 +61,13 @@ const Navbar = props => {
         setAnchorEl(null);
     };
 
-    const handleButtonClick = pageURL => {
-        history.push(pageURL);
-    };
     const menuItems = [
         {
             menuTitle: 'Home',
             pageURL: '/'
         },
     ];
+
     return (
         <div className={classes.root}>
             <AppBar className={classes.appBar} position='static'>
@@ -107,6 +105,7 @@ const Navbar = props => {
                             >
                                 {menuItems.map(menuItem => {
                                     const { menuTitle, pageURL } = menuItem;
+
                                     return (
                                         <MenuItem onClick={() => handleMenuClick(pageURL)}>
                                             {menuTitle}

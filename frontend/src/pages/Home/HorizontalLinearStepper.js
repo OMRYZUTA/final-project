@@ -12,9 +12,8 @@ import StepDialog from './StepDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        //width: '100%',
         backgroundColor: '#c3fff5',//veryLightBlue
-        padding: 12,
+        padding: 5,
         justifyContent: "space-between",
         alignContent: "space-around"
     },

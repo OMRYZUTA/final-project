@@ -24,6 +24,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { updateArray } from "../../utils/utils";
 import { useTheme } from '@material-ui/core/styles';
+import GridListTileBar from '@material-ui/core/GridListTileBar'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -76,15 +77,15 @@ export default function ApplicationProcessDialog({
   handleSave,
   handleDelete,
 }) {
-  const [content, setContent] = React.useState("");
-  const [currentApplication, setCurrentApplication] = React.useState(applicationProcess);
-  const [displayContacts, setDisplayContacts] = React.useState(false);
-  const [headline, setHeadline] = React.useState("");
-  const [onConfirmDelete, setOnConfirmDelete] = React.useState();
-  const [showCircular, setShowCircular] = React.useState(false);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = React.useState(false);
-  const [showFiles, setShowFiles] = React.useState(false);
-  const [showInfoAlert, setShowInfoAlert] = React.useState(false);
+  const [content, setContent] = useState("");
+  const [currentApplication, setCurrentApplication] = useState(applicationProcess);
+  const [displayContacts, setDisplayContacts] = useState(false);
+  const [headline, setHeadline] = useState("");
+  const [onConfirmDelete, setOnConfirmDelete] = useState();
+  const [showCircular, setShowCircular] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showFiles, setShowFiles] = useState(false);
+  const [showInfoAlert, setShowInfoAlert] = useState(false);
   const theme = useTheme();
 
   const classes = useStyles(theme);
@@ -150,7 +151,7 @@ export default function ApplicationProcessDialog({
 
   const handleStatusChange = (e) => {
     const oneElementArray = statuses.filter(a => {
-      return a.id == e.target.value;
+      return a.id === e.target.value;
     })
 
     const newStatus = oneElementArray[0]
@@ -160,7 +161,7 @@ export default function ApplicationProcessDialog({
     });
   };
 
-  function updateStatusByStage(currStatus, eventType) {
+  const updateStatusByStage = useCallback((currStatus, eventType) => {
     let status = currStatus;
     let statusID = status.id;
 
@@ -187,7 +188,7 @@ export default function ApplicationProcessDialog({
 
     status = statuses.find((item) => item.id === statusID);
     return status;
-  }
+  }, [statuses]);
 
   const handleStagesChange = useCallback((newStage, isUpdate) => {
     let { stage_set: stages, status } = currentApplication;
@@ -201,7 +202,7 @@ export default function ApplicationProcessDialog({
 
     stages = updateArray(stages, newStage);
     setCurrentApplication({ ...currentApplication, status, stage_set: stages });
-  }, [currentApplication]);
+  }, [updateStatusByStage, currentApplication]);
 
   const handleContactsChange = (e, new_contact_set) => {
     setCurrentApplication({
@@ -259,21 +260,21 @@ export default function ApplicationProcessDialog({
 
     setShowDeleteConfirmation(false);
     handleClose();
-  })
+  }, [currentApplication])
 
   const onDeleteAppProcess = useCallback(() => {
     setOnConfirmDelete(() => handleDeleteAppProcess);
     setContent("It will be permanently deleted. You can click cancel and then set the status to Closed instead.")
     setHeadline("Are you sure you'd like to delete the application process?");
     setShowDeleteConfirmation(true);
-  }, [currentApplication, handleDelete]);
+  }, [handleDeleteAppProcess]);
 
   const onDeleteStage = useCallback((stageToDelete, handleClose) => {
     setOnConfirmDelete(() => () => handleDeleteStage(stageToDelete, handleClose));
     setContent("It will be permanently deleted")
     setHeadline("Are you sure you'd like to delete the event?");
     setShowDeleteConfirmation(true);
-  }, [currentApplication, handleDelete]);
+  }, [handleDeleteStage]);
 
   const renderLeftCard = () => {
     return (
@@ -359,7 +360,7 @@ export default function ApplicationProcessDialog({
                 onChange={handleApplicationChange}
               />
               <Typography>Documents</Typography>
-              <Card className={classes.card}>
+              <Grid item>
                 <Grid container direction="row" className={classes.container}>
                   <Grid container direction="row" spacing={2}>
                     <Grid item>
@@ -375,12 +376,12 @@ export default function ApplicationProcessDialog({
                     })}
                   </Grid>
                 </Grid>
-              </Card>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Paper>
-    </Grid >);
+    </Grid>);
   }
 
   const renderRightCard = () => {

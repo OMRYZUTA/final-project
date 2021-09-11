@@ -469,7 +469,7 @@ export default function ApplicationProcessDialog({
             </Button>
           </Grid>
         </Grid>
-      </Grid >
-    </Dialog >
+      </Grid>
+    </Dialog>
   );
 }

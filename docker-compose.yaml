@@ -7,9 +7,10 @@ services:
       dockerfile: Dockerfile.backend
     image: marshmallow.azurecr.io/backend
     container_name: backend
-    env_file: mysite/.env
     environment:
-      ALLOWED_HOSTS: localhost
+      - ALLOWED_HOSTS=localhost
+      - SECRET_KEY
+      - DATABASE_URL
 
   web:
     build:

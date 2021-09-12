@@ -1,27 +1,36 @@
 import os
 import environ
-from pathlib import Path
 
 env = environ.Env(
-    CORS_ORIGIN_WHITELIST=(str, 'http://localhost:3000'),
-    DEBUG=(bool, False),
-    DJANGO_ALLOWED_HOSTS=(str, ''),
-    DJANGO_SECRET_KEY=(str, '')
+    ALLOWED_HOSTS=(str, '127.0.0.1 localhost api'),
+    CORS_ALLOWED_ORIGINS=(str, 'http://localhost:3000'),
+    DEBUG=(bool, True),
+
+# the following values should be in the .env file
+    SECRET_KEY=(str, ''),
+
+    POSTGRESQL_ENGINE=(str, ''),
+    POSTGRESQL_NAME=(str, ''),
+    POSTGRESQL_USER=(str, ''),
+    POSTGRESQL_SECRET=(str, ''),
+    POSTGRESQL_HOST=(str, ''),
+    POSTGRESQL_PORT=(str, '5432'),
 )
 
-env = environ.Env()
-environ.Env.read_env()  # reading .env file
+# Set the project base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
+# False if not in os.environ because of casting above
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(' ')
+# Raises Django's ImproperlyConfigured
+# exception if SECRET_KEY not in os.environ
+SECRET_KEY = env('SECRET_KEY')
+
+ALLOWED_HOSTS =  env('ALLOWED_HOSTS').split(' ')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,13 +58,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
-CORS_ORIGIN_WHITELIST = env('CORS_ORIGIN_WHITELIST').split(' ')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # in order to allow the django engine to use the base.html in all of the apps.
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,16 +80,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dann7vb5cvimvr',
-        'USER': 'rejrrrcrlzllgu',
-        'PASSWORD': env.str('POSTGRESQL_SECRET'),
-        'HOST': 'ec2-54-166-242-77.compute-1.amazonaws.com',
-        'PORT': '5432',
-    }
+        'ENGINE': env('POSTGRESQL_ENGINE'),
+        'NAME': env('POSTGRESQL_NAME'),
+        'USER': env('POSTGRESQL_USER'),
+        'PASSWORD': env('POSTGRESQL_SECRET'),
+        'HOST': env('POSTGRESQL_HOST'),
+        'PORT': env('POSTGRESQL_PORT'),
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -98,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -144,13 +150,10 @@ TEMPLATE_DIRS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
 }
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000'
-]
+CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS').split(' ')
 
 CORS_ALLOW_METHODS = [
     'DELETE',

@@ -250,6 +250,7 @@ export default function ApplicationProcessDialog({
   }, [currentApplication, handleDelete]);
 
   const handleDeleteStage = useCallback((stageToDelete, handleClose) => {
+    delete stageToDelete.key; //added key for update, now removing key  so it won't interfere with the filtering
     setCurrentApplication({
       ...currentApplication, stage_set: currentApplication.stage_set
         .filter(stage => JSON.stringify(stage) !== JSON.stringify(stageToDelete))

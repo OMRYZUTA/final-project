@@ -75,7 +75,7 @@ function StageStepper({ stages, onStepClick }) {
                 .map((stage, index) => {
                     return renderStep({ ...stage, key: index }, classes, onStepClick);
                 })}
-        </Stepper >
+        </Stepper>
     );
 }
 
@@ -97,6 +97,11 @@ export default function HorizontalStepper({
         });
     }, [])
 
+    const handleStepClick = useCallback((step) => {
+        setIsUpdate(true);
+        setCurrentStep(step);
+    }, [])
+
     const handleStepDialogClose = useCallback((newStep) => {
         setCurrentStep();
     }, []);
@@ -104,7 +109,7 @@ export default function HorizontalStepper({
     const handleStepDialogChange = useCallback((newStep) => {
         handleStagesChange(newStep, isUpdate);
         setCurrentStep();
-    }, [handleStagesChange]);
+    }, [handleStagesChange, isUpdate]);
 
     const hasSteps = stage_set.length;
 
@@ -115,7 +120,7 @@ export default function HorizontalStepper({
                     <AddIcon />
                 </IconButton>
             </Grid>
-            {hasSteps && <StageStepper stages={stage_set} onStepClick={setCurrentStep} />}
+            {hasSteps && <StageStepper stages={stage_set} onStepClick={handleStepClick} />}
             {!hasSteps && renderEmptyState()}
             {currentStep && <StepDialog
                 onDeleteStage={onDeleteStage}

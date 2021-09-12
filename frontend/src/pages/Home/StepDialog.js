@@ -80,7 +80,8 @@ export default function StepDialog({
 
     const handleDelete = useCallback((e) => {
         onDeleteStage(step, handleClose);
-    })
+    },[handleClose,onDeleteStage,step]);
+    
     const isNew = !step.id; // change any value to boolean true/false
 
     return (

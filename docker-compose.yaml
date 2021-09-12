@@ -14,8 +14,8 @@ services:
   nginx:
     build:
       context: frontend
-      args:
-        API_URL: /api
+    environment:
+      PORT: 8000
     ports:
       - 8080:8080
     depends_on:

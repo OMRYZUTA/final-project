@@ -29,4 +29,4 @@ COPY . .
 # RUN python manage.py makemigrations
 # RUN python manage.py migrate
 
-CMD ["gunicorn", "mysite.wsgi", "--bind" "0.0.0.0:$PORT"]
+CMD gunicorn mysite.wsgi --bind 0.0.0.0:$PORT

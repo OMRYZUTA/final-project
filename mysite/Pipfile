@@ -91,6 +91,7 @@ django-cors-headers = "*"
 gunicorn = "*"
 environ = "*"
 django-environ = "*"
+django-heroku = "*"
 
 [dev-packages]
 rope = "*"

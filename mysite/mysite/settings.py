@@ -4,7 +4,7 @@ import django_heroku
 
 env = environ.Env(
     ALLOWED_HOSTS=(str, '127.0.0.1 localhost api'),
-    CORS_ALLOWED_ORIGINS=(str, 'http://localhost:3000'),
+    CORS_ALLOWED_ORIGINS=(str, 'http://localhost:3000 http://localhost:8000'),
     DEBUG=(bool, True),
 
 # the following value should be in the .env file

@@ -1,12 +1,12 @@
-upstream api {
-    server backend:8000;
+upstream backend {
+  server $BACKEND_HOST:$BACKEND_PORT fail_timeout=0;
 }
 
 server {
-    listen 8080;
+    listen $PORT;
 
-    location /api/ {
-        proxy_pass http://api$request_uri;
+    location /api {
+        proxy_pass http://backend/api;
     }
 
     # ignore cache frontend
@@ -17,7 +17,7 @@ server {
     }
 
     location / {
-      root /var/www/frontend;
-      try_files $uri $uri/ /index.html;
+    root /var/www/frontend;
+    try_files $uri $uri/ /index.html;
     }
 }

@@ -5,22 +5,23 @@ services:
     build:
       context: mysite
       dockerfile: Dockerfile.backend
+    image: marshmallow.azurecr.io/backend
+    container_name: backend
     env_file: mysite/.env
-    environment: 
-      ALLOWED_HOSTS: backend
-    command: gunicorn mysite.wsgi --bind 0.0.0.0:8000
-    ports:
-      - 8000:8000
+    environment:
+      ALLOWED_HOSTS: localhost
 
   web:
     build:
       context: frontend
       dockerfile: Dockerfile.web
+    image: marshmallow.azurecr.io/web
+    container_name: web
     environment:
       BACKEND_HOST: backend
       BACKEND_PORT: 8000
-      PORT: 8080
+      PORT: 80
     ports:
-      - 8080:8080
+      - 80:80
     depends_on:
       - backend

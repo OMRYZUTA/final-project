@@ -9,11 +9,9 @@ COPY public public
 COPY src src
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:1.21.1-alpine
-
-USER nginx
+FROM nginx:1.21.1-alpine
 
 COPY nginx-proxy.conf.template /etc/nginx/templates/default.conf.template
-COPY --from=builder --chown=nginx:nginx /frontend/build /var/www/frontend
+COPY --from=builder /frontend/build /var/www/frontend
 
 CMD ["nginx-debug", "-g", "daemon off;"]

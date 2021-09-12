@@ -44,44 +44,53 @@ function renderEmptyState() {
     );
 }
 
-function renderStep(event, classes, onClick) {
-    const isInPast = new Date(event.stage_date) < new Date();
+function renderStep(stage, classes, onClick) {
+    const isInPast = new Date(stage.stage_date) < new Date();
+
     return (
         //  date - blue, future date pink
-        <Step key={event.id} active={!isInPast} >
-            <StepButton onClick={() => onClick(event)}>
+        <Step key={stage.id} active={!isInPast} >
+            <StepButton onClick={() => onClick(stage)}>
                 <StepLabel StepIconProps={{
                     classes: { root: classes.stepIconRoot }
                 }}>
-                    <div>{event.event_type.name}</div>
-                    <div fullWidth>{event.stage_date}</div>
+                    <div>{stage.event_type.name}</div>
+                    <div fullWidth>{stage.stage_date}</div>
                 </StepLabel>
             </StepButton>
         </Step>
     );
 }
 
-function EventStepper({ events, onStepClick }) {
+function StageStepper({ stages, onStepClick }) {
     const classes = useStyles();
-    const manyEvents = events.length > 7;
+    const stageDisplayLimit = stages.length > 7;
     const { root, scrollable } = classes;
-    const className = manyEvents ? [scrollable, root] : root
+    const className = stageDisplayLimit ? [scrollable, root] : root
+
     return (
         <Stepper nonLinear className={className}>
-            {events
+            {stages
                 .sort((e1, e2) => new Date(e1.stage_date) - new Date(e2.stage_date))
-                .map((event) => {
-                    return renderStep(event, classes, onStepClick);
+                .map((stage, index) => {
+                    return renderStep({ ...stage, key: index }, classes, onStepClick);
                 })}
         </Stepper >
     );
 }
 
-export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, handleStagesChange, onDeleteStage }) {
+export default function HorizontalStepper({
+    stage_set,
+    eventTypes,
+    eventMedias,
+    handleStagesChange,
+    onDeleteStage }) {
     const classes = useStyles();
     const [currentStep, setCurrentStep] = useState();
+    const [isUpdate, setIsUpdate] = useState(true);
 
     const handleAddStep = useCallback(() => {
+        setIsUpdate(false);
         setCurrentStep({
             event_type: { id: "CV", name: "cv sent" },
             event_media: { id: "EM", name: "email" },
@@ -93,7 +102,7 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
     }, []);
 
     const handleStepDialogChange = useCallback((newStep) => {
-        handleStagesChange(newStep);
+        handleStagesChange(newStep, isUpdate);
         setCurrentStep();
     }, [handleStagesChange]);
 
@@ -106,7 +115,7 @@ export default function HorizontalStepper({ stage_set, eventTypes, eventMedias, 
                     <AddIcon />
                 </IconButton>
             </Grid>
-            {hasSteps && <EventStepper events={stage_set} onStepClick={setCurrentStep} />}
+            {hasSteps && <StageStepper stages={stage_set} onStepClick={setCurrentStep} />}
             {!hasSteps && renderEmptyState()}
             {currentStep && <StepDialog
                 onDeleteStage={onDeleteStage}

@@ -54,9 +54,8 @@ SimpleDialog.propTypes = {
 };
 
 export default function DocumentChooser({ files, showFiles, handleClose }) {
-    const [selectedFile, setSelectedFile] = React.useState(null);
 
     return (
-        <SimpleDialog files={files} selectedValue={selectedFile} open={showFiles} onClose={handleClose} />
+        <SimpleDialog files={files} open={showFiles} onClose={handleClose} />
     );
 }

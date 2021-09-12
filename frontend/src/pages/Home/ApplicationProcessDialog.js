@@ -194,7 +194,7 @@ export default function ApplicationProcessDialog({
 
     if (isUpdate) {
       stages = stages
-        .filter(stage => JSON.stringify(stage) !== JSON.stringify(newStage));
+        .filter(stage => stage.key !== newStage.key);
     }
 
     stages = updateArray(stages, newStage);

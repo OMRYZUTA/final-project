@@ -9,17 +9,6 @@ from rest_framework import viewsets
 from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer, DocumentSerializer
 # ViewSets define the view behavior.
 
-class PassthroughRenderer(renderers.BaseRenderer):
-    """
-        Return data as-is. View should supply a Response.
-    """
-    media_type = ''
-    format = ''
-
-    def render(self, data, accepted_media_type=None, renderer_context=None):
-        return data
-
-
 class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
     queryset = Document.objects.all()
@@ -29,34 +18,43 @@ class DocumentViewSet(viewsets.ModelViewSet):
         serializer = DocumentSerializer(queryset, many=True)
         return Response(serializer.data)
 
+
 class StatusViewSet(viewsets.ModelViewSet):
     serializer_class = StatusSerializer
     queryset = Status.objects.all()
+
 
 class EventTypeViewSet(viewsets.ModelViewSet):
     serializer_class = EventTypeSerializer
     queryset = EventType.objects.all()
 
+
 class EventMediaViewSet(viewsets.ModelViewSet):
     serializer_class = EventMediaSerializer
     queryset = EventMedia.objects.all()
+
 
 class StageViewSet(viewsets.ModelViewSet):
     serializer_class = StageSerializer
     queryset = Stage.objects.all()
 
+
 class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
+
 
 class PositionViewSet(viewsets.ModelViewSet):
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
 
+
 class StatsView(APIView):
-    def get(self, request, format=None):
+    # if login is implemented, the userID will be part of the request
+    def get(self, request):
         stats = StatsManager.getStatsByUserID(2)
         return Response(stats)
+
 
 class ApplicationProcessViewSet(viewsets.ModelViewSet):
     serializer_class = ApplicationProcessSerializer
@@ -64,11 +62,11 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        #queryset = queryset.filter(user_id=self.request.user.id)
+        #queryset = queryset.filter(user_id=self.request.user.id) becomes relevant if login is implemented
         queryset = queryset.all()
 
         position = self.request.query_params.get('position')
-        
+
         if position is not None:
             queryset = queryset.filter(position_id=position)
 

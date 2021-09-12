@@ -310,6 +310,13 @@ export default function EnhancedTable() {
       else if (app.reference?.toLowerCase().includes(normilizedQuery.toLowerCase())) {
         result = true;
       }
+      else if (app.contact_set.length > 0) {
+        app.contact_set.forEach(contact => {
+          if (contact.name.toLowerCase().includes(normilizedQuery.toLowerCase())) {
+            result = true;
+          }
+        })
+      }
     }
 
     return result;

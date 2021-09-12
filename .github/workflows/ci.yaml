@@ -27,4 +27,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Build Images
-        run: docker compose build
+        run: docker-compose build

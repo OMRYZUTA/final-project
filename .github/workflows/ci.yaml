@@ -38,8 +38,7 @@ jobs:
         id: backend_build
         uses: docker/build-push-action@v2
         with:
-          context: ./
-          file: ./mysite/Dockerfile.backend
+          context: ./mysite
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags:  marshmallow.azurecr.io/backend:latest
@@ -51,8 +50,7 @@ jobs:
         id: frontend_build
         uses: docker/build-push-action@v2
         with:
-          context: ./
-          file: ./frontend/Dockerfile.frontend
+          context: ./frontend
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags:  marshmallow.azurecr.io/frontend:latest

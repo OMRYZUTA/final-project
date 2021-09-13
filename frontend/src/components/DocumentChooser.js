@@ -22,10 +22,10 @@ function SimpleDialog(props) {
     const classes = useStyles();
     const { files, onClose, selectedValue, open } = props;
     const handleClose = () => { onClose(); };
-
+    console.log(files);
     const handleListItemClick = (value) => {
-        const fixed_url = "http://127.0.0.1:8000" + value.file;
-        onClose({ ...value, file: null, file_url: fixed_url });
+        // const fixed_url = "http://127.0.0.1:8000" + value.file;
+        onClose({ ...value, file: null, file_url: value.file });
     };
 
     return (

@@ -12,9 +12,10 @@ export async function getFiles() {
 
 export async function getFile(relativeURL) {
     try {
-        const response = await axios(relativeURL);
-        const blob = response.blob();
-        const url = window.URL.createObjectURL(blob);
+        const config = { responseType: 'blob' };
+        const response = await axios.get(relativeURL, config);
+        // const blob = await response.blob();
+        const url = window.URL.createObjectURL(response.data);
         return url;
     } catch (err) {
         handleError(err);

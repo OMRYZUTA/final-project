@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(function (request) {
   appProcess["stage_set"] = [];
   appProcess["document_set"] = [];
   appProcess["user_id"] = 2;
-  postData('http://127.0.0.1:8000/api/applicationprocesses/', appProcess)
+  postData('https://zulimarshmallow.azurewebsites.net/api/applicationprocesses/', appProcess)
     .then(data => {
     });
 });

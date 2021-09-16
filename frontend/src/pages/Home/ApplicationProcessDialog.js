@@ -74,7 +74,6 @@ export default function ApplicationProcessDialog({
   handleSave,
   handleDelete,
 }) {
-  console.log(files);
   const [content, setContent] = useState("");
   const [currentApplication, setCurrentApplication] = useState(applicationProcess);
   const [displayContacts, setDisplayContacts] = useState(false);

@@ -7,11 +7,12 @@ let job_posting_URL = window.location.href;
 let position = {};
 
 const scrape = () => {
-    //incase of a not logged in user
     if (job_posting_URL.includes("indeed")) {
         if (job_posting_URL.includes("vjk") || job_posting_URL.includes("vjs")) {
+            //in  url of specific job
             job_title = document.getElementsByClassName("jobsearch-JobInfoHeader-title")[0]?.innerText.replace("- job post", "");
-            if (typeof job_title === "undefined") {//incase of not a logged in user
+            if (typeof job_title === "undefined") {
+                //incase of not a logged in user
                 job_title = document.getElementById('vjs-jobtitle').innerText
                 company_name = document.getElementById("vjs-cn").innerText;
                 let city = document.getElementById("vjs-loc").innerText
@@ -20,7 +21,8 @@ const scrape = () => {
                 position = { company_name, job_title, city, about_the_job, job_posting_URL };
             }
 
-            else {//incase of a  logged in user
+            else {
+                //incase of a  logged in user
                 position = { job_title };
                 company_name = document.getElementsByClassName("jobsearch-InlineCompanyRating")[0].innerText;
                 let job_posting_url = String(window.location.href);
@@ -28,8 +30,8 @@ const scrape = () => {
             }
         }
     }
-    //incase of  a logged in user - otherwise, it is different tags, need to scrape with setinterval.
     else if (job_posting_URL.includes("linkedin")) {
+         //incase of  a logged in user - otherwise, it is different tags, need to scrape with setinterval.
         let jobDescriptionCollection = document.getElementsByClassName("jobs-unified-top-card__content--two-pane");
         if (jobDescriptionCollection.length > 0) {
             let job_description_div = jobDescriptionCollection[0];

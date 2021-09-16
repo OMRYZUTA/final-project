@@ -22,7 +22,6 @@ function SimpleDialog(props) {
     const classes = useStyles();
     const { files, onClose, selectedValue, open } = props;
     const handleClose = () => { onClose(); };
-    console.log(files);
     const handleListItemClick = (value) => {
         onClose({ ...value, file: null, file_url: value.file });
     };

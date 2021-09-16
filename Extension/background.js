@@ -13,6 +13,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
       )
     }
   }
+  return true;
 }
 )
 
@@ -27,6 +28,7 @@ chrome.runtime.onMessage.addListener(function (request) {
   postData('https://zulimarshmallow.azurewebsites.net/api/applicationprocesses/', appProcess)
     .then(data => {
     });
+  return true;
 });
 
 async function postData(url = '', data = {}) {

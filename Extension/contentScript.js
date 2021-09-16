@@ -1,5 +1,6 @@
-chrome.runtime.onMessage.addListener((msg, sender, sendResopnse) => {
-    sendResopnse(scrape());
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    sendResponse(scrape());
+    return true;
 })
 let job_title = "";
 let job_posting_URL = window.location.href;
@@ -18,7 +19,7 @@ const scrape = () => {
                 let job_posting_URL = String(window.location.href);
                 position = { company_name, job_title, city, about_the_job, job_posting_URL };
             }
-            
+
             else {//incase of a  logged in user
                 position = { job_title };
                 company_name = document.getElementsByClassName("jobsearch-InlineCompanyRating")[0].innerText;

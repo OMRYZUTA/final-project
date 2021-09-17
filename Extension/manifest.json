@@ -29,5 +29,6 @@
       "run_at": "document_end",
       "js": ["contentScript.js"]
     }
-  ]
+  ],
+  "host_permissions": ["https://zulimarshmallow.azurewebsites.net/*"]
 }

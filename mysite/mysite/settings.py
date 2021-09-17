@@ -2,7 +2,7 @@ import os
 import environ
 import django_heroku
 
-CORS_ALLOW_ALL_ORIGINS = True #to fix later
+CORS_ALLOW_ALL_ORIGINS = True 
 env = environ.Env(
     ALLOWED_HOSTS=(str, '127.0.0.1 localhost api'),
     CORS_ALLOWED_ORIGINS=(str, 'http://localhost:3000 http://localhost:8000'),

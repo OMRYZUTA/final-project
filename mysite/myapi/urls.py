@@ -13,6 +13,7 @@ router.register(r'statuses', views.StatusViewSet)
 router.register(r'stages', views.StageViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
     path('stats', views.StatsView.as_view()),
+    path(r'^api/', include(router.urls)),
+    # url(r'^v1/', include(router.urls)), # <-------------- HERE
 ]

@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  backend:
+    image: marshmallow.azurecr.io/backend
+    container_name: backend
+    environment:
+      ALLOWED_HOSTS: localhost
+
+  web:
+    image: marshmallow.azurecr.io/frontend
+    container_name: web
+    environment:
+      BACKEND_HOST: backend
+      BACKEND_PORT: 8000
+      PORT: 80
+    ports:
+      - 80:80
+    depends_on:
+      - backend

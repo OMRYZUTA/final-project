@@ -61,3 +61,14 @@ jobs:
         run: |
           echo Backend: ${{ steps.backend_build.outputs.digest }}
           echo Frontend: ${{ steps.frontend_build.outputs.digest }}
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: publish updated images to App Service
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp config container set --resource-group marshmallow --name zulimarshmallow --multicontainer-config-type compose --multicontainer-config-file docker-compose-prod.yaml

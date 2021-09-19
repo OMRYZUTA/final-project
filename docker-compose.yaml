@@ -4,7 +4,6 @@ services:
   backend:
     build:
       context: mysite
-      dockerfile: Dockerfile.backend
     image: marshmallow.azurecr.io/backend
     container_name: backend
     environment:
@@ -15,7 +14,6 @@ services:
   web:
     build:
       context: frontend
-      dockerfile: Dockerfile.web
     image: marshmallow.azurecr.io/web
     container_name: web
     environment:

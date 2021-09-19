@@ -7,6 +7,7 @@ env = environ.Env(
     ALLOWED_HOSTS=(str, '127.0.0.1 localhost api'),
     CORS_ALLOWED_ORIGINS=(str, 'http://localhost:3000 http://localhost:8000'),
     DEBUG=(bool, True),
+    SSL=(bool, False),
 
     # the following value should be in the .env file
     SECRET_KEY=(str, ''),
@@ -27,6 +28,11 @@ DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(' ')
+
+if env('SSL'):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    USE_X_FORWARDED_HOST = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',

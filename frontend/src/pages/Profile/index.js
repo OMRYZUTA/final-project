@@ -6,6 +6,7 @@ import { getStats } from "../../services/StaticServices"
 import Cover from './Cover';
 import IconTabs from './IconTabs';
 import { Typography, Card } from '@material-ui/core';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         border: 0,

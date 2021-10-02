@@ -7,11 +7,12 @@ import Tab from '@material-ui/core/Tab';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import DescriptionIcon from '@material-ui/icons/Description';
 import StarsIcon from '@material-ui/icons/Stars';
-import Skills from './Skills'
+
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Stats from './Stats'
 import Documents from './Documents'
+import Skills from './Skills'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

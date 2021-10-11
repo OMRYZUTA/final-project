@@ -9,6 +9,7 @@ from rest_framework import viewsets
 from .serializers import PositionSerializer, ApplicationProcessSerializer, ContactSerializer, StageSerializer, EventTypeSerializer, EventMediaSerializer, StatusSerializer, DocumentSerializer
 # ViewSets define the view behavior.
 
+
 class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
     queryset = Document.objects.all()
@@ -62,8 +63,9 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
-        #queryset = queryset.filter(user_id=self.request.user.id) becomes relevant if login is implemented
-        queryset = queryset.all()
+        # becomes relevant if login is implemented
+        queryset = queryset.filter(user_id=1)
+        # queryset = queryset.all()
 
         position = self.request.query_params.get('position')
 

@@ -59,8 +59,8 @@ class StatsView(APIView):
 
 class ApplicationProcessViewSet(viewsets.ModelViewSet):
     serializer_class = ApplicationProcessSerializer
-    queryset = ApplicationProcess.objects.all()
-
+    queryset = queryset.filter(user_id=1)
+    
     def get_queryset(self):
         queryset = self.queryset
         # becomes relevant if login is implemented

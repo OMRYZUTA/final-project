@@ -66,7 +66,7 @@ class ApplicationProcessViewSet(viewsets.ModelViewSet):
         # becomes relevant if login is implemented
         queryset = queryset.filter(user_id=1)
         # queryset = queryset.all()
-
+s
         position = self.request.query_params.get('position')
 
         if position is not None:

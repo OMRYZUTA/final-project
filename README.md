@@ -9,7 +9,7 @@ Back-End
 
 - Initially, we sketched-out the classes, and had a pretty good picture in our heads of how things should look. But later on, we were in unknown territory for us, trying to figure out the models when working with a database, and we realised the initial classes would need some modifications.
  The **relationships between models,** especially Many-to-One, something that may seem trivial to experienced developers, were counter-intuitive to us and required some extra digging and effort to overcome.
-- py: Marshmallow - final project\BackEnd\api
+- Serializers.py: Marshmallow - final project\BackEnd\api
 It took us a while to figure out how to work with serializers and the most complicated of these was the **ApplicationProcessSerializer**.
  We knew that we wanted to send the ApplicationProcess as a single payload from the front-end, and its nested objects made its serialization more complicated.
  Because of the hierarchical nature of the ApplicationProcess model, we couldn&#39;t use default create and update methods of ApplicationProcessSerializer and had to override them.

@@ -1,8 +1,7 @@
-# final-project
+# Final Project
+## Marshmallow. managing your job hunt.
 A web application and chrome extension to manage your job hunt.
 ![](RackMultipart20211018-4-1xy4qa2_html_51289b050488c5e.png)
-
-# Marshmallow. managing your job hunt.
 
 We&#39;re proud of our project and the great progress we made with it. We&#39;d like to draw your attention to a few observations and code-bits we find to be especially interesting:
 
